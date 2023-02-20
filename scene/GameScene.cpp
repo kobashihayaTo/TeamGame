@@ -46,11 +46,13 @@ void GameScene::Initialize() {
 
 void GameScene::Update() {
 
-	if (newMap->GetMapFlag() == 0)
+	if (newMap->GetInvisible() == false)
 	{
-		//プレイヤーの更新
-		newPlayer->Update();
+		
 	}
+
+	//プレイヤーの更新
+	newPlayer->Update();
 
 	//マップの更新
 	newMap->Update(newPlayer.get());
