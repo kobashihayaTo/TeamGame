@@ -53,6 +53,8 @@ public:		//ƒƒ“ƒoŠÖ”
 
 	bool CheckCollision(Vector3 pos1, Vector3 pos2, float radius1, float radius2);
 
+	int GetMapFlag() { return MapFlag; }
+
 public:
 	//”¼Œa
 	const float radius = 0.9f;
