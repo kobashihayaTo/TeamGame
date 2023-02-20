@@ -15,7 +15,10 @@
 #include "WorldTransform.h"
 #include "Function.h"
 
+#include "camera/RailCamera.h"
 #include "Enum.h"
+#include "Player/Player.h"
+#include "Map/Map.h"
 
 /// <summary>
 /// ゲームシーン
@@ -48,6 +51,8 @@ class GameScene {
 	/// </summary>
 	void Draw();
 
+
+
 	/// <summary>
 	/// シーン切り替え
 	/// </summary>
@@ -62,6 +67,33 @@ class GameScene {
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
 	DebugText* debugText_ = nullptr;
+	//ビュープロジェクション
+	ViewProjection viewProjection_;
+
+	//レールカメラ
+	std::unique_ptr<RailCamera> newCamera = std::make_unique<RailCamera>();
+
+
+	Model* model_ = nullptr;
+
+	//マップ生成
+	std::unique_ptr<Map> newMap = std::make_unique<Map>();
+	//マップモデル
+	Model* mapModel_ = nullptr;
+	//マップテクスチャ
+	uint32_t mapTH_ = 0u;
+
+	//プレイヤー生成
+	std::unique_ptr<Player> newPlayer = std::make_unique<Player>();
+	//プレイヤーモデル
+	Model* playerModel_ = nullptr;
+	
+	//テクスチャハンドル
+	uint32_t floorTH_ = 0u;
+	//床モデル
+	Model* floorModel_ = nullptr;
+	//床のスプライト
+	Sprite* floorSprite = nullptr;	uint32_t ruleTH_ = 0u;
 
 	/// <summary>
 	/// ゲームシーン用
@@ -69,4 +101,5 @@ class GameScene {
 	
 	Scene nextScene_ = Scene::GAME;
 	int isEnd_ = false;
+
 };

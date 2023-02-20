@@ -2,9 +2,15 @@
 #include "TextureManager.h"
 #include <cassert>
 
+#include "MyMath.h"
+
 GameScene::GameScene() {}
 
-GameScene::~GameScene() {}
+GameScene::~GameScene() {
+	delete mapModel_;
+	delete playerModel_;
+	delete floorModel_;
+}
 
 void GameScene::Initialize() {
 
@@ -12,9 +18,47 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 	debugText_ = DebugText::GetInstance();
+
+ 	mapTH_ = TextureManager::Load("cube/cube.jpg");
+	floorTH_ = TextureManager::Load("ground/floor.png");
+
+	//3Dモデルを生成
+	mapModel_ = Model::CreateFromOBJ("cube", true);
+	playerModel_ = Model::CreateFromOBJ("player", true);
+	floorModel_ = Model::CreateFromOBJ("floor", true);
+
+#pragma  region 初期化
+	//マップの初期化
+	newMap->Initialize(mapModel_, floorModel_);
+	//カメラの初期位置を設定
+	Vector3 cameraPos(0, 0, 0);
+	Vector3 cameraRot(0, 0, 0);
+	//レールカメラの初期化
+	newCamera->Initialize(cameraPos, cameraRot);
+	//プレイヤーの初期化
+	newPlayer->Initialize(playerModel_);
+#pragma endregion
+	//ビュープロジェクションの初期化
+	viewProjection_.Initialize();
+
+	model_ = Model::Create();
 }
 
 void GameScene::Update() {
+	//プレイヤーの更新
+	newPlayer->Update();
+
+	//マップの更新
+	newMap->Update(newPlayer.get());
+
+	//カメラの更新
+	newCamera->Update();
+	//レールカメラをゲームシーンのカメラに適応する
+	viewProjection_.matView = newCamera->GetViewProjection().matView;
+	viewProjection_.matProjection = newCamera->GetViewProjection().matProjection;
+	//ビュープロジェクションの転送
+	viewProjection_.TransferMatrix();
+
 	SceneChange();
 }
 
@@ -44,6 +88,14 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
+	//マップの描画
+	newMap->Draw(viewProjection_);
+
+	//床の描画
+	newMap->FloorDraw(viewProjection_);
+
+	//プレイヤーの描画
+	newPlayer->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
