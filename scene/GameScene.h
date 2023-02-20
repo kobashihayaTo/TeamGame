@@ -19,6 +19,7 @@
 #include "Enum.h"
 #include "Player/Player.h"
 #include "Map/Map.h"
+#include "Enemy/Enemy.h"
 
 /// <summary>
 /// ゲームシーン
@@ -94,6 +95,11 @@ class GameScene {
 	Model* floorModel_ = nullptr;
 	//床のスプライト
 	Sprite* floorSprite = nullptr;	uint32_t ruleTH_ = 0u;
+
+	//敵生成
+	std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
+	//敵モデル
+	Model* enemyModel_ = nullptr;
 
 	/// <summary>
 	/// ゲームシーン用
