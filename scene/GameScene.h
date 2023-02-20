@@ -1,5 +1,9 @@
 ﻿#pragma once
-
+#include <Windows.h>
+#include <wrl.h>
+#include <d3d12.h>
+#include <d3dx12.h>
+#include <DirectXMath.h>
 #include "Audio.h"
 #include "DirectXCommon.h"
 #include "DebugText.h"
@@ -9,6 +13,9 @@
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include "Function.h"
+
+#include "Enum.h"
 
 /// <summary>
 /// ゲームシーン
@@ -41,6 +48,15 @@ class GameScene {
 	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// シーン切り替え
+	/// </summary>
+	void SceneChange();
+
+	Scene GetNextScene() { return nextScene_; }
+
+	int GetIsEnd() { return isEnd_; }
+
   private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -50,4 +66,7 @@ class GameScene {
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
+	
+	Scene nextScene_ = Scene::GAME;
+	int isEnd_ = false;
 };

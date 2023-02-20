@@ -14,7 +14,9 @@ void GameScene::Initialize() {
 	debugText_ = DebugText::GetInstance();
 }
 
-void GameScene::Update() {}
+void GameScene::Update() {
+	SceneChange();
+}
 
 void GameScene::Draw() {
 
@@ -62,4 +64,13 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 #pragma endregion
+}
+
+void GameScene::SceneChange() {
+	isEnd_ = false;
+	if (input_->TriggerKey(DIK_SPACE))
+	{
+		nextScene_ = Scene::END;
+		isEnd_ = true;
+	}
 }

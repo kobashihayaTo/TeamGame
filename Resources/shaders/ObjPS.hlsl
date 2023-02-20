@@ -9,7 +9,7 @@ float4 main(VSOutput input) : SV_TARGET
 	float4 texcolor = tex.Sample(smp, input.uv);
 		
 	// 光沢度
-	const float shininess = 4.0f;
+	const float shininess = 1.0f;
 	// 頂点から視点への方向ベクトル
 	float3 eyedir = normalize(cameraPos - input.worldpos.xyz);
 
