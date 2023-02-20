@@ -3,7 +3,7 @@
 #include "ViewProjection.h"
 #include "DebugText.h"
 #include "Input.h"
-#include "Function.h"
+#include "Function/Function.h"
 
 class RailCamera
 {

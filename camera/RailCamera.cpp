@@ -1,6 +1,6 @@
 #include "RailCamera.h"
-#include "MyMath.h"
-#include "Function.h"
+#include "math/MyMath.h"
+#include "Function/Function.h"
 
 void RailCamera::Initialize(Vector3& position, Vector3& rotation) {
 	//シングルトンインスタンスを取得する

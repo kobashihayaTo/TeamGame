@@ -102,16 +102,16 @@
     <ClCompile Include="base\TextureManager.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
     <ClCompile Include="camera\RailCamera.cpp" />
-    <ClCompile Include="Function.cpp" />
+    <ClCompile Include="Function\Function.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map\Map.cpp" />
-    <ClCompile Include="MyMath.cpp" />
+    <ClCompile Include="math\MyMath.cpp" />
+    <ClCompile Include="math\Useful.cpp" />
     <ClCompile Include="Player\Player.cpp" />
     <ClCompile Include="scene\EndScene.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="scene\ManualScene.cpp" />
     <ClCompile Include="scene\TitleScene.cpp" />
-    <ClCompile Include="Useful.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\DebugText.h" />
@@ -138,21 +138,21 @@
     <ClInclude Include="base\WinApp.h" />
     <ClInclude Include="camera\RailCamera.h" />
     <ClInclude Include="Enum.h" />
-    <ClInclude Include="Function.h" />
+    <ClInclude Include="Function\Function.h" />
     <ClInclude Include="input\Input.h" />
     <ClInclude Include="Map\Map.h" />
     <ClInclude Include="math\MathUtility.h" />
     <ClInclude Include="math\Matrix4.h" />
+    <ClInclude Include="math\MyMath.h" />
+    <ClInclude Include="math\Useful.h" />
     <ClInclude Include="math\Vector2.h" />
     <ClInclude Include="math\Vector3.h" />
     <ClInclude Include="math\Vector4.h" />
-    <ClInclude Include="MyMath.h" />
     <ClInclude Include="Player\Player.h" />
     <ClInclude Include="scene\EndScene.h" />
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="scene\ManualScene.h" />
     <ClInclude Include="scene\TitleScene.h" />
-    <ClInclude Include="Useful.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\TerrainPS.hlsl">

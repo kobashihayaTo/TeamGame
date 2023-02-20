@@ -1,4 +1,4 @@
-#include"Useful.h"
+#include "math/Useful.h"
 
 void useful::setScaleMat(Matrix4& mat, WorldTransform& worldTransform) {
 	//スケーリング倍率を行列に設定する

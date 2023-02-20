@@ -13,7 +13,7 @@
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include "Function.h"
+#include "Function/Function.h"
 
 #include "camera/RailCamera.h"
 #include "Enum.h"

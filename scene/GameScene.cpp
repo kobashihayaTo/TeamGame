@@ -2,7 +2,7 @@
 #include "TextureManager.h"
 #include <cassert>
 
-#include "MyMath.h"
+#include "math/MyMath.h"
 
 GameScene::GameScene() {}
 

@@ -2,7 +2,7 @@
 
 #include "Model.h"
 #include "WorldTransform.h"
-#include "Function.h"
+#include "Function/Function.h"
 #include <cassert>
 #include "DebugText.h"
 #include"Input.h"
