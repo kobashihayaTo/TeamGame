@@ -102,7 +102,7 @@
     <ClCompile Include="base\TextureManager.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
     <ClCompile Include="camera\RailCamera.cpp" />
-    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Enemy\Enemy.cpp" />
     <ClCompile Include="Function.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map\Map.cpp" />
@@ -138,7 +138,7 @@
     <ClInclude Include="base\TextureManager.h" />
     <ClInclude Include="base\WinApp.h" />
     <ClInclude Include="camera\RailCamera.h" />
-    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Enemy\Enemy.h" />
     <ClInclude Include="Enum.h" />
     <ClInclude Include="Function.h" />
     <ClInclude Include="input\Input.h" />

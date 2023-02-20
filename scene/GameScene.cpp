@@ -26,6 +26,7 @@ void GameScene::Initialize() {
 	mapModel_ = Model::CreateFromOBJ("cube", true);
 	playerModel_ = Model::CreateFromOBJ("player", true);
 	floorModel_ = Model::CreateFromOBJ("floor", true);
+	enemyModel_ = Model::CreateFromOBJ("enemy", true);
 
 #pragma  region 初期化
 	//マップの初期化
@@ -37,6 +38,8 @@ void GameScene::Initialize() {
 	newCamera->Initialize(cameraPos, cameraRot);
 	//プレイヤーの初期化
 	newPlayer->Initialize(playerModel_);
+	//敵の初期化
+	newEnemy->Initialize(enemyModel_);
 #pragma endregion
 	//ビュープロジェクションの初期化
 	viewProjection_.Initialize();
@@ -50,6 +53,9 @@ void GameScene::Update() {
 
 	//マップの更新
 	newMap->Update(newPlayer.get());
+
+	//敵の追加
+	newEnemy->Update();
 
 	//カメラの更新
 	newCamera->Update();
@@ -96,6 +102,9 @@ void GameScene::Draw() {
 
 	//プレイヤーの描画
 	newPlayer->Draw(viewProjection_);
+
+	//敵の描画
+	newEnemy->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
