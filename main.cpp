@@ -65,6 +65,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	primitiveDrawer = PrimitiveDrawer::GetInstance();
 	primitiveDrawer->Initialize();
+	win->SetFullscreen(true);
 #pragma endregion
 	//タイトルの初期化
 	titleScene = new TitleScene();
@@ -140,6 +141,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			break;
 		case Scene::END:
 			endScene->Draw();
+			break;
+		}
+		//エスケープが押されたらループから抜ける
+
+		if (input->TriggerKey(DIK_ESCAPE))
+		{
 			break;
 		}
 		// 軸表示の描画
