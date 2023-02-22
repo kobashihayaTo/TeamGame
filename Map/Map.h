@@ -136,7 +136,9 @@ private:	//メンバ変数
 	//ファンクション
 	MyFunc myFunc_;
 
+	//マップフラグ
 	int MapFlag = 0;
 
+	//透明フラグ
 	bool invisibleFlag = false;
 };

@@ -39,12 +39,18 @@ void Map::Initialize(Model* model, Model* floorModel) {
 }
 
 void Map::Update(Player* player) {
+
+	//マップチップとプレイヤーが当たっているか確認する
 	BlockCheck(player);
+
+	//マップフラグの切り替え
 	if (input_->TriggerKey(DIK_L)) {
 		if (MapFlag == 1) {
 			MapFlag = 0;
 		}
 	}
+
+	//透明フラグの切り替え
 	if (input_->TriggerKey(DIK_K)) {
 		if (invisibleFlag == true) {
 			invisibleFlag = false;
@@ -70,7 +76,7 @@ void Map::Draw(ViewProjection& viewProjection) {
 		//3Dモデルを描画
 		for (int z = 0; z < 20; z++) {
 			for (int x = 0; x < 25; x++) {
-				if (invisibleFlag == true) {
+				if (invisibleFlag == false) {
 					if (FirstMap[z][x] == BLOCK) {
 						model_->Draw(worldTransform_[z][x], viewProjection);
 					}

@@ -61,5 +61,8 @@ private:	//メンバ変数
 	//切り替えフラグ
 	bool LightFlag = false;
 	bool LeftFlag = false;
+
+	//透明フラグ
+	bool invisibleFlag = false;
 };
 
