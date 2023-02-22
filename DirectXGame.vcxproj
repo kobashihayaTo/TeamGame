@@ -103,7 +103,6 @@
     <ClCompile Include="base\WinApp.cpp" />
     <ClCompile Include="camera\RailCamera.cpp" />
     <ClCompile Include="Enemy\Enemy.cpp" />
-    <ClCompile Include="Function.cpp" />
     <ClCompile Include="Function\Function.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map\Map.cpp" />
