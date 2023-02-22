@@ -26,7 +26,8 @@ void Enemy::Initialize(Model* model) {
 void Enemy::Update() {
 	//プレイヤーの移動ベクトル
 	Vector3 move = { 0,0,0 };
-
+	
+	//敵の移動処理
 	if (worldTransform_.translation_.x <= -11)
 	{
 		LightFlag = false;
@@ -40,14 +41,25 @@ void Enemy::Update() {
 
 	if (LeftFlag == true)
 	{
-		worldTransform_.translation_.x+=0.1;
+		worldTransform_.translation_.x+=0.1f;
 	}
 	if (LightFlag == true)
 	{
-		worldTransform_.translation_.x-=0.1;
+		worldTransform_.translation_.x-=0.1f;
 	}
 	//行列の更新
 	myFunc_.UpdateWorldTransform(worldTransform_);
+
+	//透明フラグの切り替え
+	if (input_->TriggerKey(DIK_K)) {
+		if (invisibleFlag == true) {
+			invisibleFlag = false;
+		}
+		else if (invisibleFlag == false) {
+			invisibleFlag = true;
+		}
+	}
+
 
 	//デバッグ用表示
 	debugText_->SetPos(50, 180);
@@ -57,7 +69,10 @@ void Enemy::Update() {
 //描画
 void Enemy::Draw(ViewProjection& viewprojection) {
 	//3Dモデルを描画
-	model_->Draw(worldTransform_, viewprojection);
+	if (invisibleFlag == true)
+	{
+		model_->Draw(worldTransform_, viewprojection);
+	}
 }
 
 Vector3 Enemy::GetWorldPosition() {
