@@ -35,16 +35,20 @@ void Player::Update() {
 	//ã‰º
 	if (input_->PushKey(DIK_UP)) {
 		worldTransform_.translation_.z += playerSpeedZ_;
+		worldTransform_.rotation_.y = RadianConversion(0);
 	}
 	if (input_->PushKey(DIK_DOWN)) {
 		worldTransform_.translation_.z -= playerSpeedZ_;
+		worldTransform_.rotation_.y = RadianConversion(180);
 	}
 	//¶‰E
 	if (input_->PushKey(DIK_RIGHT)) {
 		worldTransform_.translation_.x += playerSpeedX_;
+		worldTransform_.rotation_.y = RadianConversion(90);
 	}
 	if (input_->PushKey(DIK_LEFT)) {
 		worldTransform_.translation_.x -= playerSpeedX_;
+		worldTransform_.rotation_.y = RadianConversion(270);
 	}
 
 	move = worldTransform_.translation_;

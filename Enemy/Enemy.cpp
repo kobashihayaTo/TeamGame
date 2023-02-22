@@ -50,7 +50,7 @@ void Enemy::Update() {
 	myFunc_.UpdateWorldTransform(worldTransform_);
 
 	//デバッグ用表示
-	debugText_->SetPos(50, 180);
+	debugText_->SetPos(50, 120);
 	debugText_->Printf("Enemy pos:(%f, %f, %f)", worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z);
 }
 

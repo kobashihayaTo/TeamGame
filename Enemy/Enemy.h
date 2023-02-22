@@ -7,6 +7,7 @@
 #include "DebugText.h"
 #include "Function/Function.h"
 
+
 class Enemy
 {
 public:		//ƒƒ“ƒoŠÖ”

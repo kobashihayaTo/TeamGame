@@ -44,9 +44,6 @@ void Map::Update(Player* player) {
 		if (MapFlag == 1) {
 			MapFlag = 0;
 		}
-		//else if (MapFlag == 0) {
-		//	MapFlag = 1;
-		//}
 	}
 	if (input_->TriggerKey(DIK_K)) {
 		if (invisibleFlag == true) {

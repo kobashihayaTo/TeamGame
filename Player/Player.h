@@ -5,6 +5,7 @@
 #include "Model.h"
 #include "DebugText.h"
 #include "Function/Function.h"
+#include "MyMath.h"
 
 struct CornerPos {
 	float cornerZ;	//プレイヤーの角のZ座標

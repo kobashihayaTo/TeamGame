@@ -65,7 +65,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	primitiveDrawer = PrimitiveDrawer::GetInstance();
 	primitiveDrawer->Initialize();
+
+	//フルスクリーン
 	win->SetFullscreen(true);
+
 #pragma endregion
 	//タイトルの初期化
 	titleScene = new TitleScene();
