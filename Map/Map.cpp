@@ -53,9 +53,11 @@ void Map::Update(Player* player) {
 	//“§–¾ƒtƒ‰ƒO‚ÌØ‚è‘Ö‚¦
 	if (input_->TriggerKey(DIK_K)) {
 		if (invisibleFlag == true) {
+			player->GetTransform()= { -11.0f, 0.0f, -18.0f };
 			invisibleFlag = false;
 		}
 		else if (invisibleFlag == false) {
+			player->GetTransform() = { 0.0f, 0.0f, 0.0f };
 			invisibleFlag = true;
 		}
 	}
@@ -66,6 +68,9 @@ void Map::Update(Player* player) {
 
 	debugText_->SetPos(50, 210);
 	debugText_->Printf("MapFlag:%d", MapFlag);
+
+	debugText_->SetPos(50, 230);
+	debugText_->Printf("MapPlayer pos:(%f, %f, %f)", player->GetTransform().x, player->GetTransform().y, player->GetTransform().z);
 
 }
 

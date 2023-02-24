@@ -5,6 +5,8 @@
 #include "Input.h"
 #include "Function/Function.h"
 
+
+
 class RailCamera
 {
 public:
@@ -26,10 +28,13 @@ public:
 	/// ビュープロジェクションを取得
 	/// </summary>
 	/// <returns></returns>
-	const ViewProjection& GetViewProjection() { return viewProjection_; }
+	ViewProjection& GetViewProjection() { return viewProjection_; }
 
 	//ワールド行列を取得
 	WorldTransform* GetWorldMatrix() { return &worldTransform_; }
+
+	//セッター
+	void SetWorldPosition(Vector3 worldPosition) { worldTransform_.translation_ = worldPosition; }
 
 private:
 	//ワールド変換データ
@@ -46,6 +51,7 @@ private:
 
 	//ファンクション
 	MyFunc myFunc_;
+
 
 	//カメラ上方向の角度
 	float viewAngle = 0.0f;

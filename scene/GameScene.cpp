@@ -32,8 +32,8 @@ void GameScene::Initialize() {
 	//マップの初期化
 	newMap->Initialize(mapModel_, floorModel_);
 	//カメラの初期位置を設定
-	Vector3 cameraPos(0, 0, 0);
-	Vector3 cameraRot(0, 0, 0);
+	cameraPos = { 10,10,10 };
+	cameraRot = { 0,0,0 };
 	//レールカメラの初期化
 	newCamera->Initialize(cameraPos, cameraRot);
 	//プレイヤーの初期化
@@ -49,16 +49,13 @@ void GameScene::Initialize() {
 
 void GameScene::Update() {
 
-	if (newMap->GetInvisible() == false)
-	{
-		
-	}
-
 	//プレイヤーの更新
 	newPlayer->Update();
 
+	//cameraPos = newPlayer->GetTransform();
+
 	//マップの更新
-	newMap->Update(newPlayer.get());
+ 	newMap->Update(newPlayer.get());
 
 	//敵の追加
 	newEnemy->Update();

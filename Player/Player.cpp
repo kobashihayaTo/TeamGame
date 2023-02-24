@@ -19,8 +19,8 @@ void Player::Initialize(Model* model) {
 	//プレイヤーの大きさ(倍率)
 	worldTransform_.scale_ = { 2.0f,2.0f,2.0f };
 	//プレイヤーの初期位置の設定
-	worldTransform_.translation_ = { -11.0f, 0.0f, -18.0f };
-
+	Trans = { -11.0f, 0.0f, -18.0f };
+	worldTransform_.translation_ = Trans;
 
 }
 
@@ -51,6 +51,8 @@ void Player::Update() {
 		worldTransform_.rotation_.y = RadianConversion(270);
 	}
 
+
+
 	move = worldTransform_.translation_;
 
 	//行列の更新
@@ -59,6 +61,10 @@ void Player::Update() {
 	//デバッグ用表示
 	debugText_->SetPos(50, 150);
 	debugText_->Printf("Player pos:(%f, %f, %f)", worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z);
+
+	debugText_->SetPos(50, 150);
+	debugText_->Printf("Player pos:(%f, %f, %f)", worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z);
+
 }
 
 //描画
