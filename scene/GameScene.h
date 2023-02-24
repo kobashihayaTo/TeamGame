@@ -73,8 +73,7 @@ class GameScene {
 
 	//レールカメラ
 	std::unique_ptr<RailCamera> newCamera = std::make_unique<RailCamera>();
-
-
+	
 	Model* model_ = nullptr;
 
 	//マップ生成
@@ -100,6 +99,9 @@ class GameScene {
 	std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
 	//敵モデル
 	Model* enemyModel_ = nullptr;
+
+	Vector3 cameraPos = newPlayer->GetTransform();
+	Vector3 cameraRot = { 0,0,0 };
 
 	/// <summary>
 	/// ゲームシーン用

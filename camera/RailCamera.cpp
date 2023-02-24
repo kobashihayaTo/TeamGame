@@ -14,7 +14,7 @@ void RailCamera::Initialize(Vector3& position, Vector3& rotation) {
 
 	//ビュープロジェクションの初期化
 	viewProjection_.farZ = 2000.0f;
-	viewProjection_.eye = { 0,20,-45 };
+	viewProjection_.eye = { 0,60.0f,-15.0f };
 	viewProjection_.Initialize();
 
 }
@@ -31,40 +31,34 @@ void RailCamera::Update() {
 
 void RailCamera::ZoomOut() {
 	//ワールドトランスフォームの座標の数値を加減算する(移動)
-	Vector3 cameraMove = { 0,60.0f,-15.0f };
+	Vector3 cameraMove = { 0.0f,0.0f,0.0f };
+
+
 	
 	//カメラの位置の移動処理
-	/*if (input_->PushKey(DIK_UP)) {
+	if (input_->PushKey(DIK_W)) {
 		cameraMove.y += 0.1;
 	}
 
-	if (input_->PushKey(DIK_DOWN)) {
+	if (input_->PushKey(DIK_S)) {
 		cameraMove.y -= 0.1;
 	}
 
-	if (input_->PushKey(DIK_RIGHT)) {
-		cameraMove.x += 0.1;
-	}
-
-	if (input_->PushKey(DIK_LEFT)) {
-		cameraMove.x -= 0.1;
-	}
-
-	if (input_->PushKey(DIK_Q)) {
+	if (input_->PushKey(DIK_D)) {
 		cameraMove.z += 0.1;
 	}
 
-	if (input_->PushKey(DIK_E)) {
+	if (input_->PushKey(DIK_A)) {
 		cameraMove.z -= 0.1;
-	}*/
+	}
 
-	//worldTransform_.translation_ += cameraMove;
 
+	worldTransform_.translation_ += cameraMove;
 	////行列の更新
-	//myFunc_.UpdateWorldTransform(worldTransform_);
+	myFunc_.UpdateWorldTransform(worldTransform_);
 
 	//カメラ視点座標を設定
-	viewProjection_.eye = cameraMove;
+	viewProjection_.eye += cameraMove;
 
 	//ワールド前方ベクトル
 	//Vector3 forward(0, 0, 1);
