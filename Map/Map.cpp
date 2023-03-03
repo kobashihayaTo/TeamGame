@@ -35,7 +35,7 @@ void Map::Initialize(Model* model, Model* floorModel) {
 	debugText_->SetPos(50, 140);
 	debugText_->Printf(" pos:(%f, %f, %f)", worldTransform_[0][0].translation_.x, worldTransform_[0][0].translation_.y, worldTransform_[0][0].translation_.z);
 
-
+	goalFlag = false;
 }
 
 void Map::Update(Player* player) {
@@ -53,7 +53,7 @@ void Map::Update(Player* player) {
 	//透明フラグの切り替え
 	if (input_->TriggerKey(DIK_K)) {
 		if (invisibleFlag == true) {
-			player->GetTransform()= { -11.0f, 0.0f, -18.0f };
+			player->GetTransform() = { -11.0f, 0.0f, -18.0f };
 			invisibleFlag = false;
 		}
 		else if (invisibleFlag == false) {
@@ -118,58 +118,61 @@ void Map::OnCollision(Vector3 playerPos, float radius) {
 
 }
 
-int Map::BlockCheck(int line, int culumn) {
-	if (MapFlag == 0)
-	{
-		//マップ進んだ先にブロックがあったら1を返す
-		if (FirstMap[line][culumn] == BLOCK) {
-			return 1;
-		}
-		if (FirstMap[line][culumn] == WALL) {
-			return 1;
-		}
-	}
-	//if (MapFlag == 1)
-	//{
-	//	//マップ進んだ先にブロックがあったら1を返す
-	//	if (SecondMap[line][culumn] == BLOCK) {
-	//		return 1;
-	//	}
-	//}
-
-	return 0;
-}
+//int Map::BlockCheck(int line, int culumn) {
+//	if (MapFlag == 0)
+//	{
+//		//マップ進んだ先にブロックがあったら1を返す
+//		if (FirstMap[line][culumn] == BLOCK) {
+//			return 1;
+//		}
+//		if (FirstMap[line][culumn] == WALL) {
+//			return 1;
+//		}
+//	}
+//	//if (MapFlag == 1)
+//	//{
+//	//	//マップ進んだ先にブロックがあったら1を返す
+//	//	if (SecondMap[line][culumn] == BLOCK) {
+//	//		return 1;
+//	//	}
+//	//}
+//
+//	return 0;
+//}
 
 void Map::BlockCheck(Player* player) {
-	if (MapFlag == 0){
+	if (MapFlag == 0) {
 		for (int z = 0; z < 20; z++) {
 			for (int x = 0; x < 25; x++) {
+				// ブロックの座標
+				worldTransform_[z][x].translation_;
+
+				// プレイヤーの座標
+				player->GetWorldPosition();
+
+				//プレイヤーの移動する前の場所を保存する変数
+				Vector3 oldPlayerPos;
+
+				oldPlayerPos = player->GetprePosition();
+
+				// ブロックのどちら側からぶつかったか
+				float blockLeftX = worldTransform_[z][x].translation_.x - radius;
+				float blockRightX = worldTransform_[z][x].translation_.x + radius;
+				float blockUpZ = worldTransform_[z][x].translation_.z + radius;
+				float blockDownZ = worldTransform_[z][x].translation_.z - radius;
+
+				float playerLeftX = oldPlayerPos.x - player->GetRadius();
+				float playerRightX = oldPlayerPos.x + player->GetRadius();
+				float playerUpZ = oldPlayerPos.z + player->GetRadius();
+				float playerDownZ = oldPlayerPos.z - player->GetRadius();
+
+				float distance = 0.1f;
+
+				//進んだ先がBLOCKだったら進ませなくする
 				if (FirstMap[z][x] == BLOCK) {
-					// ブロックの座標
-					worldTransform_[z][x].translation_;
-
-					// プレイヤーの座標
-					player->GetWorldPosition();
 
 					// プレイヤーとブロック衝突判定
 					if (CheckCollision(worldTransform_[z][x].translation_, player->GetWorldPosition(), radius, player->GetRadius())) {
-						//プレイヤーの移動する前の場所を保存する変数
-						Vector3 oldPlayerPos;
-
-						oldPlayerPos = player->GetprePosition();
-
-						// ブロックのどちら側からぶつかったか
-						float blockLeftX = worldTransform_[z][x].translation_.x - radius;
-						float blockRightX = worldTransform_[z][x].translation_.x + radius;
-						float blockUpZ = worldTransform_[z][x].translation_.z + radius;
-						float blockDownZ = worldTransform_[z][x].translation_.z - radius;
-
-						float playerLeftX = oldPlayerPos.x - player->GetRadius();
-						float playerRightX = oldPlayerPos.x + player->GetRadius();
-						float playerUpZ = oldPlayerPos.z + player->GetRadius();
-						float playerDownZ = oldPlayerPos.z - player->GetRadius();
-
-						float distance = 0.1f;
 
 						/*
 							ブロックかプレイヤーの四角の左端、右端、上端、下端、中心点を比較してぶつかった方向判別する
@@ -238,32 +241,11 @@ void Map::BlockCheck(Player* player) {
 						}
 					}
 				}
+				//進んだ先がWALLだったら進ませなくする
 				if (FirstMap[z][x] == WALL) {
-					// ブロックの座標
-					worldTransform_[z][x].translation_;
-
-					// プレイヤーの座標
-					player->GetWorldPosition();
 
 					// プレイヤーとブロック衝突判定
 					if (CheckCollision(worldTransform_[z][x].translation_, player->GetWorldPosition(), radius, player->GetRadius())) {
-						//プレイヤーの移動する前の場所を保存する変数
-						Vector3 oldPlayerPos;
-
-						oldPlayerPos = player->GetprePosition();
-
-						// ブロックのどちら側からぶつかったか
-						float blockLeftX = worldTransform_[z][x].translation_.x - radius;
-						float blockRightX = worldTransform_[z][x].translation_.x + radius;
-						float blockUpZ = worldTransform_[z][x].translation_.z + radius;
-						float blockDownZ = worldTransform_[z][x].translation_.z - radius;
-
-						float playerLeftX = oldPlayerPos.x - player->GetRadius();
-						float playerRightX = oldPlayerPos.x + player->GetRadius();
-						float playerUpZ = oldPlayerPos.z + player->GetRadius();
-						float playerDownZ = oldPlayerPos.z - player->GetRadius();
-
-						float distance = 0.1f;
 
 						/*
 							ブロックかプレイヤーの四角の左端、右端、上端、下端、中心点を比較してぶつかった方向判別する
@@ -332,9 +314,51 @@ void Map::BlockCheck(Player* player) {
 						}
 					}
 				}
+				//進んだ先がGOALだったらクリア画面に移行する
+				if (FirstMap[z][x] == GOAL) {
+
+					// プレイヤーとブロック衝突判定
+					if (CheckCollision(worldTransform_[z][x].translation_, player->GetWorldPosition(), radius, player->GetRadius())) {
+
+						/*
+							ブロックかプレイヤーの四角の左端、右端、上端、下端、中心点を比較してぶつかった方向判別する
+
+							例　下から
+							プレイヤーの中心点とブロックの中心点比べてプレイヤーが下にいるはず
+							まだこれだと左、右からぶつかってきた場合がある
+
+							移動する前のプレイヤー(oldPlayerPos)に右端とブロックの左端を比べてプレイヤーの右端が大きかったら左からぶつかるのはありえない
+							逆のこと言える、右からぶつかるのもありえないことが分かるのでその三つの条件が達成されている場合下からぶつかっている
+						*/
+
+						// 上下
+						if (playerRightX > blockLeftX && playerLeftX < blockRightX) {
+							if (player->GetWorldPosition().z < worldTransform_[z][x].translation_.z) {
+								goalFlag = true;
+							}
+							else if (player->GetWorldPosition().z > worldTransform_[z][x].translation_.z) {
+								goalFlag = true;
+							}
+						}
+						// 左右
+						else if (playerUpZ > blockDownZ && playerDownZ < blockUpZ) {
+							if (player->GetWorldPosition().x < worldTransform_[z][x].translation_.x) {
+								goalFlag = true;
+							}
+							else if (player->GetWorldPosition().x > worldTransform_[z][x].translation_.x) {
+								goalFlag = true;
+							}
+						}
+
+					}
+				}
+
 			}
 		}
+
 	}
+
+
 	//if (MapFlag == 1) {
 	//	for (int z = 0; z < 20; z++) {
 	//		for (int x = 0; x < 25; x++) {
@@ -450,4 +474,5 @@ bool Map::CheckCollision(Vector3 pos1, Vector3 pos2, float radius1, float radius
 void Map::Reset()
 {
 	invisibleFlag = false;
+	goalFlag = false;
 }

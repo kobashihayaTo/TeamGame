@@ -48,18 +48,18 @@ void Enemy::Update() {
 			LeftFlag = false;
 			LightFlag = true;
 		}
-	
-	//“G‚ÌˆÚ“®ˆ—
-	if (worldTransform_.translation_.x <= -11)
-	{
-		LightFlag = false;
-		LeftFlag = true;
-	}
-	if (worldTransform_.translation_.x >= 6)
-	{
-		LeftFlag = false;
-		LightFlag = true;
-	}
+
+		//“G‚ÌˆÚ“®ˆ—
+		if (worldTransform_.translation_.x <= -11)
+		{
+			LightFlag = false;
+			LeftFlag = true;
+		}
+		if (worldTransform_.translation_.x >= 6)
+		{
+			LeftFlag = false;
+			LightFlag = true;
+		}
 
 		if (LeftFlag == true)
 		{
@@ -69,15 +69,16 @@ void Enemy::Update() {
 		{
 			worldTransform_.translation_.x -= 0.1;
 		}
-	if (LeftFlag == true)
-	{
-		worldTransform_.translation_.x+=0.1f;
+		if (LeftFlag == true)
+		{
+			worldTransform_.translation_.x += 0.1f;
+		}
+		if (LightFlag == true)
+		{
+			worldTransform_.translation_.x -= 0.1f;
+		}
 	}
-	if (LightFlag == true)
-	{
-		worldTransform_.translation_.x-=0.1f;
-	}
-	
+
 	//s—ñ‚ÌXV
 	myFunc_.UpdateWorldTransform(worldTransform_);
 
