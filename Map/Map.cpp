@@ -332,7 +332,7 @@ void Map::BlockCheck(Player* player) {
 						*/
 
 						// ã‰º
-						if (goalPlayerRightX > goalLeftX && goalPlayerLeftX < goalRightX) {
+						if (playerRightX > blockLeftX && playerLeftX < blockRightX) {
 							if (player->GetWorldPosition().z < worldTransform_[z][x].translation_.z) {
 								goalFlag = true;
 							}
@@ -341,7 +341,7 @@ void Map::BlockCheck(Player* player) {
 							}
 						}
 						// ¶‰E
-						else if (goalPlayerUpZ > goalDownZ && goalPlayerDownZ < goalUpZ) {
+						else if (playerUpZ > blockDownZ && playerDownZ < blockUpZ) {
 							if (player->GetWorldPosition().x < worldTransform_[z][x].translation_.x) {
 								goalFlag = true;
 							}
