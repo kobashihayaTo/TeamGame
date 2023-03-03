@@ -179,7 +179,7 @@ void GameScene::CheckAllCollisions(Enemy* enemy) {
 
 void GameScene::SceneChange() {
 	isEnd_ = false;
-	if (input_->TriggerKey(DIK_SPACE))
+	if (input_->TriggerKey(DIK_SPACE) || newMap->GetGoalFlag() == true)
 	{
 		nextScene_ = Scene::END;
 		isEnd_ = true;

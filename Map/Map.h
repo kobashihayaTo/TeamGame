@@ -9,9 +9,18 @@
 #include "MathUtility.h"
 #include "ViewProjection.h"
 #include <Player/Player.h>
+#include "Enum.h"
 
 class Map
 {
+public:		//Enum
+	enum Mapinfo {
+		NONE, //0
+		WALL, //1
+		BLOCK,//2
+		GOAL  //3	
+	};
+
 public:		//メンバ関数
 
 	Map();
@@ -36,12 +45,6 @@ public:		//メンバ関数
 	//衝突を検出したら呼び出されるコールバック関数
 	void OnCollision(Vector3 playerPos, float radius);
 
-	enum Mapinfo {
-		NONE, //0
-		WALL, //1
-		BLOCK//2
-	};
-
 
 	/// <summary>
 	/// マップ上のブロックに当たっているかチェック
@@ -59,6 +62,8 @@ public:		//メンバ関数
 
 	bool GetInvisible() { return invisibleFlag; }
 
+	bool GetGoalFlag() { return goalFlag; }
+
 	void Reset();
 
 public:
@@ -69,7 +74,7 @@ public:		//マップ
 
 	//第一ステージ
 	int FirstMap[20][25]{
-		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1,1,1,1,1,1,1,1,1},
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,1},
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,1},
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -143,4 +148,6 @@ private:	//メンバ変数
 
 	//透明フラグ
 	bool invisibleFlag = false;
+
+	bool goalFlag = false;
 };
