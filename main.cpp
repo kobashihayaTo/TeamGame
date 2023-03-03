@@ -9,6 +9,7 @@
 #include "TitleScene.h"
 #include "ManualScene.h"
 #include "EndScene.h"
+#include "scene/BadScene.h"
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
@@ -20,11 +21,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	DebugText* debugText = nullptr;
 	AxisIndicator* axisIndicator = nullptr;
 	PrimitiveDrawer* primitiveDrawer = nullptr;
-	GameScene* gameScene = nullptr;
 
+	GameScene* gameScene = nullptr;
 	TitleScene* titleScene = nullptr;
 	ManualScene* manualScene = nullptr;
 	EndScene* endScene = nullptr;
+	BadScene* badScene = nullptr;
 
 	Scene scene = Scene::TITLE;
 
@@ -86,6 +88,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	endScene = new EndScene();
 	endScene->Initialize();
 
+	badScene = new BadScene();
+	badScene->Initialize();
 
 	// メインループ
 	while (true) {
@@ -101,6 +105,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		case Scene::TITLE:
 			titleScene->Update();
 			if (titleScene->GetChangeFlag()) {
+				gameScene->Reset();
 				scene = titleScene->GetNextScene();
 			}
 			break;
@@ -121,6 +126,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			if (endScene->GetEndFlag()) {
 				endScene->SoundStop();
 				scene = endScene->GetNextScene();
+			}
+			break;
+		case Scene::BADEND:
+			badScene->Update();
+			if (badScene->GetEndFlag()) {
+				badScene->SoundStop();
+				scene = badScene->GetNextScene();
 			}
 			break;
 		}
@@ -144,6 +156,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			break;
 		case Scene::END:
 			endScene->Draw();
+			break;
+		case Scene::BADEND:
+			badScene->Draw();
 			break;
 		}
 		//エスケープが押されたらループから抜ける

@@ -61,7 +61,7 @@ void Map::Update(Player* player) {
 	debugText_->Printf("MapPlayer pos:(%f, %f, %f)", player->GetWorldPosition().x, player->GetWorldPosition().y, player->GetWorldPosition().z);
 
 	debugText_->SetPos(50, 210);
-	debugText_->Printf("MapFlag:%d", MapFlag);
+	debugText_->Printf("invisibleFlag:%d", invisibleFlag);
 
 	debugText_->SetPos(50, 230);
 	debugText_->Printf("MapPlayer pos:(%f, %f, %f)", player->GetTransform().x, player->GetTransform().y, player->GetTransform().z);
@@ -439,4 +439,9 @@ bool Map::CheckCollision(Vector3 pos1, Vector3 pos2, float radius1, float radius
 		}
 	}
 	return 0;
+}
+
+void Map::Reset()
+{
+	invisibleFlag = false;
 }

@@ -27,37 +27,55 @@ void Enemy::Update() {
 	//プレイヤーの移動ベクトル
 	Vector3 move = { 0,0,0 };
 
-	if (worldTransform_.translation_.x <= -11)
+	if (input_->TriggerKey(DIK_H))
 	{
-		LightFlag = false;
-		LeftFlag = true;
-	}
-	if (worldTransform_.translation_.x >= 6)
-	{
-		LeftFlag = false;
-		LightFlag = true;
+		if (stopFlag == true) {
+			stopFlag = false;
+		}
+		else if (stopFlag == false) {
+			stopFlag = true;
+		}
 	}
 
-	if (LeftFlag == true)
-	{
-		worldTransform_.translation_.x+=0.1;
+	if (stopFlag == false) {
+		if (worldTransform_.translation_.x <= -11)
+		{
+			LightFlag = false;
+			LeftFlag = true;
+		}
+		if (worldTransform_.translation_.x >= 6)
+		{
+			LeftFlag = false;
+			LightFlag = true;
+		}
+
+		if (LeftFlag == true)
+		{
+			worldTransform_.translation_.x += 0.1;
+		}
+		if (LightFlag == true)
+		{
+			worldTransform_.translation_.x -= 0.1;
+		}
 	}
-	if (LightFlag == true)
-	{
-		worldTransform_.translation_.x-=0.1;
-	}
+	
 	//行列の更新
 	myFunc_.UpdateWorldTransform(worldTransform_);
 
 	//デバッグ用表示
 	debugText_->SetPos(50, 120);
-	debugText_->Printf("Enemy pos:(%f, %f, %f)", worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z);
+	debugText_->Printf("stopFlag:%d", stopFlag);
 }
 
 //描画
 void Enemy::Draw(ViewProjection& viewprojection) {
 	//3Dモデルを描画
 	model_->Draw(worldTransform_, viewprojection);
+}
+
+void Enemy::Reset()
+{
+	worldTransform_.translation_ = { 6.0f, 0.9f, -2.7f };
 }
 
 Vector3 Enemy::GetWorldPosition() {

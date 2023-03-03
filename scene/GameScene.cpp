@@ -57,8 +57,9 @@ void GameScene::Update() {
 	//マップの更新
  	newMap->Update(newPlayer.get());
 
-	//敵の追加
 	newEnemy->Update();
+
+
 
 	//カメラの更新
 	newCamera->Update();
@@ -69,6 +70,18 @@ void GameScene::Update() {
 	viewProjection_.TransferMatrix();
 
 	SceneChange();
+
+	if (newPlayer->GetSecretFlag() == false) {
+ 		CheckAllCollisions(newEnemy.get());
+	}
+
+	if (input_->TriggerKey(DIK_W)) {
+		newPlayer->Reset();
+		newEnemy->Reset();
+		newMap->Reset();
+	}
+
+
 }
 
 void GameScene::Draw() {
@@ -130,6 +143,40 @@ void GameScene::Draw() {
 #pragma endregion
 }
 
+void GameScene::CheckAllCollisions(Enemy* enemy) {
+	//判定対象AとBの座標
+	Vector3 posA, posB;
+
+	//距離を図るための変数
+	double distance;
+
+	//半径
+	float radius;
+
+	//自キャラとマップチップの当たり判定
+#pragma region
+	//自キャラの座標
+	posA = newPlayer->GetWorldPosition();
+
+	//マップの座標
+	posB = enemy->GetWorldPosition();
+
+	//座標AとBの距離を求める
+	distance = CalculateDistance(posA, posB);
+
+	radius = newPlayer->GetRadius() + enemy->GetRadius();
+	distance = (posA.x - posB.x) * (posA.x - posB.x) + (posA.y - posB.y) * (posA.y - posB.y) + (posA.z - posB.z) * (posA.z - posB.z);
+	//自キャラとマップの当たり判定
+	if (distance <= radius * radius) {
+		//自キャラの衝突時コールバックを呼び出す
+		newPlayer->OnCollision();
+		//マップの衝突時コールバックを呼び出す
+		enemy->OnCollision();
+	}
+
+#pragma endregion
+}
+
 void GameScene::SceneChange() {
 	isEnd_ = false;
 	if (input_->TriggerKey(DIK_SPACE))
@@ -137,4 +184,16 @@ void GameScene::SceneChange() {
 		nextScene_ = Scene::END;
 		isEnd_ = true;
 	}
+	if (newPlayer->GetFlag() == true)
+	{
+		nextScene_ = Scene::BADEND;
+		isEnd_ = true;
+	}
+}
+
+void GameScene::Reset()
+{
+	newPlayer->Reset();
+	newEnemy->Reset();
+	newMap->Reset();
 }

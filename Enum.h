@@ -5,6 +5,5 @@ enum class Scene {
 	MANUAL,//マニュアル
 	GAME,//ゲームシーン
 	END,//エンド
-
+	BADEND//ゲームオーバー
 };
-//BADEND//ゲームオーバー
