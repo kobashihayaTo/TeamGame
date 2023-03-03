@@ -71,11 +71,14 @@ void Enemy::Update() {
 void Enemy::Draw(ViewProjection& viewprojection) {
 	//3Dƒ‚ƒfƒ‹‚ð•`‰æ
 	model_->Draw(worldTransform_, viewprojection);
+
 }
 
 void Enemy::Reset()
 {
 	worldTransform_.translation_ = { 6.0f, 0.9f, -2.7f };
+	invisibleFlag = false;
+	stopFlag = false;
 }
 
 Vector3 Enemy::GetWorldPosition() {

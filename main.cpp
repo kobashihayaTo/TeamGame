@@ -103,11 +103,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		switch (scene)
 		{
 		case Scene::TITLE:
+
 			titleScene->Update();
 			if (titleScene->GetChangeFlag()) {
 				gameScene->Reset();
 				scene = titleScene->GetNextScene();
 			}
+
 			break;
 		case Scene::MANUAL:
 			manualScene->Update();
@@ -162,10 +164,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			break;
 		}
 		//エスケープが押されたらループから抜ける
-
-		if (input->TriggerKey(DIK_ESCAPE))
+		if (titleScene->GetSelectFlag() == 1)
 		{
-			break;
+			if (input->TriggerKey(DIK_ESCAPE))
+			{
+				break;
+			}
 		}
 		// 軸表示の描画
 		axisIndicator->Draw();
