@@ -320,18 +320,6 @@ void Map::BlockCheck(Player* player) {
 					// プレイヤーとブロック衝突判定
 					if (CheckCollision(worldTransform_[z][x].translation_, player->GetWorldPosition(), radius, player->GetRadius())) {
 
-						float goalRadius = 0.1f;
-
-						float goalLeftX = worldTransform_[z][x].translation_.x-0.1;
-						float goalRightX = worldTransform_[z][x].translation_.x+0.1;
-						float goalUpZ = worldTransform_[z][x].translation_.z+0.1;
-						float goalDownZ = worldTransform_[z][x].translation_.z-0.1;
-
-						float goalPlayerLeftX = oldPlayerPos.x - goalRadius;
-						float goalPlayerRightX = oldPlayerPos.x + goalRadius;
-						float goalPlayerUpZ = oldPlayerPos.z + goalRadius;
-						float goalPlayerDownZ = oldPlayerPos.z - goalRadius;
-
 						/*
 							ブロックかプレイヤーの四角の左端、右端、上端、下端、中心点を比較してぶつかった方向判別する
 
