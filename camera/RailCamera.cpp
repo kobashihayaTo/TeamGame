@@ -2,7 +2,7 @@
 #include "math/MyMath.h"
 #include "Function/Function.h"
 
-void RailCamera::Initialize(Vector3& position, Vector3& rotation) {
+void RailCamera::Initialize(Vector3& position, Vector3& rotation, Player* player) {
 	//シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
 	debugText_ = DebugText::GetInstance();
@@ -14,22 +14,27 @@ void RailCamera::Initialize(Vector3& position, Vector3& rotation) {
 
 	//ビュープロジェクションの初期化
 	viewProjection_.farZ = 2000.0f;
-	viewProjection_.eye = { 0,60.0f,-15.0f };
+	viewProjection_.eye = { 0,40.0f,-15.0f };
 	viewProjection_.Initialize();
 
+	newPlayer = player;
 }
 
 void RailCamera::Update() {
 
-	ZoomOut();
+	ZoomIn();
 #ifdef _DEBUG
 	//デバッグ用表示
 	debugText_->SetPos(50, 50);
 	debugText_->Printf("RailCamera pos:(%f, %f, %f)", viewProjection_.eye.x, viewProjection_.eye.y, viewProjection_.eye.z);
+
+	debugText_->SetPos(50, 270);
+	debugText_->Printf("viewtarget:(%f, %f, %f)", viewProjection_.target.x, viewProjection_.target.y, viewProjection_.target.z);
+
 #endif
 }
 
-void RailCamera::ZoomOut() {
+void RailCamera::ZoomIn() {
 	//ワールドトランスフォームの座標の数値を加減算する(移動)
 	Vector3 cameraMove = { 0.0f,0.0f,0.0f };
 
@@ -52,6 +57,14 @@ void RailCamera::ZoomOut() {
 		cameraMove.z -= 0.1;
 	}
 
+	if (input_->PushKey(DIK_E)) {
+		cameraMove.x += 0.1;
+	}
+
+	if (input_->PushKey(DIK_Q)) {
+		cameraMove.x -= 0.1;
+	}
+
 
 	worldTransform_.translation_ += cameraMove;
 	////行列の更新
@@ -61,12 +74,12 @@ void RailCamera::ZoomOut() {
 	viewProjection_.eye += cameraMove;
 
 	//ワールド前方ベクトル
-	//Vector3 forward(0, 0, 1);
-	////レールカメラの回転を判定
-	//forward = Transform(forward, worldTransform_);
-	////視点から前方に適当な距離進んだ位置が注視点
+	Vector3 forward(0, 0, 1);
+	//レールカメラの回転を判定
+	//forward = newPlayer->GetTransform();
+	//視点から前方に適当な距離進んだ位置が注視点
 	//forward += viewProjection_.eye;
-	//viewProjection_.target = forward;
+	viewProjection_.target = { newPlayer->Getmove().x,newPlayer->Getmove().y,newPlayer->Getmove().z + 1 };
 
 	////ワールド上方ベクトル
 	//Vector3 up(0, 1, 0);
@@ -88,4 +101,20 @@ void RailCamera::ZoomOut() {
 
 	//ビュープロジェクションを更新
 	viewProjection_.UpdateMatrix();
+}
+
+void RailCamera::PlayerCamera()
+{
+	////ワールド前方ベクトル
+	//Vector3 forward(0, 0, 1);
+	////レールカメラの回転を判定
+	////forward = newPlayer->GetTransform();
+	////視点から前方に適当な距離進んだ位置が注視点
+	////forward += viewProjection_.eye;
+	//viewProjection_.target.y = newPlayer->GetTransform().y;
+	//viewProjection_.target.y=
+
+
+	////ビュープロジェクションを更新
+	//viewProjection_.UpdateMatrix();
 }

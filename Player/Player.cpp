@@ -62,9 +62,6 @@ void Player::Update() {
 	debugText_->SetPos(50, 150);
 	debugText_->Printf("Player pos:(%f, %f, %f)", worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z);
 
-	debugText_->SetPos(50, 150);
-	debugText_->Printf("Player pos:(%f, %f, %f)", worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z);
-
 }
 
 //•`‰æ

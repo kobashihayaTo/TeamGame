@@ -4,7 +4,7 @@
 #include "DebugText.h"
 #include "Input.h"
 #include "Function/Function.h"
-
+#include "Player/Player.h"
 
 
 class RailCamera
@@ -15,14 +15,16 @@ public:
 	/// </summary>
 	/// <param name="position">初期座標</param>
 	/// <param name="rotation">初期角度</param>
-	void Initialize(Vector3& position, Vector3& rotation);
+	void Initialize(Vector3& position, Vector3& rotation, Player* player);
 
 	/// <summary>
 	/// 更新
 	/// </summary>
 	void Update();
 
-	void ZoomOut();
+	void ZoomIn();
+
+	void PlayerCamera();
 
 	/// <summary>
 	/// ビュープロジェクションを取得
@@ -52,6 +54,8 @@ private:
 	//ファンクション
 	MyFunc myFunc_;
 
+	//プレイヤー生成
+	Player* newPlayer;
 
 	//カメラ上方向の角度
 	float viewAngle = 0.0f;

@@ -7,7 +7,6 @@
 #include "Function/Function.h"
 #include "MyMath.h"
 
-#include "camera/RailCamera.h"
 
 struct CornerPos {
 	float cornerZ;	//プレイヤーの角のZ座標
@@ -60,7 +59,7 @@ public:		//メンバ関数
 
 	Vector3 Getmove() { return move; }
 
-	Vector3 GetTransform() { return Trans; }
+	Vector3 GetTransform() { return worldTransform_.translation_; }
 
 	bool GetFlag() { return playerDeathFlag; }
 
@@ -105,9 +104,6 @@ private:	//メンバ変数
 
 	//ファンクション
 	MyFunc myFunc_;
-
-	//レールカメラ
-	std::unique_ptr<RailCamera> newCamera = std::make_unique<RailCamera>();
 
 	//右上、右下の座標の変数
 	int rightTopZ = 0;

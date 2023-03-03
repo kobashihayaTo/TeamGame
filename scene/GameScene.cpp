@@ -35,7 +35,7 @@ void GameScene::Initialize() {
 	cameraPos = { 10,10,10 };
 	cameraRot = { 0,0,0 };
 	//レールカメラの初期化
-	newCamera->Initialize(cameraPos, cameraRot);
+	newCamera->Initialize(cameraPos, cameraRot, newPlayer.get());
 	//プレイヤーの初期化
 	newPlayer->Initialize(playerModel_);
 	//敵の初期化
