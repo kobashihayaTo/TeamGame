@@ -51,8 +51,14 @@ void Player::Update() {
 		worldTransform_.rotation_.y = RadianConversion(270);
 	}
 
-
-
+	if (input_->TriggerKey(DIK_J)) {
+		if (playerSecretFlag == true) {
+			playerSecretFlag = false;
+		}
+		else if (playerSecretFlag ==false) {
+			playerSecretFlag = true;
+		}
+	}
 	move = worldTransform_.translation_;
 
 	//行列の更新
@@ -62,15 +68,17 @@ void Player::Update() {
 	debugText_->SetPos(50, 150);
 	debugText_->Printf("Player pos:(%f, %f, %f)", worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z);
 
-	debugText_->SetPos(50, 150);
-	debugText_->Printf("Player pos:(%f, %f, %f)", worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z);
+	debugText_->SetPos(50, 300);
+	debugText_->Printf("playerSecretFlag:%d", playerSecretFlag);
 
 }
 
 //描画
 void Player::Draw(ViewProjection& viewprojection) {
-	//3Dモデルを描画
-	model_->Draw(worldTransform_, viewprojection);
+	if (playerSecretFlag == false) {
+		//3Dモデルを描画
+		model_->Draw(worldTransform_, viewprojection);
+	}
 }
 
 Vector3 Player::GetWorldPosition() {
@@ -94,6 +102,7 @@ void Player::OnCollision() {
 void Player::Reset()
 {
 	playerDeathFlag = false;
+	playerSecretFlag = false;
 	//プレイヤーの初期位置の設定
 	worldTransform_.translation_ = { -11.0f,0.0f ,-18.0f };
 }

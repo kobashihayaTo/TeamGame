@@ -29,6 +29,11 @@ public:		//メンバ関数
 	/// </summary>
 	void Draw(ViewProjection& viewProjection);
 
+	/// <summary>
+	/// リセット
+	/// </summary>
+	void Reset();
+
 	//ワールド座標を取得
 	Vector3 GetWorldPosition();
 
@@ -37,6 +42,7 @@ public:		//メンバ関数
 
 	float GetRadius() { return radius; }
 
+	bool GetStopFlag() { return stopFlag; }
 private:
 	//半径
 	const float radius = 1.0f;
@@ -64,5 +70,7 @@ private:	//メンバ変数
 
 	//透明フラグ
 	bool invisibleFlag = false;
+
+	bool stopFlag = false;
 };
 

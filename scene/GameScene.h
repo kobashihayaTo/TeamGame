@@ -52,12 +52,17 @@ class GameScene {
 	/// </summary>
 	void Draw();
 
-
+	void CheckAllCollisions(Enemy* enemy);
 
 	/// <summary>
 	/// シーン切り替え
 	/// </summary>
 	void SceneChange();
+
+	/// <summary>
+	/// リセット
+	/// </summary>
+	void Reset();
 
 	Scene GetNextScene() { return nextScene_; }
 
@@ -110,4 +115,5 @@ class GameScene {
 	Scene nextScene_ = Scene::GAME;
 	int isEnd_ = false;
 
+	
 };

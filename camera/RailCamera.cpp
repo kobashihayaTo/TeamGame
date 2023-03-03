@@ -36,21 +36,21 @@ void RailCamera::ZoomOut() {
 
 	
 	//ƒJƒƒ‰‚ÌˆÊ’u‚ÌˆÚ“®ˆ—
-	if (input_->PushKey(DIK_W)) {
-		cameraMove.y += 0.1;
-	}
+	//if (input_->PushKey(DIK_W)) {
+	//	cameraMove.x += 0.1;
+	//}
 
-	if (input_->PushKey(DIK_S)) {
-		cameraMove.y -= 0.1;
-	}
+	//if (input_->PushKey(DIK_S)) {
+	//	cameraMove.x -= 0.1;
+	//}
 
-	if (input_->PushKey(DIK_D)) {
-		cameraMove.z += 0.1;
-	}
+	//if (input_->PushKey(DIK_D)) {
+	//	cameraMove.z += 0.1;
+	//}
 
-	if (input_->PushKey(DIK_A)) {
-		cameraMove.z -= 0.1;
-	}
+	//if (input_->PushKey(DIK_A)) {
+	//	cameraMove.z -= 0.1;
+	//}
 
 
 	worldTransform_.translation_ += cameraMove;
