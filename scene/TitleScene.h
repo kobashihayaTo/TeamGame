@@ -44,9 +44,17 @@ public://メンバ関数
 	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// タイトルでセレクト
+	/// </summary>
+	void ChangeSelect();
+
 	Scene GetNextScene() { return nextScene_; }
 
 	int GetChangeFlag() { return changeFlag_; }
+
+	int GetSelectFlag() { return selectFlag; }
+
 private:
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -73,5 +81,7 @@ private:
 	uint32_t soundDataHandle_ = 0;
 	//音声再生ハンドル
 	uint32_t playHandle = -1;
+
+	int selectFlag = 0;
 };
 

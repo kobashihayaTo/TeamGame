@@ -21,6 +21,8 @@ void TitleScene::Initialize()
 
 	//スプライトの生成
 	sprite_ = Sprite::Create(textureHandle_, { 0,0 });
+
+	selectFlag = 0;
 }
 
 void TitleScene::Update()
@@ -30,6 +32,10 @@ void TitleScene::Update()
 		changeFlag_ = true;
 		nextScene_ = Scene::MANUAL;
 	}
+	ChangeSelect();
+
+	debugText_->SetPos(50, 330);
+	debugText_->Printf("selectFlag:%d", selectFlag);
 }
 
 void TitleScene::Draw()
@@ -80,4 +86,21 @@ void TitleScene::Draw()
 	Sprite::PostDraw();
 
 #pragma endregion
+}
+
+void TitleScene::ChangeSelect()
+{
+	if (input_->TriggerKey(DIK_LEFT)) {
+		selectFlag -= 1;
+	}
+	if (input_->TriggerKey(DIK_RIGHT)) {
+		selectFlag += 1;
+	}
+
+	if (selectFlag < 0) {
+		selectFlag = 1;
+	}
+	if (selectFlag > 1) {
+		selectFlag = 0;
+	}
 }
