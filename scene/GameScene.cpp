@@ -21,6 +21,7 @@ void GameScene::Initialize() {
 
  	mapTH_ = TextureManager::Load("cube/cube.jpg");
 	floorTH_ = TextureManager::Load("ground/floor.png");
+	//WorldTransform 
 
 	//3Dモデルを生成
 	mapModel_ = Model::CreateFromOBJ("cube", true);
@@ -115,6 +116,7 @@ void GameScene::Draw() {
 
 	//床の描画
 	newMap->FloorDraw(viewProjection_);
+
 
 	//プレイヤーの描画
 	newPlayer->Draw(viewProjection_);

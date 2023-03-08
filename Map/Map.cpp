@@ -24,13 +24,15 @@ void Map::Initialize(Model* model, Model* floorModel) {
 			worldTransform_[z][x].translation_.y = 0.0f;
 			worldTransform_[z][x].translation_.z = 2.0f * x - 22.0f;
 			myFunc_.UpdateWorldTransform(worldTransform_[z][x]);
+
+			worldTransform_[z][x].TransferColorMatrix();
 		}
 	}
 
 	floorWorldTransform_.Initialize();
 	floorWorldTransform_.translation_ = { 0,-7,0 };
 	myFunc_.UpdateWorldTransform(floorWorldTransform_);
-
+	floorWorldTransform_.TransferColorMatrix();
 	//デバッグ用表示
 	debugText_->SetPos(50, 140);
 	debugText_->Printf(" pos:(%f, %f, %f)", worldTransform_[0][0].translation_.x, worldTransform_[0][0].translation_.y, worldTransform_[0][0].translation_.z);
@@ -110,6 +112,7 @@ void Map::Draw(ViewProjection& viewProjection) {
 void Map::FloorDraw(ViewProjection& viewProjection) {
 	//3Dモデルを描画
 	floorModel_->Draw(floorWorldTransform_, viewProjection);
+
 }
 
 

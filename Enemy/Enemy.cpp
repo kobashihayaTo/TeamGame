@@ -81,7 +81,7 @@ void Enemy::Update() {
 
 	//行列の更新
 	myFunc_.UpdateWorldTransform(worldTransform_);
-
+	worldTransform_.TransferColorMatrix();
 	//透明フラグの切り替え
 	if (input_->TriggerKey(DIK_K)) {
 		if (invisibleFlag == true) {

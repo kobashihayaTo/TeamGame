@@ -129,6 +129,7 @@ private:	//ƒƒ“ƒo•Ï”
 	int BlockSize;
 	WorldTransform floorWorldTransform_;
 
+
 	//‘€ì
 	Input* input_ = nullptr;
 	//ƒ‚ƒfƒ‹

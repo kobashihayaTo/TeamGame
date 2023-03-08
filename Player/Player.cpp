@@ -26,8 +26,17 @@ void Player::Initialize(Model* model) {
 
 //更新
 void Player::Update() {
-	//プレイヤーの移動ベクトル
 
+	//プレイヤーの移動ベクトル
+	if (playerSecretFlag == false) {
+		//3Dモデルを描画
+		worldTransform_.ColorSetter(DefaultColor);
+	}
+	if (playerSecretFlag == true) {
+		//3Dモデルを描画
+		worldTransform_.ColorSetter(SecretColor);
+	}
+	worldTransform_.TransferColorMatrix();
 
 	prePosition_ = worldTransform_.translation_;
 
@@ -61,9 +70,10 @@ void Player::Update() {
 	}
 	move = worldTransform_.translation_;
 
+
+
 	//行列の更新
 	myFunc_.UpdateWorldTransform(worldTransform_);
-
 	//デバッグ用表示
 	debugText_->SetPos(50, 150);
 	debugText_->Printf("Player pos:(%f, %f, %f)", worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z);
@@ -75,10 +85,8 @@ void Player::Update() {
 
 //描画
 void Player::Draw(ViewProjection& viewprojection) {
-	if (playerSecretFlag == false) {
-		//3Dモデルを描画
-		model_->Draw(worldTransform_, viewprojection);
-	}
+	//3Dモデルを描画
+	model_->Draw(worldTransform_, viewprojection);
 }
 
 Vector3 Player::GetWorldPosition() {

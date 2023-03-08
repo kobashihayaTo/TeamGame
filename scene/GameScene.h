@@ -75,6 +75,7 @@ class GameScene {
 	DebugText* debugText_ = nullptr;
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
+	WorldTransform worldTransform_;
 
 	//レールカメラ
 	std::unique_ptr<RailCamera> newCamera = std::make_unique<RailCamera>();

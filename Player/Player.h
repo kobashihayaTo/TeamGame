@@ -8,6 +8,8 @@
 #include "MyMath.h"
 #include "Material.h"
 
+#include "PrimitiveDrawer.h"
+
 
 struct CornerPos {
 	float cornerZ;	//プレイヤーの角のZ座標
@@ -110,6 +112,8 @@ private:	//メンバ変数
 
 	Material* material = nullptr;
 
+	PrimitiveDrawer* primitiveDrawer = nullptr;
+
 	//右上、右下の座標の変数
 	int rightTopZ = 0;
 	int rightTopX = 0;
@@ -133,5 +137,8 @@ private:	//メンバ変数
 	bool playerDeathFlag = false;
 
 	bool playerSecretFlag = false;
+
+	XMFLOAT4 DefaultColor = { 1.0f,1.0f,1.0f,1.0f };
+	XMFLOAT4 SecretColor = { 1.0f,1.0f,1.0f,0.5f };
 };
 

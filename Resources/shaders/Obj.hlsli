@@ -1,5 +1,6 @@
 cbuffer WorldTransform : register(b0) {
 	matrix world; // ワールド行列
+	float4 color; //カラー
 };
 
 cbuffer ViewProjection : register(b1) {
