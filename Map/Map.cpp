@@ -64,6 +64,15 @@ void Map::Update(Player* player) {
 		}
 	}
 
+	if (input_->TriggerKey(DIK_D)) {
+		if (AnswerFlag == true) {
+			AnswerFlag = false;
+		}
+		else if (AnswerFlag == false) {
+			AnswerFlag = true;
+		}
+	}
+
 	//デバッグ用表示
 	debugText_->SetPos(50, 180);
 	debugText_->Printf("MapPlayer pos:(%f, %f, %f)", player->GetWorldPosition().x, player->GetWorldPosition().y, player->GetWorldPosition().z);
@@ -74,6 +83,8 @@ void Map::Update(Player* player) {
 	debugText_->SetPos(50, 230);
 	debugText_->Printf("MapPlayer pos:(%f, %f, %f)", player->GetTransform().x, player->GetTransform().y, player->GetTransform().z);
 
+	debugText_->SetPos(50, 320);
+	debugText_->Printf("GoalCount:%d", GoalCount);
 }
 
 void Map::Draw(ViewProjection& viewProjection) {
@@ -90,6 +101,11 @@ void Map::Draw(ViewProjection& viewProjection) {
 				}
 				if (FirstMap[z][x] == WALL) {
 					model_->Draw(worldTransform_[z][x], viewProjection);
+				}
+				if (AnswerFlag==true) {
+					if (FirstMap[z][x] == GOAL) {
+						model_->Draw(worldTransform_[z][x], viewProjection);
+					}
 				}
 			}
 		}
@@ -337,19 +353,35 @@ void Map::BlockCheck(Player* player) {
 						// 上下
 						if (playerRightX > blockLeftX && playerLeftX < blockRightX) {
 							if (player->GetWorldPosition().z < worldTransform_[z][x].translation_.z) {
-								goalFlag = true;
+								GoalCount++;
+								if (GoalCount > 100)
+								{
+									goalFlag = true;
+								}
 							}
 							else if (player->GetWorldPosition().z > worldTransform_[z][x].translation_.z) {
-								goalFlag = true;
+								GoalCount++;
+								if (GoalCount > 100)
+								{
+									goalFlag = true;
+								}
 							}
 						}
 						// 左右
 						else if (playerUpZ > blockDownZ && playerDownZ < blockUpZ) {
 							if (player->GetWorldPosition().x < worldTransform_[z][x].translation_.x) {
-								goalFlag = true;
+								GoalCount++;
+								if (GoalCount > 100)
+								{
+									goalFlag = true;
+								}
 							}
 							else if (player->GetWorldPosition().x > worldTransform_[z][x].translation_.x) {
-								goalFlag = true;
+								GoalCount++;
+								if (GoalCount > 100)
+								{
+									goalFlag = true;
+								}
 							}
 						}
 
@@ -478,4 +510,5 @@ void Map::Reset()
 {
 	invisibleFlag = false;
 	goalFlag = false;
+	GoalCount = 0;
 }
