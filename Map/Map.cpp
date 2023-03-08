@@ -17,10 +17,10 @@ void Map::Initialize(Model* model, Model* floorModel) {
 	debugText_ = DebugText::GetInstance();
 
 	//カメラの画角の調整
-	for (int z = 0; z < 20; z++) {
-		for (int x = 0; x < 25; x++) {
+	for (int z = 0; z < Map_Z; z++) {
+		for (int x = 0; x < Map_X; x++) {
 			worldTransform_[z][x].Initialize();
-			worldTransform_[z][x].translation_.x = 2.0f * z - 15.0f;
+			worldTransform_[z][x].translation_.x = 2.0f * z - 30.0f;
 			worldTransform_[z][x].translation_.y = 0.0f;
 			worldTransform_[z][x].translation_.z = 2.0f * x - 22.0f;
 			myFunc_.UpdateWorldTransform(worldTransform_[z][x]);
@@ -81,8 +81,8 @@ void Map::Draw(ViewProjection& viewProjection) {
 	if (MapFlag == 0)
 	{
 		//3Dモデルを描画
-		for (int z = 0; z < 20; z++) {
-			for (int x = 0; x < 25; x++) {
+		for (int z = 0; z < Map_Z; z++) {
+			for (int x = 0; x < Map_X; x++) {
 				if (invisibleFlag == false) {
 					if (FirstMap[z][x] == BLOCK) {
 						model_->Draw(worldTransform_[z][x], viewProjection);
@@ -145,8 +145,8 @@ void Map::OnCollision(Vector3 playerPos, float radius) {
 
 void Map::BlockCheck(Player* player) {
 	if (MapFlag == 0) {
-		for (int z = 0; z < 20; z++) {
-			for (int x = 0; x < 25; x++) {
+		for (int z = 0; z < Map_Z; z++) {
+			for (int x = 0; x < Map_X; x++) {
 				// ブロックの座標
 				worldTransform_[z][x].translation_;
 

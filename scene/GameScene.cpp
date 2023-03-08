@@ -19,10 +19,6 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 	debugText_ = DebugText::GetInstance();
 
- 	mapTH_ = TextureManager::Load("cube/cube.jpg");
-	floorTH_ = TextureManager::Load("ground/floor.png");
-	//WorldTransform 
-
 	//3Dモデルを生成
 	mapModel_ = Model::CreateFromOBJ("cube", true);
 	playerModel_ = Model::CreateFromOBJ("player", true);
