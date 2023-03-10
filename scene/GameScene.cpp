@@ -68,7 +68,7 @@ void GameScene::Update() {
 
 	SceneChange();
 
-	if (newPlayer->GetSecretFlag() == false) {
+	if (newPlayer->GetSecretFlag() == false || newPlayer->GetSecretIntervalFlag() == true) {
  		CheckAllCollisions(newEnemy.get());
 	}
 

@@ -53,13 +53,11 @@ void Map::Update(Player* player) {
 	}
 
 	//透明フラグの切り替え
-	if (input_->TriggerKey(DIK_K)) {
+	if (input_->TriggerKey(DIK_S)) {
 		if (invisibleFlag == true) {
-			player->GetTransform() = { -11.0f, 0.0f, -18.0f };
 			invisibleFlag = false;
 		}
 		else if (invisibleFlag == false) {
-			player->GetTransform() = { 0.0f, 0.0f, 0.0f };
 			invisibleFlag = true;
 		}
 	}
@@ -137,27 +135,6 @@ void Map::OnCollision(Vector3 playerPos, float radius) {
 
 }
 
-//int Map::BlockCheck(int line, int culumn) {
-//	if (MapFlag == 0)
-//	{
-//		//マップ進んだ先にブロックがあったら1を返す
-//		if (FirstMap[line][culumn] == BLOCK) {
-//			return 1;
-//		}
-//		if (FirstMap[line][culumn] == WALL) {
-//			return 1;
-//		}
-//	}
-//	//if (MapFlag == 1)
-//	//{
-//	//	//マップ進んだ先にブロックがあったら1を返す
-//	//	if (SecondMap[line][culumn] == BLOCK) {
-//	//		return 1;
-//	//	}
-//	//}
-//
-//	return 0;
-//}
 
 void Map::BlockCheck(Player* player) {
 	if (MapFlag == 0) {
