@@ -27,17 +27,32 @@ void Enemy::Update() {
 	//プレイヤーの移動ベクトル
 	Vector3 move = { 0,0,0 };
 
-	if (input_->TriggerKey(DIK_H))
+	if (input_->TriggerKey(DIK_S))
 	{
-		if (stopFlag == true) {
-			stopFlag = false;
-		}
-		else if (stopFlag == false) {
+		if (stopFlag == false) {
 			stopFlag = true;
 		}
 	}
 
-	if (stopFlag == false) {
+	if (stopFlag == true) {
+		stopTimer--;
+		if (stopTimer < 0) {
+			stopIntervalFlag = true;
+		}
+	}
+	if (stopIntervalFlag == true) {
+		stopIntervalTimer--;
+		if (stopIntervalTimer < 0) {
+			stopFlag = false;
+			stopIntervalFlag = false;
+			stopTimer = 100;
+			stopIntervalTimer = 100;
+		}
+	}
+
+
+
+	if (stopFlag == false|| stopIntervalFlag==true) {
 		if (worldTransform_.translation_.x <= -11)
 		{
 			LightFlag = false;
@@ -82,20 +97,19 @@ void Enemy::Update() {
 	//行列の更新
 	myFunc_.UpdateWorldTransform(worldTransform_);
 	worldTransform_.TransferColorMatrix();
-	//透明フラグの切り替え
-	if (input_->TriggerKey(DIK_K)) {
-		if (invisibleFlag == true) {
-			invisibleFlag = false;
-		}
-		else if (invisibleFlag == false) {
-			invisibleFlag = true;
-		}
-	}
-
 
 	//デバッグ用表示
 	debugText_->SetPos(50, 120);
 	debugText_->Printf("stopFlag:%d", stopFlag);
+
+	debugText_->SetPos(50, 210);
+	debugText_->Printf("stopIntervalFlag:%d", stopIntervalFlag);
+
+	debugText_->SetPos(50, 390);
+	debugText_->Printf("stopTimer:%d", stopTimer);
+
+	debugText_->SetPos(50, 410);
+	debugText_->Printf("stopIntervalTimer:%d", stopIntervalTimer);
 }
 
 //描画
@@ -108,7 +122,6 @@ void Enemy::Draw(ViewProjection& viewprojection) {
 void Enemy::Reset()
 {
 	worldTransform_.translation_ = { 6.0f, 0.9f, -2.7f };
-	invisibleFlag = false;
 	stopFlag = false;
 }
 

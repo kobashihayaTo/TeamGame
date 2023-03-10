@@ -53,36 +53,53 @@ void Map::Update(Player* player) {
 	}
 
 	//透明フラグの切り替え
-	if (input_->TriggerKey(DIK_S)) {
-		if (invisibleFlag == true) {
-			invisibleFlag = false;
-		}
-		else if (invisibleFlag == false) {
-			invisibleFlag = true;
-		}
-	}
 
 	if (input_->TriggerKey(DIK_D)) {
-		if (AnswerFlag == true) {
-			AnswerFlag = false;
-		}
-		else if (AnswerFlag == false) {
+		if (AnswerFlag == false) {
 			AnswerFlag = true;
 		}
 	}
+	if (AnswerFlag == true) {
+		AnswerTimer--;
+		if (AnswerTimer < 0) {
+			AnswerIntervalFlag = true;
+		}
+	}
+	if (AnswerIntervalFlag == true) {
+		AnswerIntervalTimer--;
+		if (AnswerIntervalTimer < 0) {
+			AnswerFlag = false;
+			AnswerIntervalFlag = false;
+			AnswerTimer = 100;
+			AnswerIntervalTimer = 100;
+		}
+	}
+
+
+
 
 	//デバッグ用表示
 	debugText_->SetPos(50, 180);
 	debugText_->Printf("MapPlayer pos:(%f, %f, %f)", player->GetWorldPosition().x, player->GetWorldPosition().y, player->GetWorldPosition().z);
-
-	debugText_->SetPos(50, 210);
-	debugText_->Printf("invisibleFlag:%d", invisibleFlag);
 
 	debugText_->SetPos(50, 230);
 	debugText_->Printf("MapPlayer pos:(%f, %f, %f)", player->GetTransform().x, player->GetTransform().y, player->GetTransform().z);
 
 	debugText_->SetPos(50, 320);
 	debugText_->Printf("GoalCount:%d", GoalCount);
+
+
+	//debugText_->SetPos(50, 210);
+	//debugText_->Printf("AnswerFlag:%d", AnswerFlag);
+
+	//debugText_->SetPos(50, 390);
+	//debugText_->Printf("AnswerIntervalFlag:%d", AnswerIntervalFlag);
+
+	//debugText_->SetPos(50, 410);
+	//debugText_->Printf("AnswerTimer:%d", AnswerTimer);
+
+	//debugText_->SetPos(50, 430);
+	//debugText_->Printf("AnswerIntervalTimer:%d", AnswerIntervalTimer);
 }
 
 void Map::Draw(ViewProjection& viewProjection) {
@@ -92,15 +109,13 @@ void Map::Draw(ViewProjection& viewProjection) {
 		//3Dモデルを描画
 		for (int z = 0; z < Map_Z; z++) {
 			for (int x = 0; x < Map_X; x++) {
-				if (invisibleFlag == false) {
-					if (FirstMap[z][x] == BLOCK) {
-						model_->Draw(worldTransform_[z][x], viewProjection);
-					}
+				if (FirstMap[z][x] == BLOCK) {
+					model_->Draw(worldTransform_[z][x], viewProjection);
 				}
 				if (FirstMap[z][x] == WALL) {
 					model_->Draw(worldTransform_[z][x], viewProjection);
 				}
-				if (AnswerFlag==true) {
+				if (AnswerFlag == true && AnswerIntervalFlag == false) {
 					if (FirstMap[z][x] == GOAL) {
 						model_->Draw(worldTransform_[z][x], viewProjection);
 					}
@@ -485,7 +500,11 @@ bool Map::CheckCollision(Vector3 pos1, Vector3 pos2, float radius1, float radius
 
 void Map::Reset()
 {
-	invisibleFlag = false;
 	goalFlag = false;
 	GoalCount = 0;
+
+	AnswerFlag = false;
+	AnswerIntervalFlag = false;
+	AnswerTimer = 100;
+	AnswerIntervalTimer = 100;
 }

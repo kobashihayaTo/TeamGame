@@ -69,8 +69,10 @@ private:	//ƒƒ“ƒo•Ï”
 	bool LeftFlag = false;
 
 	//“§–¾ƒtƒ‰ƒO
-	bool invisibleFlag = false;
-
 	bool stopFlag = false;
+	bool stopIntervalFlag = false;
+
+	int stopTimer = 100;
+	int stopIntervalTimer = 100;
 };
 

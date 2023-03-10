@@ -60,8 +60,6 @@ public:		//メンバ関数
 
 	int GetMapFlag() { return MapFlag; }
 
-	bool GetInvisible() { return invisibleFlag; }
-
 	bool GetGoalFlag() { return goalFlag; }
 
 	void Reset();
@@ -156,15 +154,17 @@ private:	//メンバ変数
 	//マップフラグ
 	int MapFlag = 0;
 
-	bool AnswerFlag = false;
-
 	//透明フラグ
-	bool invisibleFlag = false;
+	bool AnswerFlag = false;
+	bool AnswerIntervalFlag = false;
+	int  AnswerTimer = 100;
+	int  AnswerIntervalTimer = 100;
 
 	bool goalFlag = false;
-
 	int GoalCount = 0;
 
 	int Map_Z = 30;
 	int Map_X = 25;
+
+
 };
