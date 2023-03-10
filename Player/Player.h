@@ -68,6 +68,8 @@ public:		//メンバ関数
 
 	bool GetSecretFlag() { return playerSecretFlag; }
 
+	bool GetSecretIntervalFlag() { return SecretIntervalFlag; }
+
 	void Reset();
 
 public:
@@ -133,12 +135,15 @@ private:	//メンバ変数
 
 	Vector3 Trans = { 0,0,0 };
 
-	//
+	//フラグ関係
 	bool playerDeathFlag = false;
-
 	bool playerSecretFlag = false;
+	bool SecretIntervalFlag = false;
 
 	XMFLOAT4 DefaultColor = { 1.0f,1.0f,1.0f,1.0f };
-	XMFLOAT4 SecretColor = { 1.0f,1.0f,1.0f,0.5f };
+	XMFLOAT4 SecretColor = { 1.0f,1.0f,1.0f,0.0f };
+
+	int SecretTimer = 100;
+	int SecretIntervalTimer = 100;
 };
 
