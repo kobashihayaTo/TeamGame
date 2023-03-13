@@ -40,7 +40,7 @@ void Map::Initialize(Model* model, Model* floorModel) {
 	goalFlag = false;
 }
 
-void Map::Update(Player* player) {
+void Map::Update(Player* player, bool MapkeyFlag) {
 
 	//マップチップとプレイヤーが当たっているか確認する
 	BlockCheck(player);
@@ -54,7 +54,7 @@ void Map::Update(Player* player) {
 
 	//透明フラグの切り替え
 
-	if (input_->TriggerKey(DIK_D)) {
+	if (MapkeyFlag == true) {
 		if (AnswerFlag == false) {
 			AnswerFlag = true;
 		}
@@ -67,7 +67,11 @@ void Map::Update(Player* player) {
 	}
 	if (AnswerIntervalFlag == true) {
 		AnswerIntervalTimer--;
+		if (AnswerIntervalTimer <= 0.01f) {
+			OKFlag = true;
+		}
 		if (AnswerIntervalTimer < 0) {
+			OKFlag = false;
 			AnswerFlag = false;
 			AnswerIntervalFlag = false;
 			AnswerTimer = 100;
@@ -89,17 +93,17 @@ void Map::Update(Player* player) {
 	debugText_->Printf("GoalCount:%d", GoalCount);
 
 
-	//debugText_->SetPos(50, 210);
-	//debugText_->Printf("AnswerFlag:%d", AnswerFlag);
+	debugText_->SetPos(50, 210);
+	debugText_->Printf("AnswerFlag:%d", AnswerFlag);
 
-	//debugText_->SetPos(50, 390);
-	//debugText_->Printf("AnswerIntervalFlag:%d", AnswerIntervalFlag);
+	debugText_->SetPos(50, 390);
+	debugText_->Printf("AnswerIntervalFlag:%d", AnswerIntervalFlag);
 
-	//debugText_->SetPos(50, 410);
-	//debugText_->Printf("AnswerTimer:%d", AnswerTimer);
+	debugText_->SetPos(50, 410);
+	debugText_->Printf("AnswerTimer:%d", AnswerTimer);
 
-	//debugText_->SetPos(50, 430);
-	//debugText_->Printf("AnswerIntervalTimer:%d", AnswerIntervalTimer);
+	debugText_->SetPos(50, 430);
+	debugText_->Printf("AnswerIntervalTimer:%d", AnswerIntervalTimer);
 }
 
 void Map::Draw(ViewProjection& viewProjection) {
@@ -503,6 +507,14 @@ void Map::Reset()
 	goalFlag = false;
 	GoalCount = 0;
 
+	AnswerFlag = false;
+	AnswerIntervalFlag = false;
+	AnswerTimer = 100;
+	AnswerIntervalTimer = 100;
+}
+
+void Map::FlagReset()
+{
 	AnswerFlag = false;
 	AnswerIntervalFlag = false;
 	AnswerTimer = 100;

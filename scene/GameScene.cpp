@@ -47,17 +47,53 @@ void GameScene::Initialize() {
 void GameScene::Update() {
 
 	//プレイヤーの更新
-	newPlayer->Update();
+	newPlayer->Update(playerkeyFlag);
 
 	//cameraPos = newPlayer->GetTransform();
 
 	//マップの更新
- 	newMap->Update(newPlayer.get());
+	newMap->Update(newPlayer.get(), MapkeyFlag);
 
-	newEnemy->Update();
-
-
-
+	newEnemy->Update(keyFlag);
+	//プレイヤー
+	if (input_->TriggerKey(DIK_A)) {
+		if (MapkeyFlag == false && keyFlag == false) {
+		playerkeyFlag = true;
+		MapkeyFlag = false;
+		keyFlag = false;
+		}
+	}
+	if (newPlayer->GetOKFlag()) {
+		playerkeyFlag = false;
+		MapkeyFlag = false;
+		keyFlag = false;
+	}
+	//マップ
+	if (input_->TriggerKey(DIK_D)) {
+		if (playerkeyFlag == false&&keyFlag==false) {
+		playerkeyFlag = false;
+		MapkeyFlag = true;
+		keyFlag = false;
+		}
+	}
+	if (newMap->GetOKFlag()) {
+		playerkeyFlag = false;
+		MapkeyFlag = false;
+		keyFlag = false;
+	}
+	//敵
+	if (input_->TriggerKey(DIK_S)) {
+		if (playerkeyFlag == false && MapkeyFlag == false) {
+			playerkeyFlag = false;
+			MapkeyFlag = false;
+			keyFlag = true;
+		}
+	}
+	if (newEnemy->GetOKFlag()) {
+		playerkeyFlag = false;
+		MapkeyFlag = false;
+		keyFlag = false;
+	}
 	//カメラの更新
 	newCamera->Update();
 	//レールカメラをゲームシーンのカメラに適応する
@@ -78,6 +114,14 @@ void GameScene::Update() {
 		newMap->Reset();
 	}
 
+	debugText_->SetPos(50, 450);
+	debugText_->Printf("playerkeyFlag:%d", playerkeyFlag);
+
+	debugText_->SetPos(50, 470);
+	debugText_->Printf("keyFlag:%d", keyFlag);
+
+	debugText_->SetPos(50, 490);
+	debugText_->Printf("MapkeyFlag:%d", MapkeyFlag);
 
 }
 

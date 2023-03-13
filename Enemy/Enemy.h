@@ -8,6 +8,7 @@
 #include "Function/Function.h"
 
 
+
 class Enemy
 {
 public:		//メンバ関数
@@ -22,7 +23,7 @@ public:		//メンバ関数
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update(bool keyFlag);
 
 	/// <summary>
 	/// 描画
@@ -34,6 +35,11 @@ public:		//メンバ関数
 	/// </summary>
 	void Reset();
 
+	/// <summary>
+	/// フラグリセット
+	/// </summary>
+	void FlagReset();
+
 	//ワールド座標を取得
 	Vector3 GetWorldPosition();
 
@@ -43,6 +49,8 @@ public:		//メンバ関数
 	float GetRadius() { return radius; }
 
 	bool GetStopFlag() { return stopFlag; }
+
+	bool GetOKFlag() { return OKFlag; }
 private:
 	//半径
 	const float radius = 1.0f;
@@ -74,5 +82,7 @@ private:	//メンバ変数
 
 	int stopTimer = 100;
 	int stopIntervalTimer = 100;
+
+	bool OKFlag = false;
 };
 

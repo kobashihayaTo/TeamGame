@@ -35,7 +35,7 @@ public:		//メンバ関数
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update(bool PlayerKeyFlag);
 
 	/// <summary>
 	/// 描画
@@ -70,7 +70,11 @@ public:		//メンバ関数
 
 	bool GetSecretIntervalFlag() { return SecretIntervalFlag; }
 
+	bool GetOKFlag() { return OKFlag; }
+
 	void Reset();
+
+	void FlagReset();
 
 public:
 	//speedZのセッター
@@ -138,12 +142,16 @@ private:	//メンバ変数
 	//フラグ関係
 	bool playerDeathFlag = false;
 	bool playerSecretFlag = false;
+
 	bool SecretIntervalFlag = false;
 
 	XMFLOAT4 DefaultColor = { 1.0f,1.0f,1.0f,1.0f };
 	XMFLOAT4 SecretColor = { 1.0f,1.0f,1.0f,0.0f };
 
 	int SecretTimer = 100;
-	int SecretIntervalTimer = 100;
+	float SecretIntervalTimer = 100.0f;
+
+
+	bool OKFlag = false;
 };
 

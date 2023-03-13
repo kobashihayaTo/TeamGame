@@ -23,11 +23,11 @@ void Enemy::Initialize(Model* model) {
 }
 
 //更新
-void Enemy::Update() {
+void Enemy::Update(bool keyFlag) {
 	//プレイヤーの移動ベクトル
 	Vector3 move = { 0,0,0 };
 
-	if (input_->TriggerKey(DIK_S))
+	if (keyFlag == true)
 	{
 		if (stopFlag == false) {
 			stopFlag = true;
@@ -42,7 +42,11 @@ void Enemy::Update() {
 	}
 	if (stopIntervalFlag == true) {
 		stopIntervalTimer--;
+		if (stopIntervalTimer <= 0.01f) {
+			OKFlag = true;
+		}
 		if (stopIntervalTimer < 0) {
+			OKFlag = false;
 			stopFlag = false;
 			stopIntervalFlag = false;
 			stopTimer = 100;
@@ -99,7 +103,7 @@ void Enemy::Update() {
 	worldTransform_.TransferColorMatrix();
 
 	//デバッグ用表示
-	debugText_->SetPos(50, 120);
+	/*debugText_->SetPos(50, 120);
 	debugText_->Printf("stopFlag:%d", stopFlag);
 
 	debugText_->SetPos(50, 210);
@@ -109,7 +113,7 @@ void Enemy::Update() {
 	debugText_->Printf("stopTimer:%d", stopTimer);
 
 	debugText_->SetPos(50, 410);
-	debugText_->Printf("stopIntervalTimer:%d", stopIntervalTimer);
+	debugText_->Printf("stopIntervalTimer:%d", stopIntervalTimer);*/
 }
 
 //描画
@@ -123,6 +127,17 @@ void Enemy::Reset()
 {
 	worldTransform_.translation_ = { 6.0f, 0.9f, -2.7f };
 	stopFlag = false;
+	stopIntervalFlag = false;
+	stopTimer = 100;
+	stopIntervalTimer = 100;
+}
+
+void Enemy::FlagReset()
+{
+	stopFlag = false;
+	stopIntervalFlag = false;
+	stopTimer = 100;
+	stopIntervalTimer = 100;
 }
 
 Vector3 Enemy::GetWorldPosition() {
