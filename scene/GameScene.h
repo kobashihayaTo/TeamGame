@@ -116,5 +116,7 @@ class GameScene {
 	Scene nextScene_ = Scene::GAME;
 	int isEnd_ = false;
 
-	
+	bool keyFlag = false;
+	bool MapkeyFlag = false;
+	bool playerkeyFlag = false;
 };

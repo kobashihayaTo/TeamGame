@@ -25,7 +25,7 @@ void Player::Initialize(Model* model) {
 }
 
 //更新
-void Player::Update() {
+void Player::Update(bool PlayerKeyFlag) {
 
 	//プレイヤーの移動ベクトル
 	if (playerSecretFlag == false ) {
@@ -64,10 +64,11 @@ void Player::Update() {
 		worldTransform_.rotation_.y = RadianConversion(270);
 	}
 
-	if (input_->TriggerKey(DIK_A)) {
-		if (playerSecretFlag == false) {
-			playerSecretFlag = true;
-		}
+	if (PlayerKeyFlag == true) {
+	/*	if (playerSecretFlag == false) {
+			
+		}*/
+		playerSecretFlag = true;
 	}
 
 	if (playerSecretFlag == true){
@@ -79,12 +80,19 @@ void Player::Update() {
 
 	if (SecretIntervalFlag == true) {
 		SecretIntervalTimer--;
+		if (SecretIntervalTimer <= 0.01f) {
+			OKFlag = true;
+		}
 		if (SecretIntervalTimer < 0) {
+			PlayerKeyFlag = false;
+			OKFlag = false;
 			playerSecretFlag = false;
 			SecretIntervalFlag = false;
 			SecretTimer = 100;
 			SecretIntervalTimer = 100;
+
 		}
+
 
 	}
 	move = worldTransform_.translation_;
@@ -104,10 +112,10 @@ void Player::Update() {
 	debugText_->Printf("SecretTimer:%d", SecretTimer);
 
 	debugText_->SetPos(50, 350);
-	debugText_->Printf("SecretIntervalTimer:%d", SecretIntervalTimer);
+	debugText_->Printf("SecretIntervalTimer:%f", SecretIntervalTimer);
 
 	debugText_->SetPos(50, 370);
-	debugText_->Printf("SecretIntervalFlag:%d", SecretIntervalFlag);
+	debugText_->Printf("OKFlag:%d", OKFlag);
 }
 
 //描画
@@ -140,11 +148,16 @@ void Player::Reset()
 	playerSecretFlag = false;
 	//プレイヤーの初期位置の設定
 	worldTransform_.translation_ = { -11.0f,0.0f ,-18.0f };
-
+	SecretIntervalFlag = false;
+	SecretTimer = 100;
+	SecretIntervalTimer = 100.0f;
+}
+void Player::FlagReset()
+{
 	playerSecretFlag = false;
 	SecretIntervalFlag = false;
 	SecretTimer = 100;
-	SecretIntervalTimer = 100;
+	SecretIntervalTimer = 100.0f;
 }
 	//何もしない
 

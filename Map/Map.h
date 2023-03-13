@@ -31,7 +31,7 @@ public:		//メンバ関数
 	void Initialize(Model* model, Model* floorModel);
 
 	//更新
-	void Update(Player* player);
+	void Update(Player* player, bool MapkeyFlag);
 
 	//描画
 	void Draw(ViewProjection& viewProjection);
@@ -62,8 +62,13 @@ public:		//メンバ関数
 
 	bool GetGoalFlag() { return goalFlag; }
 
+	bool GetAnswerFlag() { return AnswerFlag; }
+
+	bool GetOKFlag() { return OKFlag; }
+
 	void Reset();
 
+	void FlagReset();
 public:
 	//半径
 	const float radius = 0.9f;
@@ -166,5 +171,5 @@ private:	//メンバ変数
 	int Map_Z = 30;
 	int Map_X = 25;
 
-
+	bool OKFlag = false;
 };
