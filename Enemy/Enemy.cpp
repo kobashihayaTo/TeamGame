@@ -50,6 +50,11 @@ void Enemy::Initialize(Model* model, RailCamera* camera) {
 
 //更新
 void Enemy::Update(bool keyFlag) {
+
+	//センサーを敵に追従
+	sensorX = worldTransform_.translation_.x;
+	sensorZ = worldTransform_.translation_.z;
+
 	//プレイヤーの移動ベクトル
 	Vector3 move = { 0,0,0 };
 
