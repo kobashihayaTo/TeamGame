@@ -6,6 +6,10 @@
 #include "Model.h"
 #include "DebugText.h"
 #include "Function/Function.h"
+#include "camera/RailCamera.h"
+#include "PrimitiveDrawer.h"
+
+#define PI 3.14
 
 
 class Enemy
@@ -17,7 +21,7 @@ public:		//メンバ関数
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <param name="texturehandle">テクスチャハンドル</param>
-	void Initialize(Model* model);
+	void Initialize(Model* model, RailCamera* camera);
 
 	/// <summary>
 	/// 更新
@@ -33,6 +37,22 @@ public:		//メンバ関数
 	/// リセット
 	/// </summary>
 	void Reset();
+
+	/// <summary>
+	/// 視界を動かす関数
+	/// </summary>
+	void SensorVision();
+
+	/// <summary>
+	/// それぞれのベクトルを得る関数
+	/// </summary>
+	void SensorVector(float playerZ, float playerX, float playerRadius);
+
+	/// <summary>
+	/// センサーの描画
+	/// </summary>
+	void SensorDraw();
+
 
 	//ワールド座標を取得
 	Vector3 GetWorldPosition();
@@ -61,6 +81,8 @@ private:	//メンバ変数
 	//デバッグテキスト
 	DebugText* debugText_ = nullptr;
 
+	PrimitiveDrawer* primitive_ = nullptr;
+
 	//ファンクション
 	MyFunc myFunc_;
 
@@ -73,6 +95,21 @@ private:	//メンバ変数
 
 	bool stopFlag = false;
 
+	float sensorX;	//カメラ本体の座標
+	float sensorZ;
+	float sensorR;
 
+	float sensorVisionX[2];	//カメラの視界
+	float sensorVisionZ[2];
+
+	float visionMemoryX[2];	//視界移動の記憶変数
+	float visionMemoryZ[2];
+
+	int visionFlag; //視界の移動を制御するフラグ
+	int visionHitFlag[3]; //視界の当たり判定用フラグ
+
+	int speed;
+
+	float visionTimer; //視界が再び動くまでのタイマー
 };
 

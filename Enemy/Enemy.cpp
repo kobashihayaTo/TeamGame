@@ -189,17 +189,17 @@ void Enemy::Reset()
 {
 	worldTransform_.translation_ = { 6.0f, 0.9f, -2.7f };
 	stopFlag = false;
-	stopIntervalFlag = false;
+	/*stopIntervalFlag = false;
 	stopTimer = 100;
-	stopIntervalTimer = 100;
+	stopIntervalTimer = 100;*/
 }
 
 void Enemy::FlagReset()
 {
-	stopFlag = false;
+	/*stopFlag = false;
 	stopIntervalFlag = false;
 	stopTimer = 100;
-	stopIntervalTimer = 100;
+	stopIntervalTimer = 100;*/
 }
 
 Vector3 Enemy::GetWorldPosition() {
