@@ -2,7 +2,7 @@
 #include <cassert>
 
 //初期化
-void Enemy::Initialize(Model* model,RailCamera* camera) {
+void Enemy::Initialize(Model* model, RailCamera* camera) {
 	//NULLポイントチェック
 	assert(model);
 
@@ -82,7 +82,7 @@ void Enemy::Update(bool keyFlag) {
 
 
 
-	if (stopFlag == false|| stopIntervalFlag==true) {
+	if (stopFlag == false || stopIntervalFlag == true) {
 		if (worldTransform_.translation_.x <= -11)
 		{
 			LightFlag = false;
@@ -168,8 +168,8 @@ void Enemy::SensorDraw() {
 
 			primitive_->DrawLine3d(start, end, color);
 		}
-		primitive_->DrawLine3d(end,end1, color);
-	
+		primitive_->DrawLine3d(end, end1, color);
+
 	}
 	else
 	{
@@ -181,7 +181,7 @@ void Enemy::SensorDraw() {
 
 			primitive_->DrawLine3d(start, end, color1);
 		}
-		primitive_->DrawLine3d(end,end1,color1);
+		primitive_->DrawLine3d(end, end1, color1);
 	}
 }
 
@@ -219,7 +219,7 @@ void Enemy::OnCollision() {
 	//何もしない
 }
 
-void Enemy::SensorVision(){
+void Enemy::SensorVision() {
 #pragma region 回転処理
 	if (visionFlag == 0)
 	{
@@ -314,7 +314,7 @@ void Enemy::SensorVision(){
 	}
 }
 
-void Enemy::SensorVector(float playerZ, float playerX, float playerRadius){
+void Enemy::SensorVector(float playerZ, float playerX, float playerRadius) {
 	//それぞれのベクトル
 	Vector3 vec[3];	//線
 	Vector3 vecPlayer[4];	//Playerまでのベクトル
@@ -415,3 +415,4 @@ void Enemy::SensorVector(float playerZ, float playerX, float playerRadius){
 #pragma endregion
 
 }
+
