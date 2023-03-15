@@ -8,6 +8,8 @@
 #include "MyMath.h"
 #include "Material.h"
 
+#include "PrimitiveDrawer.h"
+
 
 struct CornerPos {
 	float cornerZ;	//プレイヤーの角のZ座標
@@ -33,7 +35,7 @@ public:		//メンバ関数
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update(bool PlayerKeyFlag);
 
 	/// <summary>
 	/// 描画
@@ -66,7 +68,13 @@ public:		//メンバ関数
 
 	bool GetSecretFlag() { return playerSecretFlag; }
 
+	bool GetSecretIntervalFlag() { return SecretIntervalFlag; }
+
+	bool GetOKFlag() { return OKFlag; }
+
 	void Reset();
+
+	void FlagReset();
 
 public:
 	//speedZのセッター
@@ -110,6 +118,8 @@ private:	//メンバ変数
 
 	Material* material = nullptr;
 
+	PrimitiveDrawer* primitiveDrawer = nullptr;
+
 	//右上、右下の座標の変数
 	int rightTopZ = 0;
 	int rightTopX = 0;
@@ -129,9 +139,19 @@ private:	//メンバ変数
 
 	Vector3 Trans = { 0,0,0 };
 
-	//
+	//フラグ関係
 	bool playerDeathFlag = false;
-
 	bool playerSecretFlag = false;
+
+	bool SecretIntervalFlag = false;
+
+	XMFLOAT4 DefaultColor = { 1.0f,1.0f,1.0f,1.0f };
+	XMFLOAT4 SecretColor = { 1.0f,1.0f,1.0f,0.0f };
+
+	int SecretTimer = 100;
+	float SecretIntervalTimer = 100.0f;
+
+
+	bool OKFlag = false;
 };
 

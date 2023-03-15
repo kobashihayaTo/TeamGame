@@ -25,9 +25,22 @@ void Player::Initialize(Model* model) {
 }
 
 //更新
-void Player::Update() {
-	//プレイヤーの移動ベクトル
+void Player::Update(bool PlayerKeyFlag) {
 
+	//プレイヤーの移動ベクトル
+	if (playerSecretFlag == false ) {
+		//3Dモデルを描画
+		worldTransform_.ColorSetter(DefaultColor);
+	}
+	if (playerSecretFlag == true) {
+		//3Dモデルを描画
+		worldTransform_.ColorSetter(SecretColor);
+	}
+	if (SecretIntervalFlag == true) {
+		//3Dモデルを描画
+		worldTransform_.ColorSetter(DefaultColor);
+	}
+	worldTransform_.TransferColorMatrix();
 
 	prePosition_ = worldTransform_.translation_;
 
@@ -51,19 +64,43 @@ void Player::Update() {
 		worldTransform_.rotation_.y = RadianConversion(270);
 	}
 
-	if (input_->TriggerKey(DIK_J)) {
-		if (playerSecretFlag == true) {
+	if (PlayerKeyFlag == true) {
+	/*	if (playerSecretFlag == false) {
+			
+		}*/
+		playerSecretFlag = true;
+	}
+
+	if (playerSecretFlag == true){
+		SecretTimer--;
+		if (SecretTimer < 0){
+			SecretIntervalFlag = true;
+		}
+	}
+
+	if (SecretIntervalFlag == true) {
+		SecretIntervalTimer--;
+		if (SecretIntervalTimer <= 0.01f) {
+			OKFlag = true;
+		}
+		if (SecretIntervalTimer < 0) {
+			PlayerKeyFlag = false;
+			OKFlag = false;
 			playerSecretFlag = false;
+			SecretIntervalFlag = false;
+			SecretTimer = 100;
+			SecretIntervalTimer = 100;
+
 		}
-		else if (playerSecretFlag ==false) {
-			playerSecretFlag = true;
-		}
+
+
 	}
 	move = worldTransform_.translation_;
 
+
+
 	//行列の更新
 	myFunc_.UpdateWorldTransform(worldTransform_);
-
 	//デバッグ用表示
 	debugText_->SetPos(50, 150);
 	debugText_->Printf("Player pos:(%f, %f, %f)", worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z);
@@ -71,14 +108,20 @@ void Player::Update() {
 	debugText_->SetPos(50, 300);
 	debugText_->Printf("playerSecretFlag:%d", playerSecretFlag);
 
+	debugText_->SetPos(50, 330);
+	debugText_->Printf("SecretTimer:%d", SecretTimer);
+
+	debugText_->SetPos(50, 350);
+	debugText_->Printf("SecretIntervalTimer:%f", SecretIntervalTimer);
+
+	debugText_->SetPos(50, 370);
+	debugText_->Printf("OKFlag:%d", OKFlag);
 }
 
 //描画
 void Player::Draw(ViewProjection& viewprojection) {
-	if (playerSecretFlag == false) {
-		//3Dモデルを描画
-		model_->Draw(worldTransform_, viewprojection);
-	}
+	//3Dモデルを描画
+	model_->Draw(worldTransform_, viewprojection);
 }
 
 Vector3 Player::GetWorldPosition() {
@@ -105,6 +148,16 @@ void Player::Reset()
 	playerSecretFlag = false;
 	//プレイヤーの初期位置の設定
 	worldTransform_.translation_ = { -11.0f,0.0f ,-18.0f };
+	SecretIntervalFlag = false;
+	SecretTimer = 100;
+	SecretIntervalTimer = 100.0f;
+}
+void Player::FlagReset()
+{
+	playerSecretFlag = false;
+	SecretIntervalFlag = false;
+	SecretTimer = 100;
+	SecretIntervalTimer = 100.0f;
 }
 	//何もしない
 

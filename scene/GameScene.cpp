@@ -19,9 +19,6 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 	debugText_ = DebugText::GetInstance();
 
- 	mapTH_ = TextureManager::Load("cube/cube.jpg");
-	floorTH_ = TextureManager::Load("ground/floor.png");
-
 	//3Dモデルを生成
 	mapModel_ = Model::CreateFromOBJ("cube", true);
 	playerModel_ = Model::CreateFromOBJ("player", true);
@@ -50,18 +47,53 @@ void GameScene::Initialize() {
 void GameScene::Update() {
 
 	//プレイヤーの更新
-	newPlayer->Update();
+	newPlayer->Update(playerkeyFlag);
 
 	//cameraPos = newPlayer->GetTransform();
 
 	//マップの更新
- 	newMap->Update(newPlayer.get());
+	newMap->Update(newPlayer.get(), MapkeyFlag);
 
-	//敵の更新
-	newEnemy->Update(newPlayer.get());
-
-
-
+	newEnemy->Update(keyFlag);
+	//プレイヤー
+	if (input_->TriggerKey(DIK_A)) {
+		if (MapkeyFlag == false && keyFlag == false) {
+		playerkeyFlag = true;
+		MapkeyFlag = false;
+		keyFlag = false;
+		}
+	}
+	if (newPlayer->GetOKFlag()) {
+		playerkeyFlag = false;
+		MapkeyFlag = false;
+		keyFlag = false;
+	}
+	//マップ
+	if (input_->TriggerKey(DIK_D)) {
+		if (playerkeyFlag == false&&keyFlag==false) {
+		playerkeyFlag = false;
+		MapkeyFlag = true;
+		keyFlag = false;
+		}
+	}
+	if (newMap->GetOKFlag()) {
+		playerkeyFlag = false;
+		MapkeyFlag = false;
+		keyFlag = false;
+	}
+	//敵
+	if (input_->TriggerKey(DIK_S)) {
+		if (playerkeyFlag == false && MapkeyFlag == false) {
+			playerkeyFlag = false;
+			MapkeyFlag = false;
+			keyFlag = true;
+		}
+	}
+	if (newEnemy->GetOKFlag()) {
+		playerkeyFlag = false;
+		MapkeyFlag = false;
+		keyFlag = false;
+	}
 	//カメラの更新
 	newCamera->Update();
 	//レールカメラをゲームシーンのカメラに適応する
@@ -73,7 +105,7 @@ void GameScene::Update() {
 	//シーンを切り替える
 	SceneChange();
 
-	if (newPlayer->GetSecretFlag() == false) {
+	if (newPlayer->GetSecretFlag() == false || newPlayer->GetSecretIntervalFlag() == true) {
  		CheckAllCollisions(newEnemy.get());
 	}
 
@@ -84,6 +116,14 @@ void GameScene::Update() {
 		newMap->Reset();
 	}
 
+	debugText_->SetPos(50, 450);
+	debugText_->Printf("playerkeyFlag:%d", playerkeyFlag);
+
+	debugText_->SetPos(50, 470);
+	debugText_->Printf("keyFlag:%d", keyFlag);
+
+	debugText_->SetPos(50, 490);
+	debugText_->Printf("MapkeyFlag:%d", MapkeyFlag);
 
 }
 
@@ -118,6 +158,7 @@ void GameScene::Draw() {
 
 	//床の描画
 	newMap->FloorDraw(viewProjection_);
+
 
 	//プレイヤーの描画
 	newPlayer->Draw(viewProjection_);

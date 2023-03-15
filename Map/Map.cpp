@@ -17,20 +17,22 @@ void Map::Initialize(Model* model, Model* floorModel) {
 	debugText_ = DebugText::GetInstance();
 
 	//カメラの画角の調整
-	for (int z = 0; z < 20; z++) {
-		for (int x = 0; x < 25; x++) {
+	for (int z = 0; z < Map_Z; z++) {
+		for (int x = 0; x < Map_X; x++) {
 			worldTransform_[z][x].Initialize();
-			worldTransform_[z][x].translation_.x = 2.0f * z - 15.0f;
+			worldTransform_[z][x].translation_.x = 2.0f * z - 30.0f;
 			worldTransform_[z][x].translation_.y = 0.0f;
 			worldTransform_[z][x].translation_.z = 2.0f * x - 22.0f;
 			myFunc_.UpdateWorldTransform(worldTransform_[z][x]);
+
+			worldTransform_[z][x].TransferColorMatrix();
 		}
 	}
 
 	floorWorldTransform_.Initialize();
 	floorWorldTransform_.translation_ = { 0,-7,0 };
 	myFunc_.UpdateWorldTransform(floorWorldTransform_);
-
+	floorWorldTransform_.TransferColorMatrix();
 	//デバッグ用表示
 	debugText_->SetPos(50, 140);
 	debugText_->Printf(" pos:(%f, %f, %f)", worldTransform_[0][0].translation_.x, worldTransform_[0][0].translation_.y, worldTransform_[0][0].translation_.z);
@@ -38,7 +40,7 @@ void Map::Initialize(Model* model, Model* floorModel) {
 	goalFlag = false;
 }
 
-void Map::Update(Player* player) {
+void Map::Update(Player* player, bool MapkeyFlag) {
 
 	//マップチップとプレイヤーが当たっているか確認する
 	BlockCheck(player);
@@ -51,27 +53,57 @@ void Map::Update(Player* player) {
 	}
 
 	//透明フラグの切り替え
-	if (input_->TriggerKey(DIK_K)) {
-		if (invisibleFlag == true) {
-			player->GetTransform() = { -11.0f, 0.0f, -18.0f };
-			invisibleFlag = false;
-		}
-		else if (invisibleFlag == false) {
-			player->GetTransform() = { 0.0f, 0.0f, 0.0f };
-			invisibleFlag = true;
+
+	if (MapkeyFlag == true) {
+		if (AnswerFlag == false) {
+			AnswerFlag = true;
 		}
 	}
+	if (AnswerFlag == true) {
+		AnswerTimer--;
+		if (AnswerTimer < 0) {
+			AnswerIntervalFlag = true;
+		}
+	}
+	if (AnswerIntervalFlag == true) {
+		AnswerIntervalTimer--;
+		if (AnswerIntervalTimer <= 0.01f) {
+			OKFlag = true;
+		}
+		if (AnswerIntervalTimer < 0) {
+			OKFlag = false;
+			AnswerFlag = false;
+			AnswerIntervalFlag = false;
+			AnswerTimer = 100;
+			AnswerIntervalTimer = 100;
+		}
+	}
+
+
+
 
 	//デバッグ用表示
 	debugText_->SetPos(50, 180);
 	debugText_->Printf("MapPlayer pos:(%f, %f, %f)", player->GetWorldPosition().x, player->GetWorldPosition().y, player->GetWorldPosition().z);
 
-	debugText_->SetPos(50, 210);
-	debugText_->Printf("invisibleFlag:%d", invisibleFlag);
-
 	debugText_->SetPos(50, 230);
 	debugText_->Printf("MapPlayer pos:(%f, %f, %f)", player->GetTransform().x, player->GetTransform().y, player->GetTransform().z);
 
+	debugText_->SetPos(50, 320);
+	debugText_->Printf("GoalCount:%d", GoalCount);
+
+
+	debugText_->SetPos(50, 210);
+	debugText_->Printf("AnswerFlag:%d", AnswerFlag);
+
+	debugText_->SetPos(50, 390);
+	debugText_->Printf("AnswerIntervalFlag:%d", AnswerIntervalFlag);
+
+	debugText_->SetPos(50, 410);
+	debugText_->Printf("AnswerTimer:%d", AnswerTimer);
+
+	debugText_->SetPos(50, 430);
+	debugText_->Printf("AnswerIntervalTimer:%d", AnswerIntervalTimer);
 }
 
 void Map::Draw(ViewProjection& viewProjection) {
@@ -79,15 +111,18 @@ void Map::Draw(ViewProjection& viewProjection) {
 	if (MapFlag == 0)
 	{
 		//3Dモデルを描画
-		for (int z = 0; z < 20; z++) {
-			for (int x = 0; x < 25; x++) {
-				if (invisibleFlag == false) {
-					if (FirstMap[z][x] == BLOCK) {
-						model_->Draw(worldTransform_[z][x], viewProjection);
-					}
+		for (int z = 0; z < Map_Z; z++) {
+			for (int x = 0; x < Map_X; x++) {
+				if (FirstMap[z][x] == BLOCK) {
+					model_->Draw(worldTransform_[z][x], viewProjection);
 				}
 				if (FirstMap[z][x] == WALL) {
 					model_->Draw(worldTransform_[z][x], viewProjection);
+				}
+				if (AnswerFlag == true && AnswerIntervalFlag == false) {
+					if (FirstMap[z][x] == GOAL) {
+						model_->Draw(worldTransform_[z][x], viewProjection);
+					}
 				}
 			}
 		}
@@ -110,6 +145,7 @@ void Map::Draw(ViewProjection& viewProjection) {
 void Map::FloorDraw(ViewProjection& viewProjection) {
 	//3Dモデルを描画
 	floorModel_->Draw(floorWorldTransform_, viewProjection);
+
 }
 
 
@@ -118,32 +154,11 @@ void Map::OnCollision(Vector3 playerPos, float radius) {
 
 }
 
-//int Map::BlockCheck(int line, int culumn) {
-//	if (MapFlag == 0)
-//	{
-//		//マップ進んだ先にブロックがあったら1を返す
-//		if (FirstMap[line][culumn] == BLOCK) {
-//			return 1;
-//		}
-//		if (FirstMap[line][culumn] == WALL) {
-//			return 1;
-//		}
-//	}
-//	//if (MapFlag == 1)
-//	//{
-//	//	//マップ進んだ先にブロックがあったら1を返す
-//	//	if (SecondMap[line][culumn] == BLOCK) {
-//	//		return 1;
-//	//	}
-//	//}
-//
-//	return 0;
-//}
 
 void Map::BlockCheck(Player* player) {
 	if (MapFlag == 0) {
-		for (int z = 0; z < 20; z++) {
-			for (int x = 0; x < 25; x++) {
+		for (int z = 0; z < Map_Z; z++) {
+			for (int x = 0; x < Map_X; x++) {
 				// ブロックの座標
 				worldTransform_[z][x].translation_;
 
@@ -334,19 +349,35 @@ void Map::BlockCheck(Player* player) {
 						// 上下
 						if (playerRightX > blockLeftX && playerLeftX < blockRightX) {
 							if (player->GetWorldPosition().z < worldTransform_[z][x].translation_.z) {
-								goalFlag = true;
+								GoalCount++;
+								if (GoalCount > 100)
+								{
+									goalFlag = true;
+								}
 							}
 							else if (player->GetWorldPosition().z > worldTransform_[z][x].translation_.z) {
-								goalFlag = true;
+								GoalCount++;
+								if (GoalCount > 100)
+								{
+									goalFlag = true;
+								}
 							}
 						}
 						// 左右
 						else if (playerUpZ > blockDownZ && playerDownZ < blockUpZ) {
 							if (player->GetWorldPosition().x < worldTransform_[z][x].translation_.x) {
-								goalFlag = true;
+								GoalCount++;
+								if (GoalCount > 100)
+								{
+									goalFlag = true;
+								}
 							}
 							else if (player->GetWorldPosition().x > worldTransform_[z][x].translation_.x) {
-								goalFlag = true;
+								GoalCount++;
+								if (GoalCount > 100)
+								{
+									goalFlag = true;
+								}
 							}
 						}
 
@@ -473,6 +504,19 @@ bool Map::CheckCollision(Vector3 pos1, Vector3 pos2, float radius1, float radius
 
 void Map::Reset()
 {
-	invisibleFlag = false;
 	goalFlag = false;
+	GoalCount = 0;
+
+	AnswerFlag = false;
+	AnswerIntervalFlag = false;
+	AnswerTimer = 100;
+	AnswerIntervalTimer = 100;
+}
+
+void Map::FlagReset()
+{
+	AnswerFlag = false;
+	AnswerIntervalFlag = false;
+	AnswerTimer = 100;
+	AnswerIntervalTimer = 100;
 }

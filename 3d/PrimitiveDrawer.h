@@ -136,7 +136,7 @@ class PrimitiveDrawer {
 	// 参照するビュープロジェクション
 	const ViewProjection* viewProjection_ = nullptr;
 	// ブレンドモード
-	BlendMode blendMode_ = BlendMode::kBlendModeNormal;
+	BlendMode blendMode_ = BlendMode::kBlendModeSubtract;
 	// パイプラインセット
 	std::array<std::unique_ptr<PipelineSet>, (uint16_t)BlendMode::kCountOfBlendMode> pipelineSetLines_;
 };
