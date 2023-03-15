@@ -6,6 +6,12 @@
 #include "Model.h"
 #include "DebugText.h"
 #include "Function/Function.h"
+#include "math/MyMath.h"
+#include "Player/Player.h"
+#include "PrimitiveDrawer.h"
+#include "camera/RailCamera.h"
+
+#define PI 3.14
 
 
 class Enemy
@@ -17,17 +23,22 @@ public:		//メンバ関数
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <param name="texturehandle">テクスチャハンドル</param>
-	void Initialize(Model* model);
+	void Initialize(Model* model, RailCamera* camera);
 
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update(Player* player);
 
 	/// <summary>
 	/// 描画
 	/// </summary>
 	void Draw(ViewProjection& viewProjection);
+
+	/// <summary>
+	/// センサーの描画
+	/// </summary>
+	void SensorDraw();
 
 	/// <summary>
 	/// リセット
@@ -39,6 +50,11 @@ public:		//メンバ関数
 
 	//衝突を検出したら呼び出されるコールバック関数
 	void OnCollision();
+
+	//敵のセンサーの処理
+	void SensorVision();
+
+	void SensorVector(float playerZ, float playeryY, float playerRadius);
 
 	float GetRadius() { return radius; }
 
@@ -64,6 +80,9 @@ private:	//メンバ変数
 	//ファンクション
 	MyFunc myFunc_;
 
+	//
+	PrimitiveDrawer* primitive_ = nullptr;
+
 	//切り替えフラグ
 	bool LightFlag = false;
 	bool LeftFlag = false;
@@ -72,5 +91,22 @@ private:	//メンバ変数
 	bool invisibleFlag = false;
 
 	bool stopFlag = false;
+
+	float sensorX;	//カメラ本体の座標
+	float sensorZ;
+	float sensorRadius;
+
+	float sensorVisionX[2];	//カメラの視界
+	float sensorVisionZ[2];
+
+	float visionMemoryX[2];	//視界移動の記憶変数
+	float visionMemoryZ[2];
+
+	int visionFlag; //視界の移動を制御するフラグ
+	int visionHitFlag[3]; //視界の当たり判定用フラグ
+
+	int speed;
+
+	float visionTimer; //視界が再び動くまでのタイマー
 };
 
