@@ -36,7 +36,7 @@ void GameScene::Initialize() {
 	//プレイヤーの初期化
 	newPlayer->Initialize(playerModel_);
 	//敵の初期化
-	newEnemy->Initialize(enemyModel_);
+	newEnemy->Initialize(enemyModel_, newCamera.get());
 #pragma endregion
 	//ビュープロジェクションの初期化
 	viewProjection_.Initialize();
@@ -102,12 +102,14 @@ void GameScene::Update() {
 	//ビュープロジェクションの転送
 	viewProjection_.TransferMatrix();
 
+	//シーンを切り替える
 	SceneChange();
 
 	if (newPlayer->GetSecretFlag() == false || newPlayer->GetSecretIntervalFlag() == true) {
  		CheckAllCollisions(newEnemy.get());
 	}
 
+	//リセット処理
 	if (input_->TriggerKey(DIK_W)) {
 		newPlayer->Reset();
 		newEnemy->Reset();
@@ -163,6 +165,8 @@ void GameScene::Draw() {
 
 	//敵の描画
 	newEnemy->Draw(viewProjection_);
+
+	newEnemy->SensorDraw();
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
