@@ -194,13 +194,13 @@ void Enemy::Reset()
 	stopIntervalTimer = 100;*/
 }
 
-void Enemy::FlagReset()
-{
-	/*stopFlag = false;
-	stopIntervalFlag = false;
-	stopTimer = 100;
-	stopIntervalTimer = 100;*/
-}
+//void Enemy::FlagReset()
+//{
+//	stopFlag = false;
+//	stopIntervalFlag = false;
+//	stopTimer = 100;
+//	stopIntervalTimer = 100;
+//}
 
 Vector3 Enemy::GetWorldPosition() {
 	//ƒ[ƒ‹ƒhÀ•W‚ğ“ü‚ê‚é•Ï”
