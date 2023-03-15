@@ -190,6 +190,21 @@ void Enemy::SensorDraw() {
 	}
 }
 
+void Enemy::FlagReset()
+{
+	LightFlag = false;
+	LeftFlag = false;
+
+	//“§–¾ƒtƒ‰ƒO
+	invisibleFlag = false;
+
+	stopFlag = false;
+	stopIntervalFlag = false;
+
+	stopTimer = 100;
+	stopIntervalTimer = 100;
+}
+
 void Enemy::Reset()
 {
 	worldTransform_.translation_ = { 6.0f, 0.9f, -2.7f };

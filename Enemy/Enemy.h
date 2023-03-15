@@ -53,6 +53,7 @@ public:		//メンバ関数
 	/// </summary>
 	void SensorDraw();
 
+	void FlagReset();
 
 	//ワールド座標を取得
 	Vector3 GetWorldPosition();
