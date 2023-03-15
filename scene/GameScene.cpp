@@ -238,4 +238,8 @@ void GameScene::Reset()
 	newPlayer->Reset();
 	newEnemy->Reset();
 	newMap->Reset();
+
+	newPlayer->FlagReset();
+	newEnemy->FlagReset();
+	newMap->FlagReset();
 }
