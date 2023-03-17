@@ -54,7 +54,7 @@ void GameScene::Update() {
 	//マップの更新
 	newMap->Update(newPlayer.get(), MapkeyFlag);
 
-	newEnemy->Update(keyFlag);
+	newEnemy->Update(keyFlag, newPlayer.get());
 	//プレイヤー
 	if (input_->TriggerKey(DIK_A)) {
 		if (MapkeyFlag == false && keyFlag == false) {
@@ -181,7 +181,11 @@ void GameScene::Draw() {
 	/// </summary>
 
 	// デバッグテキストの描画
+#ifdef _DEBUG
+
+// デバッグテキストの描画
 	debugText_->DrawAll(commandList);
+#endif  
 	//
 	// スプライト描画後処理
 	Sprite::PostDraw();

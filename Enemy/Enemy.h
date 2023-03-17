@@ -7,6 +7,7 @@
 #include "DebugText.h"
 #include "Function/Function.h"
 #include "camera/RailCamera.h"
+#include "Player/Player.h"
 #include "PrimitiveDrawer.h"
 
 #define PI 3.14
@@ -26,7 +27,7 @@ public:		//ƒƒ“ƒoŠÖ”
 	/// <summary>
 	/// XV
 	/// </summary>
-	void Update(bool keyFlag);
+	void Update(bool keyFlag, Player* player);
 
 	/// <summary>
 	/// •`‰æ
