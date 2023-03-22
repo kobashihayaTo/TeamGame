@@ -10,6 +10,7 @@
 #include "ManualScene.h"
 #include "EndScene.h"
 #include "scene/BadScene.h"
+#include "UI.h"
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
@@ -27,6 +28,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	ManualScene* manualScene = nullptr;
 	EndScene* endScene = nullptr;
 	BadScene* badScene = nullptr;
+
 
 	Scene scene = Scene::TITLE;
 

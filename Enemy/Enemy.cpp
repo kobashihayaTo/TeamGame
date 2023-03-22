@@ -2,7 +2,7 @@
 #include <cassert>
 
 //初期化
-void Enemy::Initialize(Model* model, RailCamera* camera) {
+void Enemy::Initialize(Model* model, RailCamera* camera, Vector3 enemyPos) {
 	//NULLポイントチェック
 	assert(model);
 
@@ -19,10 +19,12 @@ void Enemy::Initialize(Model* model, RailCamera* camera) {
 	//ワールド変換の初期化
 	worldTransform_.Initialize();
 
+
 	//敵の大きさ(倍率)
 	worldTransform_.scale_ = { 0.5f,0.5f,0.5f };
 	//敵の初期位置の設定
-	worldTransform_.translation_ = { 6.0f, 0.9f, -2.7f };
+	worldTransform_.translation_ = enemyPos;
+
 
 	sensorX = worldTransform_.translation_.x;
 	sensorZ = worldTransform_.translation_.z;
@@ -52,8 +54,10 @@ void Enemy::Initialize(Model* model, RailCamera* camera) {
 void Enemy::Update(bool keyFlag, Player* player) {
 
 	//センサーを敵に追従
+
 	sensorX = worldTransform_.translation_.x;
 	sensorZ = worldTransform_.translation_.z;
+
 
 	SensorVision();
 
@@ -92,6 +96,7 @@ void Enemy::Update(bool keyFlag, Player* player) {
 
 
 	if (stopFlag == false || stopIntervalFlag == true) {
+		//敵の移動処理
 		if (worldTransform_.translation_.x <= -11)
 		{
 			LightFlag = false;
@@ -103,13 +108,12 @@ void Enemy::Update(bool keyFlag, Player* player) {
 			LightFlag = true;
 		}
 
-		//敵の移動処理
 		if (worldTransform_.translation_.x <= -11)
 		{
 			LightFlag = false;
 			LeftFlag = true;
 		}
-		if (worldTransform_.translation_.x >= 6)
+		if (worldTransform_.translation_.x >= 4)
 		{
 			LeftFlag = false;
 			LightFlag = true;
@@ -123,19 +127,21 @@ void Enemy::Update(bool keyFlag, Player* player) {
 		{
 			worldTransform_.translation_.x -= 0.1;
 		}
-		if (LeftFlag == true)
-		{
-			worldTransform_.translation_.x += 0.1f;
-		}
-		if (LightFlag == true)
-		{
-			worldTransform_.translation_.x -= 0.1f;
-		}
-	}
 
+		/*if (LeftFlag[1] == true)
+		{
+			worldTransform_[1].translation_.x += 0.1;
+		}
+		if (LightFlag[1] == true)
+		{
+			worldTransform_[1].translation_.x -= 0.1;
+		}*/
+	}
 	//行列の更新
 	myFunc_.UpdateWorldTransform(worldTransform_);
 	worldTransform_.TransferColorMatrix();
+
+
 
 	//デバッグ用表示
 	/*debugText_->SetPos(50, 120);
@@ -152,6 +158,8 @@ void Enemy::Update(bool keyFlag, Player* player) {
 
 	debugText_->SetPos(50, 90);
 	debugText_->Printf("visionHitFlag [0]:%d [1]:%d [2]:%d", visionHitFlag[0], visionHitFlag[1], visionHitFlag[2]);
+
+
 }
 
 //描画
@@ -202,6 +210,7 @@ void Enemy::FlagReset()
 	LightFlag = false;
 	LeftFlag = false;
 
+
 	//透明フラグ
 	invisibleFlag = false;
 
@@ -210,15 +219,18 @@ void Enemy::FlagReset()
 
 	stopTimer = 100;
 	stopIntervalTimer = 100;
+
 }
 
 void Enemy::Reset()
 {
 	worldTransform_.translation_ = { 6.0f, 0.9f, -2.7f };
+
 	stopFlag = false;
-	/*stopIntervalFlag = false;
+	stopIntervalFlag = false;
 	stopTimer = 100;
-	stopIntervalTimer = 100;*/
+	stopIntervalTimer = 100;
+
 }
 
 //void Enemy::FlagReset()
@@ -233,12 +245,15 @@ Vector3 Enemy::GetWorldPosition() {
 	//ワールド座標を入れる変数
 	Vector3 worldPos;
 	//ワールド行列の平行移動成分を取得(ワールド座標)
-
 	worldPos.x = worldTransform_.matWorld_.m[3][0];
 	worldPos.y = worldTransform_.matWorld_.m[3][1];
 	worldPos.z = worldTransform_.matWorld_.m[3][2];
 
-	return worldPos;
+	return  worldPos;
+	/*worldPos_2.x = worldTransform_[1].matWorld_.m[3][0];
+	worldPos_2.y = worldTransform_[1].matWorld_.m[3][1];
+	worldPos_2.z = worldTransform_[1].matWorld_.m[3][2];
+	return  worldPos_2;*/
 
 }
 

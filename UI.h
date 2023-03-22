@@ -1,28 +1,35 @@
 #pragma once
-#include "DebugText.h"
+#include <Windows.h>
+#include <wrl.h>
+#include <d3d12.h>
+#include <d3dx12.h>
+#include <DirectXMath.h>
+#include "Audio.h"
 #include "DirectXCommon.h"
+#include "DebugText.h"
 #include "Input.h"
+#include "Model.h"
 #include "SafeDelete.h"
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include "DebugCamera.h"
-#include "Audio.h"
+#include "Function/Function.h"
 
-#include "Enum.h"
 
-class ManualScene
+
+class UI
 {
-public:
+
+public: // メンバ関数
 	/// <summary>
 	/// コンストクラタ
 	/// </summary>
-	ManualScene();
+	UI();
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~ManualScene();
+	~UI();
 
 	/// <summary>
 	/// 初期化
@@ -39,38 +46,21 @@ public:
 	/// </summary>
 	void Draw();
 
-	/// <summary>
-	/// タイトルでセレクト
-	/// </summary>
-	void ChangeSelect();
-
-	Scene GetNextScene() { return nextScene_; }
-
-	int GetManualFlag() { return manualFlag_; }
 private:
+
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
-	DebugText* debugText_ = nullptr;
 	Audio* audio_ = nullptr;
-	//デバッグカメラ
-	DebugCamera* debugCamera_ = nullptr;
-
-	//デバッグカメラ有効
-	bool isDebugCameraActive_ = false;
+	DebugText* debugText_ = nullptr;
 
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
+	WorldTransform worldTransform_;
 
-	Scene nextScene_ = Scene::END;
+	Model* model_ = nullptr;
 
-	int manualFlag_ = false;
-
-	//テクスチャバンドル
 	uint32_t textureHandle_ = 0;
 	//スプライト
 	Sprite* sprite_ = nullptr;
-
-	int selectFlag = 0;
-
 };
 

@@ -10,6 +10,7 @@ GameScene::~GameScene() {
 	delete mapModel_;
 	delete playerModel_;
 	delete floorModel_;
+	delete enemyModel_;
 }
 
 void GameScene::Initialize() {
@@ -25,6 +26,8 @@ void GameScene::Initialize() {
 	floorModel_ = Model::CreateFromOBJ("floor", true);
 	enemyModel_ = Model::CreateFromOBJ("enemy", true);
 
+	//UIの初期化
+	newUI->Initialize();
 #pragma  region 初期化
 	//マップの初期化
 	newMap->Initialize(mapModel_, floorModel_);
@@ -36,7 +39,10 @@ void GameScene::Initialize() {
 	//プレイヤーの初期化
 	newPlayer->Initialize(playerModel_);
 	//敵の初期化
-	newEnemy->Initialize(enemyModel_, newCamera.get());
+	newEnemy->Initialize(enemyModel_, newCamera.get(), { 6.0f, 0.9f, -2.7f });
+
+	newEnemy_1->Initialize(enemyModel_, newCamera.get(), { 4.0f, 0.9f, -2.0f });
+
 #pragma endregion
 	//ビュープロジェクションの初期化
 	viewProjection_.Initialize();
@@ -55,12 +61,13 @@ void GameScene::Update() {
 	newMap->Update(newPlayer.get(), MapkeyFlag);
 
 	newEnemy->Update(keyFlag, newPlayer.get());
+	newEnemy_1->Update(keyFlag, newPlayer.get());
 	//プレイヤー
 	if (input_->TriggerKey(DIK_A)) {
 		if (MapkeyFlag == false && keyFlag == false) {
-		playerkeyFlag = true;
-		MapkeyFlag = false;
-		keyFlag = false;
+			playerkeyFlag = true;
+			MapkeyFlag = false;
+			keyFlag = false;
 		}
 	}
 	if (newPlayer->GetOKFlag()) {
@@ -70,10 +77,10 @@ void GameScene::Update() {
 	}
 	//マップ
 	if (input_->TriggerKey(DIK_D)) {
-		if (playerkeyFlag == false&&keyFlag==false) {
-		playerkeyFlag = false;
-		MapkeyFlag = true;
-		keyFlag = false;
+		if (playerkeyFlag == false && keyFlag == false) {
+			playerkeyFlag = false;
+			MapkeyFlag = true;
+			keyFlag = false;
 		}
 	}
 	if (newMap->GetOKFlag()) {
@@ -94,6 +101,7 @@ void GameScene::Update() {
 		MapkeyFlag = false;
 		keyFlag = false;
 	}
+
 	//カメラの更新
 	newCamera->Update();
 	//レールカメラをゲームシーンのカメラに適応する
@@ -106,7 +114,8 @@ void GameScene::Update() {
 	SceneChange();
 
 	if (newPlayer->GetSecretFlag() == false || newPlayer->GetSecretIntervalFlag() == true) {
- 		CheckAllCollisions(newEnemy.get());
+		CheckAllCollisions(newEnemy.get());
+		CheckAllCollisions(newEnemy_1.get());
 	}
 
 	//リセット処理
@@ -159,14 +168,15 @@ void GameScene::Draw() {
 	//床の描画
 	newMap->FloorDraw(viewProjection_);
 
-
 	//プレイヤーの描画
 	newPlayer->Draw(viewProjection_);
 
 	//敵の描画
 	newEnemy->Draw(viewProjection_);
+	newEnemy_1->Draw(viewProjection_);
 
 	newEnemy->SensorDraw();
+	newEnemy_1->SensorDraw();
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
@@ -180,7 +190,10 @@ void GameScene::Draw() {
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
 
+	//newUI->Draw();
+
 	// デバッグテキストの描画
+
 #ifdef _DEBUG
 
 // デバッグテキストの描画
@@ -193,7 +206,7 @@ void GameScene::Draw() {
 #pragma endregion
 }
 
-void GameScene::CheckAllCollisions(Enemy* enemy) {
+void GameScene::CheckAllCollisions(Enemy* enemy_) {
 	//判定対象AとBの座標
 	Vector3 posA, posB;
 
@@ -205,23 +218,26 @@ void GameScene::CheckAllCollisions(Enemy* enemy) {
 
 	//自キャラとマップチップの当たり判定
 #pragma region
+	//const std::list<std::unique_ptr<Enemy>>& enemy = enemy_->GetEnemy();
+
 	//自キャラの座標
 	posA = newPlayer->GetWorldPosition();
 
-	//マップの座標
-	posB = enemy->GetWorldPosition();
+
+	//敵キャラの座標
+	posB = enemy_->GetWorldPosition();
 
 	//座標AとBの距離を求める
 	distance = CalculateDistance(posA, posB);
 
-	radius = newPlayer->GetRadius() + enemy->GetRadius();
+	radius = newPlayer->GetRadius() + enemy_->GetRadius();
 	distance = (posA.x - posB.x) * (posA.x - posB.x) + (posA.y - posB.y) * (posA.y - posB.y) + (posA.z - posB.z) * (posA.z - posB.z);
 	//自キャラとマップの当たり判定
 	if (distance <= radius * radius) {
 		//自キャラの衝突時コールバックを呼び出す
 		newPlayer->OnCollision();
 		//マップの衝突時コールバックを呼び出す
-		enemy->OnCollision();
+		enemy_->OnCollision();
 	}
 
 #pragma endregion
@@ -245,9 +261,12 @@ void GameScene::Reset()
 {
 	newPlayer->Reset();
 	newEnemy->Reset();
+	//newEnemy_1->Reset();
 	newMap->Reset();
 
 	newPlayer->FlagReset();
 	newEnemy->FlagReset();
+	//newEnemy_1->FlagReset();
 	newMap->FlagReset();
 }
+

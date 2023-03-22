@@ -10,6 +10,8 @@
 #include "Player/Player.h"
 #include "PrimitiveDrawer.h"
 
+#include <list>
+
 #define PI 3.14
 
 
@@ -22,7 +24,7 @@ public:		//メンバ関数
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <param name="texturehandle">テクスチャハンドル</param>
-	void Initialize(Model* model, RailCamera* camera);
+	void Initialize(Model* model, RailCamera* camera,Vector3 enemyPos);
 
 	/// <summary>
 	/// 更新
@@ -67,6 +69,8 @@ public:		//メンバ関数
 	bool GetStopFlag() { return stopFlag; }
 
 	bool GetOKFlag() { return OKFlag; }
+
+	const std::list<std::unique_ptr<Enemy>>& GetEnemy() { return enemys; }
 private:
 	//半径
 	const float radius = 1.0f;
@@ -90,9 +94,11 @@ private:	//メンバ変数
 	//ファンクション
 	MyFunc myFunc_;
 
+	std::list<std::unique_ptr<Enemy>>enemys;
+
 	//切り替えフラグ
 	bool LightFlag = false;
-	bool LeftFlag = false;
+	bool LeftFlag =  false;
 
 	//透明フラグ
 	bool invisibleFlag = false;
@@ -102,6 +108,8 @@ private:	//メンバ変数
 
 	int stopTimer = 100;
 	int stopIntervalTimer = 100;
+
+	int enemyMax = 5;
 
 	bool OKFlag = false;
 

@@ -20,6 +20,7 @@
 #include "Player/Player.h"
 #include "Map/Map.h"
 #include "Enemy/Enemy.h"
+#include "UI.h"
 
 /// <summary>
 /// ゲームシーン
@@ -103,11 +104,15 @@ class GameScene {
 
 	//敵生成
 	std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
+	std::unique_ptr<Enemy> newEnemy_1 = std::make_unique<Enemy>();
 	//敵モデル
 	Model* enemyModel_ = nullptr;
 
 	Vector3 cameraPos = newPlayer->GetTransform();
 	Vector3 cameraRot = { 0,0,0 };
+
+	//UI
+	std::unique_ptr<UI> newUI = std::make_unique<UI>();
 
 	/// <summary>
 	/// ゲームシーン用
@@ -119,4 +124,6 @@ class GameScene {
 	bool keyFlag = false;
 	bool MapkeyFlag = false;
 	bool playerkeyFlag = false;
+
+
 };

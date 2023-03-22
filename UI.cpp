@@ -1,47 +1,34 @@
-#include "TextureManager.h"
-#include "AxisIndicator.h"
-#include "PrimitiveDrawer.h"
+#include "UI.h"
 
-#include "ManualScene.h"
-
-ManualScene::ManualScene() {}
-
-ManualScene::~ManualScene() {
-	delete sprite_;
+UI::UI()
+{
 }
 
-void ManualScene::Initialize()
+UI::~UI()
+{
+}
+
+void UI::Initialize()
 {
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	debugText_ = DebugText::GetInstance();
-	nextScene_ = Scene::MANUAL;
 
 	//ファイル名指定してテクスチャを読み込む
-	textureHandle_ = TextureManager::Load("menuscreen.png");
+	textureHandle_ = TextureManager::Load("clearscreen.png");
 
 	//スプライトの生成
 	sprite_ = Sprite::Create(textureHandle_, { 0,0 });
 
-	selectFlag = 0;
+
 }
 
-void ManualScene::Update()
+void UI::Update()
 {
-	manualFlag_ = false;
-	if (selectFlag == 0) {
-		if (input_->TriggerKey(DIK_SPACE)) {
-			manualFlag_ = true;
-			nextScene_ = Scene::GAME;
-		}
-	}
-	ChangeSelect();
-	debugText_->SetPos(50, 100);
-	debugText_->Printf("selectFlag:%d", selectFlag);
 
 }
 
-void ManualScene::Draw()
+void UI::Draw()
 {
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandList();
@@ -89,21 +76,4 @@ void ManualScene::Draw()
 
 #pragma endregion
 
-}
-
-void ManualScene::ChangeSelect()
-{
-	if (input_->TriggerKey(DIK_LEFT)) {
-		selectFlag -= 1;
-	}
-	if (input_->TriggerKey(DIK_RIGHT)) {
-		selectFlag += 1;
-	}
-
-	if (selectFlag < 0) {
-		selectFlag = 1;
-	}
-	if (selectFlag > 1) {
-		selectFlag = 0;
-	}
 }
