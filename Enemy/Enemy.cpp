@@ -93,6 +93,8 @@ void Enemy::Update(bool keyFlag, Player* player) {
 		}
 	}
 
+
+
 	if (stopFlag == false || stopIntervalFlag == true) {
 		//“G‚ÌˆÚ“®ˆ—
 		if (worldTransform_.translation_.x <= -11)
@@ -120,15 +122,12 @@ void Enemy::Update(bool keyFlag, Player* player) {
 		if (LeftFlag == true)
 		{
 			worldTransform_.translation_.x += 0.1;
-			worldTransform_.rotation_.y = RadianConversion(90);
 		}
 		if (LightFlag == true)
 		{
 			worldTransform_.translation_.x -= 0.1;
-			worldTransform_.rotation_.y = RadianConversion(270);
 		}
 	}
-
 	//s—ñ‚ÌXV
 	myFunc_.UpdateWorldTransform(worldTransform_);
 	worldTransform_.TransferColorMatrix();
