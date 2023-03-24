@@ -122,10 +122,12 @@ void Enemy::Update(bool keyFlag, Player* player) {
 		if (LeftFlag == true)
 		{
 			worldTransform_.translation_.x += 0.1;
+			worldTransform_.rotation_.y = RadianConversion(90);
 		}
 		if (LightFlag == true)
 		{
 			worldTransform_.translation_.x -= 0.1;
+			worldTransform_.rotation_.y = RadianConversion(270);
 		}
 	}
 	//çsóÒÇÃçXêV
