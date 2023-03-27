@@ -39,9 +39,9 @@ void GameScene::Initialize() {
 	//プレイヤーの初期化
 	newPlayer->Initialize(playerModel_);
 	//敵の初期化
-	newEnemy->Initialize(enemyModel_, newCamera.get(), { 6.0f, 0.9f, -2.7f });
+	newEnemy->Initialize(enemyModel_, newCamera.get(),enemyPos);
 
-	newEnemy_1->Initialize(enemyModel_, newCamera.get(), { 4.0f, 0.9f, -2.0f });
+	newEnemy_1->Initialize(enemyModel_, newCamera.get(), enemyPos_1);
 
 #pragma endregion
 	//ビュープロジェクションの初期化
@@ -54,8 +54,6 @@ void GameScene::Update() {
 
 	//プレイヤーの更新
 	newPlayer->Update(playerkeyFlag);
-
-	//cameraPos = newPlayer->GetTransform();
 
 	//マップの更新
 	newMap->Update(newPlayer.get(), MapkeyFlag);
@@ -120,9 +118,7 @@ void GameScene::Update() {
 
 	//リセット処理
 	if (input_->TriggerKey(DIK_W)) {
-		newPlayer->Reset();
-		newEnemy->Reset();
-		newMap->Reset();
+		Reset();
 	}
 
 	debugText_->SetPos(50, 450);
@@ -133,6 +129,7 @@ void GameScene::Update() {
 
 	debugText_->SetPos(50, 490);
 	debugText_->Printf("MapkeyFlag:%d", MapkeyFlag);
+
 
 }
 
@@ -261,12 +258,15 @@ void GameScene::Reset()
 {
 	newPlayer->Reset();
 	newEnemy->Reset();
-	//newEnemy_1->Reset();
 	newMap->Reset();
+	PosReset();
+}
 
-	newPlayer->FlagReset();
-	newEnemy->FlagReset();
-	//newEnemy_1->FlagReset();
-	newMap->FlagReset();
+void GameScene::PosReset()
+{
+	//敵の初期化
+	newEnemy->Initialize(enemyModel_, newCamera.get(), enemyPos);
+
+	newEnemy_1->Initialize(enemyModel_, newCamera.get(), enemyPos_1);
 }
 

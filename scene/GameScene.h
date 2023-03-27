@@ -65,6 +65,11 @@ class GameScene {
 	/// </summary>
 	void Reset();
 
+	/// <summary>
+	/// 敵リセット
+	/// </summary>
+	void PosReset();
+
 	Scene GetNextScene() { return nextScene_; }
 
 	int GetIsEnd() { return isEnd_; }
@@ -125,5 +130,7 @@ class GameScene {
 	bool MapkeyFlag = false;
 	bool playerkeyFlag = false;
 
+	Vector3 enemyPos = { 6.0f, 0.9f, -2.7f };
+	Vector3 enemyPos_1 = { 4.0f, 0.9f, -2.0f };
 
 };

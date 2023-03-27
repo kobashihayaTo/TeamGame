@@ -152,7 +152,6 @@ void Enemy::Update(bool keyFlag, Player* player) {
 	debugText_->SetPos(50, 90);
 	debugText_->Printf("visionHitFlag [0]:%d [1]:%d [2]:%d", visionHitFlag[0], visionHitFlag[1], visionHitFlag[2]);
 
-
 }
 
 //描画
@@ -217,10 +216,17 @@ void Enemy::FlagReset()
 
 void Enemy::Reset()
 {
-	worldTransform_.translation_ = { 6.0f, 0.9f, -2.7f };
+
+	LightFlag = false;
+	LeftFlag = false;
+
+
+	//透明フラグ
+	invisibleFlag = false;
 
 	stopFlag = false;
 	stopIntervalFlag = false;
+
 	stopTimer = 100;
 	stopIntervalTimer = 100;
 
@@ -275,13 +281,32 @@ void Enemy::SensorVision() {
 	//	}
 	//}
 
+	//if (visionFlag == 0)
+	//{
+	//	//座標を回転させる
+	//	for (int i = 0; i < 2; i++)
+	//	{
+	//		visionMemoryX[i] = sensorVisionX[i] * cos(PI / 180 * 1);
+	//		visionMemoryZ[i] = sensorVisionZ[i] * cos(PI / 180 * 1);
+	//	}
+	//}
+	//else if (visionFlag == 1)
+	//{
+	//	//座標を回転させる
+	//	for (int i = 0; i < 2; i++)
+	//	{
+	//		visionMemoryX[i] = sensorVisionX[i] * cos(PI / 180 * 1);
+	//		visionMemoryZ[i] = sensorVisionZ[i] * cos(PI / 180 * 1);
+	//	}
+	//}
+
 	if (visionFlag == 0)
 	{
 		//座標を回転させる
 		for (int i = 0; i < 2; i++)
 		{
-			visionMemoryX[i] = sensorVisionX[i] * cos(PI / 180 * 1);
-			visionMemoryZ[i] = sensorVisionZ[i] * cos(PI / 180 * 1);
+			visionMemoryX[i] = sensorVisionX[i] ;
+			visionMemoryZ[i] = sensorVisionZ[i] ;
 		}
 	}
 	else if (visionFlag == 1)
@@ -289,8 +314,8 @@ void Enemy::SensorVision() {
 		//座標を回転させる
 		for (int i = 0; i < 2; i++)
 		{
-			visionMemoryX[i] = sensorVisionX[i] * cos(PI / 180 * 1);
-			visionMemoryZ[i] = sensorVisionZ[i] * cos(PI / 180 * 1);
+			visionMemoryX[i] = sensorVisionX[i] ;
+			visionMemoryZ[i] = sensorVisionZ[i] ;
 		}
 	}
 
@@ -356,7 +381,7 @@ void Enemy::SensorVector(float playerZ, float playerX, float playerRadius) {
 
 #pragma region 視界のベクトル
 	//左右ラインベクトル
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 2 ; i++)
 	{
 		vec[i].x = (sensorVisionX[i] + sensorX) - sensorX;
 		vec[i].y = 0;
@@ -390,8 +415,10 @@ void Enemy::SensorVector(float playerZ, float playerX, float playerRadius) {
 	vecPlayer[3].y = 0;
 	vecPlayer[3].z = (playerZ - playerRadius) - (sensorVisionZ[1] + sensorZ);
 	vecPlayer[3] = Normalize(vecPlayer[3]);
+
+
 #pragma endregion
-	//当たり判定
+#pragma region	当たり判定
 	//右ラインベクトルの判定
 	if (vec[0].x * vecPlayer[0].z - vec[0].z * vecPlayer[0].x > 0)
 	{
@@ -420,6 +447,7 @@ void Enemy::SensorVector(float playerZ, float playerX, float playerRadius) {
 		visionHitFlag[2] = 0;
 
 	}
+#pragma endregion
 #pragma region 視界に入った時の処理
 	if (visionHitFlag[0] == 1 && visionHitFlag[1] == 1 && visionHitFlag[2] == 1)
 	{
@@ -447,8 +475,9 @@ void Enemy::SensorVector(float playerZ, float playerX, float playerRadius) {
 		}
 
 	}
-	debugText_->SetPos(50, 120);
-	debugText_->Printf("vec [x]:%f [y]:%f [z]:%f", vecPlayer[0].x, vecPlayer[0].y, vecPlayer[0].z);
+
+
+	
 #pragma endregion
 
 }

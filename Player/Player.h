@@ -146,7 +146,7 @@ private:	//ƒƒ“ƒo•Ï”
 	bool SecretIntervalFlag = false;
 
 	XMFLOAT4 DefaultColor = { 1.0f,1.0f,1.0f,1.0f };
-	XMFLOAT4 SecretColor = { 1.0f,1.0f,1.0f,0.0f };
+	XMFLOAT4 SecretColor = { 1.0f,1.0f,1.0f,0.5f };
 
 	int SecretTimer = 100;
 	float SecretIntervalTimer = 100.0f;
