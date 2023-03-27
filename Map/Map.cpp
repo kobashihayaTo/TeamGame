@@ -54,7 +54,34 @@ void Map::Update(Player* player, bool MapkeyFlag) {
 
 	//透明フラグの切り替え
 
-	if (MapkeyFlag == true) {
+	/*if (MapkeyFlag == true) {
+		if (AnswerFlag == false) {
+			AnswerFlag = true;
+		}
+	}
+	if (AnswerFlag == true) {
+		AnswerTimer--;
+		if (AnswerTimer < 0) {
+			AnswerIntervalFlag = true;
+		}
+	}
+	if (AnswerIntervalFlag == true) {
+		AnswerIntervalTimer--;
+		if (AnswerIntervalTimer <= 0.01f) {
+			OKFlag = true;
+		}
+		if (AnswerIntervalTimer < 0) {
+			OKFlag = false;
+			AnswerFlag = false;
+			AnswerIntervalFlag = false;
+			AnswerTimer = 100;
+			AnswerIntervalTimer = 100;
+		}
+	}*/
+
+	gameCount++;
+
+	if (gameCount >= 1200) {
 		if (AnswerFlag == false) {
 			AnswerFlag = true;
 		}
@@ -80,8 +107,6 @@ void Map::Update(Player* player, bool MapkeyFlag) {
 	}
 
 
-
-
 	//デバッグ用表示
 	debugText_->SetPos(50, 180);
 	debugText_->Printf("MapPlayer pos:(%f, %f, %f)", player->GetWorldPosition().x, player->GetWorldPosition().y, player->GetWorldPosition().z);
@@ -104,6 +129,9 @@ void Map::Update(Player* player, bool MapkeyFlag) {
 
 	debugText_->SetPos(50, 430);
 	debugText_->Printf("AnswerIntervalTimer:%d", AnswerIntervalTimer);
+
+	debugText_->SetPos(50, 600);
+	debugText_->Printf(" count:%d", gameCount);
 }
 
 void Map::Draw(ViewProjection& viewProjection) {
