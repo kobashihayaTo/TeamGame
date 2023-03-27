@@ -172,4 +172,6 @@ private:	//ƒƒ“ƒo•Ï”
 	int Map_X = 25;
 
 	bool OKFlag = false;
+
+	int playerTimer = 0;
 };

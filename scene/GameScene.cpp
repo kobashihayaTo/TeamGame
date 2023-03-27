@@ -242,16 +242,17 @@ void GameScene::CheckAllCollisions(Enemy* enemy_) {
 
 void GameScene::SceneChange() {
 	isEnd_ = false;
-	if (input_->TriggerKey(DIK_SPACE) || newMap->GetGoalFlag() == true)
+	if (newMap->GetGoalFlag() == true)
 	{
 		nextScene_ = Scene::END;
 		isEnd_ = true;
 	}
-	if (newPlayer->GetFlag() == true)
+	if (newPlayer->GetDeathFlag() == true)
 	{
 		nextScene_ = Scene::BADEND;
 		isEnd_ = true;
 	}
+
 }
 
 void GameScene::Reset()

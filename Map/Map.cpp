@@ -104,6 +104,9 @@ void Map::Update(Player* player, bool MapkeyFlag) {
 
 	debugText_->SetPos(50, 430);
 	debugText_->Printf("AnswerIntervalTimer:%d", AnswerIntervalTimer);
+
+	debugText_->SetPos(50, 610);
+	debugText_->Printf("playerTimer:%d", playerTimer);
 }
 
 void Map::Draw(ViewProjection& viewProjection) {
@@ -334,48 +337,35 @@ void Map::BlockCheck(Player* player) {
 
 					// プレイヤーとブロック衝突判定
 					if (CheckCollision(worldTransform_[z][x].translation_, player->GetWorldPosition(), radius, player->GetRadius())) {
+						GoalCount++;
+						if (GoalCount >= 120) {
 
-						/*
-							ブロックかプレイヤーの四角の左端、右端、上端、下端、中心点を比較してぶつかった方向判別する
+							/*
+								ブロックかプレイヤーの四角の左端、右端、上端、下端、中心点を比較してぶつかった方向判別する
 
-							例　下から
-							プレイヤーの中心点とブロックの中心点比べてプレイヤーが下にいるはず
-							まだこれだと左、右からぶつかってきた場合がある
+								例　下から
+								プレイヤーの中心点とブロックの中心点比べてプレイヤーが下にいるはず
+								まだこれだと左、右からぶつかってきた場合がある
 
-							移動する前のプレイヤー(oldPlayerPos)に右端とブロックの左端を比べてプレイヤーの右端が大きかったら左からぶつかるのはありえない
-							逆のこと言える、右からぶつかるのもありえないことが分かるのでその三つの条件が達成されている場合下からぶつかっている
-						*/
+								移動する前のプレイヤー(oldPlayerPos)に右端とブロックの左端を比べてプレイヤーの右端が大きかったら左からぶつかるのはありえない
+								逆のこと言える、右からぶつかるのもありえないことが分かるのでその三つの条件が達成されている場合下からぶつかっている
+							*/
 
-						// 上下
-						if (playerRightX > blockLeftX && playerLeftX < blockRightX) {
-							if (player->GetWorldPosition().z < worldTransform_[z][x].translation_.z) {
-								GoalCount++;
-								if (GoalCount > 100)
-								{
+							// 上下
+							if (playerRightX > blockLeftX && playerLeftX < blockRightX) {
+								if (player->GetWorldPosition().z < worldTransform_[z][x].translation_.z) {
+									goalFlag = true;
+								}
+								else if (player->GetWorldPosition().z > worldTransform_[z][x].translation_.z) {
 									goalFlag = true;
 								}
 							}
-							else if (player->GetWorldPosition().z > worldTransform_[z][x].translation_.z) {
-								GoalCount++;
-								if (GoalCount > 100)
-								{
+							// 左右
+							else if (playerUpZ > blockDownZ && playerDownZ < blockUpZ) {
+								if (player->GetWorldPosition().x < worldTransform_[z][x].translation_.x) {
 									goalFlag = true;
 								}
-							}
-						}
-						// 左右
-						else if (playerUpZ > blockDownZ && playerDownZ < blockUpZ) {
-							if (player->GetWorldPosition().x < worldTransform_[z][x].translation_.x) {
-								GoalCount++;
-								if (GoalCount > 100)
-								{
-									goalFlag = true;
-								}
-							}
-							else if (player->GetWorldPosition().x > worldTransform_[z][x].translation_.x) {
-								GoalCount++;
-								if (GoalCount > 100)
-								{
+								else if (player->GetWorldPosition().x > worldTransform_[z][x].translation_.x) {
 									goalFlag = true;
 								}
 							}

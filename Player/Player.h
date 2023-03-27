@@ -64,7 +64,7 @@ public:		//ƒƒ“ƒoŠÖ”
 
 	Vector3 GetTransform() { return Trans; }
 
-	bool GetFlag() { return playerDeathFlag; }
+	bool GetDeathFlag() { return playerDeathFlag; }
 
 	bool GetSecretFlag() { return playerSecretFlag; }
 
@@ -151,7 +151,8 @@ private:	//ƒƒ“ƒo•Ï”
 	int SecretTimer = 100;
 	float SecretIntervalTimer = 100.0f;
 
-
 	bool OKFlag = false;
+
+
 };
 

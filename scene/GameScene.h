@@ -133,4 +133,5 @@ class GameScene {
 	Vector3 enemyPos = { 6.0f, 0.9f, -2.7f };
 	Vector3 enemyPos_1 = { 4.0f, 0.9f, -2.0f };
 
+
 };
