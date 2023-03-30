@@ -47,9 +47,24 @@ public:		//メンバ関数
 	void SensorVision();
 
 	/// <summary>
-	/// それぞれのベクトルを得る関数
+	/// それぞれのベクトルを得る関数(上)
 	/// </summary>
-	void SensorVector(float playerZ, float playerX, float playerRadius);
+	void UpSensorVector(float playerZ, float playerX, float playerRadius);
+
+	/// <summary>
+	/// それぞれのベクトルを得る関数(下)
+	/// </summary>
+	void DownSensorVector(float playerZ, float playerX, float playerRadius);
+
+	/// <summary>
+	/// それぞれのベクトルを得る関数(右)
+	/// </summary>
+	void RightSensorVector(float playerZ, float playerX, float playerRadius);
+
+	/// <summary>
+	/// それぞれのベクトルを得る関数(左)
+	/// </summary>
+	void LeftSensorVector(float playerZ, float playerX, float playerRadius);
 
 	/// <summary>
 	/// センサーの描画
@@ -61,10 +76,16 @@ public:		//メンバ関数
 	//ワールド座標を取得
 	Vector3 GetWorldPosition();
 
+	Vector3 GetSensorPosition();
+
 	//衝突を検出したら呼び出されるコールバック関数
 	void OnCollision();
 
+	void SensorCollision();
+
 	float GetRadius() { return radius; }
+
+	float GetSensorRadius() { return sensorRadius; }
 
 	bool GetStopFlag() { return stopFlag; }
 
@@ -74,11 +95,15 @@ public:		//メンバ関数
 private:
 	//半径
 	const float radius = 1.0f;
+	//半径
+	const float sensorRadius = 2.0f;
 
 private:	//メンバ変数
 
 	//ワールド変換データ
 	WorldTransform worldTransform_;
+
+	WorldTransform sensorTransform_;
 
 	//モデル
 	Model* model_ = nullptr;
