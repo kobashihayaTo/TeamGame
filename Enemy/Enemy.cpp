@@ -18,12 +18,15 @@ void Enemy::Initialize(Model* model, RailCamera* camera, Vector3 enemyPos) {
 
 	//ワールド変換の初期化
 	worldTransform_.Initialize();
-
+	sensorTransform_.Initialize();
 
 	//敵の大きさ(倍率)
 	worldTransform_.scale_ = { 0.5f,0.5f,0.5f };
 	//敵の初期位置の設定
 	worldTransform_.translation_ = enemyPos;
+
+	//センサーの初期位置の設定
+	sensorTransform_.translation_ = enemyPos;
 
 
 	sensorX = worldTransform_.translation_.x;
@@ -58,10 +61,11 @@ void Enemy::Update(bool keyFlag, Player* player) {
 	sensorX = worldTransform_.translation_.x;
 	sensorZ = worldTransform_.translation_.z;
 
+	sensorTransform_ = worldTransform_;
 
 	SensorVision();
 
-	SensorVector(player->GetWorldPosition().z, player->GetWorldPosition().x, player->GetRadius());
+	UpSensorVector(player->GetWorldPosition().z, player->GetWorldPosition().x, player->GetRadius());
 
 	//プレイヤーの移動ベクトル
 	Vector3 move = { 0,0,0 };
@@ -130,8 +134,11 @@ void Enemy::Update(bool keyFlag, Player* player) {
 			worldTransform_.rotation_.y = RadianConversion(270);
 		}
 	}
+
+
 	//行列の更新
 	myFunc_.UpdateWorldTransform(worldTransform_);
+	myFunc_.UpdateWorldTransform(sensorTransform_);
 	worldTransform_.TransferColorMatrix();
 
 
@@ -166,10 +173,11 @@ void Enemy::SensorDraw() {
 	Vector3 start = { 0,0,0 };
 	Vector3 end = { 0,0,0 };
 	Vector4 color = { 1,0,0,1 };
-	Vector3 start1 = { sensorVisionX[0] + sensorX,0, sensorVisionZ[0] + sensorZ };
+	Vector3 start1 = { sensorVisionX[0] + sensorX,0,sensorVisionZ[0] + sensorZ };
 	Vector3 end1 = { sensorVisionX[0] + sensorX,0,sensorVisionZ[0] + sensorZ };
 	Vector4 color1 = { 1,1,1,1 };
 
+#pragma region 上センサーの描画
 	if (visionHitFlag[0] == 1 && visionHitFlag[1] == 1 && visionHitFlag[2] == 1)
 	{
 		for (int i = 0; i < 2; i++)
@@ -195,6 +203,92 @@ void Enemy::SensorDraw() {
 		}
 		primitive_->DrawLine3d(end, end1, color1);
 	}
+#pragma endregion
+
+#pragma region 下センサーの描画
+	if (visionHitFlag[0] == 1 && visionHitFlag[1] == 1 && visionHitFlag[2] == 1)
+	{
+		for (int i = 0; i < 2; i++)
+		{
+			start = { sensorX , 0, sensorZ };
+			end = { -sensorVisionX[i] - sensorX, 0, sensorVisionZ[i] + sensorZ };
+			color = { 1,0,0,1 };
+
+			primitive_->DrawLine3d(start, end, color);
+		}
+		primitive_->DrawLine3d(end, end1, color);
+
+	}
+	else
+	{
+		for (int i = 0; i < 2; i++)
+		{
+			start = { sensorX , 0, sensorZ };
+			end = { sensorVisionX[i] + sensorX, 0, -sensorVisionZ[i] - sensorZ };
+			color1 = { 1,1,1,1 };
+
+			primitive_->DrawLine3d(start, end, color1);
+		}
+		end1 = { sensorVisionX[0] + sensorX, 0, -sensorVisionZ[0] - sensorZ };
+		primitive_->DrawLine3d(end, end1, color1);
+	}
+#pragma endregion
+
+//#pragma region 右センサーの描画
+//	if (visionHitFlag[0] == 1 && visionHitFlag[1] == 1 && visionHitFlag[2] == 1)
+//	{
+//		for (int i = 0; i < 2; i++)
+//		{
+//			start = { sensorX , 0, sensorZ };
+//			end = { sensorVisionX[i] + sensorX, 0, sensorVisionZ[i] + sensorZ };
+//			color = { 1,0,0,1 };
+//
+//			primitive_->DrawLine3d(start, end, color);
+//		}
+//		primitive_->DrawLine3d(end, end1, color);
+//
+//	}
+//	else
+//	{
+//		for (int i = 0; i < 2; i++)
+//		{
+//			start = { sensorX , 0, sensorZ };
+//			end = { sensorVisionX[i] + sensorX, 0, sensorVisionZ[i] + sensorZ };
+//			color1 = { 1,1,1,1 };
+//
+//			primitive_->DrawLine3d(start, end, color1);
+//		}
+//		primitive_->DrawLine3d(end, end1, color1);
+//	}
+//#pragma endregion
+//
+//#pragma region 左センサーの描画
+//	if (visionHitFlag[0] == 1 && visionHitFlag[1] == 1 && visionHitFlag[2] == 1)
+//	{
+//		for (int i = 0; i < 2; i++)
+//		{
+//			start = { sensorX , 0, sensorZ };
+//			end = { sensorVisionX[i] + sensorX, 0, sensorVisionZ[i] + sensorZ };
+//			color = { 1,0,0,1 };
+//
+//			primitive_->DrawLine3d(start, end, color);
+//		}
+//		primitive_->DrawLine3d(end, end1, color);
+//
+//	}
+//	else
+//	{
+//		for (int i = 0; i < 2; i++)
+//		{
+//			start = { sensorX , 0, sensorZ };
+//			end = { sensorVisionX[i] + sensorX, 0, sensorVisionZ[i] + sensorZ };
+//			color1 = { 1,1,1,1 };
+//
+//			primitive_->DrawLine3d(start, end, color1);
+//		}
+//		primitive_->DrawLine3d(end, end1, color1);
+//	}
+//#pragma endregion
 }
 
 void Enemy::FlagReset()
@@ -256,8 +350,27 @@ Vector3 Enemy::GetWorldPosition() {
 
 }
 
+Vector3 Enemy::GetSensorPosition()
+{
+	//センサーの座標を入れる
+	Vector3 sensorPos;
+	//
+	sensorPos.x = sensorTransform_.matWorld_.m[3][0];
+	sensorPos.y = sensorTransform_.matWorld_.m[3][1];
+	sensorPos.z = sensorTransform_.matWorld_.m[3][2];
+
+	return sensorPos;
+}
+
 void Enemy::OnCollision() {
 	//何もしない
+}
+
+void Enemy::SensorCollision()
+{
+
+	debugText_->SetPos(100, 100);
+	debugText_->Printf("fuck");
 }
 
 void Enemy::SensorVision() {
@@ -305,8 +418,8 @@ void Enemy::SensorVision() {
 		//座標を回転させる
 		for (int i = 0; i < 2; i++)
 		{
-			visionMemoryX[i] = sensorVisionX[i] ;
-			visionMemoryZ[i] = sensorVisionZ[i] ;
+			visionMemoryX[i] = sensorVisionX[i];
+			visionMemoryZ[i] = sensorVisionZ[i];
 		}
 	}
 	else if (visionFlag == 1)
@@ -314,8 +427,8 @@ void Enemy::SensorVision() {
 		//座標を回転させる
 		for (int i = 0; i < 2; i++)
 		{
-			visionMemoryX[i] = sensorVisionX[i] ;
-			visionMemoryZ[i] = sensorVisionZ[i] ;
+			visionMemoryX[i] = sensorVisionX[i];
+			visionMemoryZ[i] = sensorVisionZ[i];
 		}
 	}
 
@@ -374,14 +487,14 @@ void Enemy::SensorVision() {
 	}
 }
 
-void Enemy::SensorVector(float playerZ, float playerX, float playerRadius) {
+void Enemy::UpSensorVector(float playerZ, float playerX, float playerRadius) {
 	//それぞれのベクトル
 	Vector3 vec[3];	//線
 	Vector3 vecPlayer[4];	//Playerまでのベクトル
 
 #pragma region 視界のベクトル
 	//左右ラインベクトル
-	for (int i = 0; i < 2 ; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		vec[i].x = (sensorVisionX[i] + sensorX) - sensorX;
 		vec[i].y = 0;
@@ -477,8 +590,123 @@ void Enemy::SensorVector(float playerZ, float playerX, float playerRadius) {
 	}
 
 
-	
+
 #pragma endregion
 
+}
+
+void Enemy::DownSensorVector(float playerZ, float playerX, float playerRadius){
+	//それぞれのベクトル
+	Vector3 vec[3];	//線
+	Vector3 vecPlayer[4];	//Playerまでのベクトル
+
+#pragma region 視界のベクトル
+	//左右ラインベクトル
+	for (int i = 0; i < 2; i++)
+	{
+		vec[i].x = (sensorVisionX[i] + sensorX) - sensorX;
+		vec[i].y = 0;
+		vec[i].z = (sensorVisionZ[i] + sensorZ) - sensorZ;
+		vec[i] = Normalize(vec[i]);
+	}
+	//最終点から最終点までのベクトル
+	vec[2].x = (sensorVisionX[1] + sensorX) - (sensorVisionX[0] + sensorX);
+	vec[2].y = 0;
+	vec[2].z = (sensorVisionZ[1] + sensorZ) - (sensorVisionZ[0] + sensorZ);
+	vec[2] = Normalize(vec[2]);
+#pragma endregion
+#pragma region 各視界の始まりからPlayerまでのベクトル
+	//右ラインからPlayerのベクトル
+	vecPlayer[0].x = (playerX - playerRadius) - sensorX;
+	vecPlayer[0].y = 0;
+	vecPlayer[0].z = playerZ - sensorZ;
+	vecPlayer[0] = Normalize(vecPlayer[0]);
+	//左ラインからPlayerのベクトル
+	vecPlayer[1].x = (playerX + playerRadius) - sensorX;
+	vecPlayer[1].y = 0;
+	vecPlayer[1].z = playerZ - sensorZ;
+	vecPlayer[1] = Normalize(vecPlayer[1]);
+	//限界点[0]からPlayerのベクトル
+	vecPlayer[2].x = playerX - (sensorVisionX[0] + sensorX);
+	vecPlayer[2].y = 0;
+	vecPlayer[2].z = (playerZ - playerRadius) - (sensorVisionZ[0] + sensorZ);
+	vecPlayer[2] = Normalize(vecPlayer[2]);
+	//限界点[1]からPlayerのベクトル
+	vecPlayer[3].x = playerX - (sensorVisionX[1] + sensorX);
+	vecPlayer[3].y = 0;
+	vecPlayer[3].z = (playerZ - playerRadius) - (sensorVisionZ[1] + sensorZ);
+	vecPlayer[3] = Normalize(vecPlayer[3]);
+
+
+#pragma endregion
+#pragma region	当たり判定
+	//右ラインベクトルの判定
+	if (vec[0].x * vecPlayer[0].z - vec[0].z * vecPlayer[0].x > 0)
+	{
+		visionHitFlag[0] = 1;
+	}
+	else
+	{
+		visionHitFlag[0] = 0;
+	}
+	//左ラインベクトルの判定
+	if (vec[1].x * vecPlayer[1].z - vec[1].z * vecPlayer[1].x < 0)
+	{
+		visionHitFlag[1] = 1;
+	}
+	else
+	{
+		visionHitFlag[1] = 0;
+	}
+	//視界限界点の判定
+	if (vec[2].x * vecPlayer[2].z - vec[2].z * vecPlayer[2].x > 0)
+	{
+		visionHitFlag[2] = 1;
+	}
+	else
+	{
+		visionHitFlag[2] = 0;
+
+	}
+#pragma endregion
+#pragma region 視界に入った時の処理
+	if (visionHitFlag[0] == 1 && visionHitFlag[1] == 1 && visionHitFlag[2] == 1)
+	{
+		visionFlag = 5;
+		if (visionFlag == 5 && vecPlayer[2].x != vecPlayer[3].x)
+		{
+			if (vecPlayer[3].x - 0.001 >= -vecPlayer[2].x)
+			{
+				//座標を回転させる
+				for (int i = 0; i < 2; i++)
+				{
+					visionMemoryX[i] = sensorVisionX[i] * cos(PI / 180 * 1) - sensorVisionZ[i] * -sin(PI / 180 * 1);
+					visionMemoryZ[i] = sensorVisionX[i] * -sin(PI / 180 * 1) + sensorVisionZ[i] * cos(PI / 180 * 1);
+				}
+			}
+			else if (-vecPlayer[2].x - 0.001 >= vecPlayer[3].x)
+			{
+				//座標を回転させる
+				for (int i = 0; i < 2; i++)
+				{
+					visionMemoryX[i] = sensorVisionX[i] * cos(PI / 180 * 1) - sensorVisionZ[i] * sin(PI / 180 * 1);
+					visionMemoryZ[i] = sensorVisionX[i] * sin(PI / 180 * 1) + sensorVisionZ[i] * cos(PI / 180 * 1);
+				}
+			}
+		}
+
+	}
+
+
+
+#pragma endregion
+}
+
+void Enemy::RightSensorVector(float playerZ, float playerX, float playerRadius)
+{
+}
+
+void Enemy::LeftSensorVector(float playerZ, float playerX, float playerRadius)
+{
 }
 

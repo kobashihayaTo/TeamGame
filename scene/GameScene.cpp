@@ -39,7 +39,7 @@ void GameScene::Initialize() {
 	//プレイヤーの初期化
 	newPlayer->Initialize(playerModel_);
 	//敵の初期化
-	newEnemy->Initialize(enemyModel_, newCamera.get(),enemyPos);
+	newEnemy->Initialize(enemyModel_, newCamera.get(), enemyPos);
 
 	newEnemy_1->Initialize(enemyModel_, newCamera.get(), enemyPos_1);
 
@@ -205,7 +205,7 @@ void GameScene::Draw() {
 
 void GameScene::CheckAllCollisions(Enemy* enemy_) {
 	//判定対象AとBの座標
-	Vector3 posA, posB;
+	Vector3 posA, posB, posC;
 
 	//距離を図るための変数
 	double distance;
@@ -219,7 +219,6 @@ void GameScene::CheckAllCollisions(Enemy* enemy_) {
 
 	//自キャラの座標
 	posA = newPlayer->GetWorldPosition();
-
 
 	//敵キャラの座標
 	posB = enemy_->GetWorldPosition();
@@ -235,6 +234,32 @@ void GameScene::CheckAllCollisions(Enemy* enemy_) {
 		newPlayer->OnCollision();
 		//マップの衝突時コールバックを呼び出す
 		enemy_->OnCollision();
+	}
+
+#pragma endregion
+
+#pragma region
+	//距離を図るための変数
+	double Dis;
+
+	//半径
+	float Rad;
+
+	//自キャラの座標
+	posA = newPlayer->GetWorldPosition();
+
+	//敵キャラの座標
+	posC = enemy_->GetSensorPosition();
+
+	//座標AとBの距離を求める
+	Dis = CalculateDistance(posA, posC);
+
+	Rad = newPlayer->GetRadius() + enemy_->GetSensorRadius();
+	Dis = (posA.x - posC.x) * (posA.x - posC.x) + (posA.y - posC.y) * (posA.y - posC.y) + (posA.z - posC.z) * (posA.z - posC.z);
+	//自キャラとマップの当たり判定
+	if (Dis <= Rad * Rad) {
+		//マップの衝突時コールバックを呼び出す
+		enemy_->SensorCollision();
 	}
 
 #pragma endregion
@@ -270,4 +295,3 @@ void GameScene::PosReset()
 
 	newEnemy_1->Initialize(enemyModel_, newCamera.get(), enemyPos_1);
 }
-
