@@ -54,8 +54,8 @@ void Enemy::Initialize(Model* model, RailCamera* camera) {
 void Enemy::Update(bool keyFlag, Player* player) {
 
 	//ƒZƒ“ƒT[‚ð“G‚É’Ç]
-	sensorX = player->GetWorldPosition().x;
-	sensorZ = player->GetWorldPosition().z;
+	sensorX = worldTransform_.translation_.x;
+	sensorZ = worldTransform_.translation_.z;
 
 	SensorVision();
 
