@@ -714,7 +714,7 @@ void Enemy::RightSensorVector(float playerZ, float playerX, float playerRadius)
 {
 }
 
-}
+
 
 void Enemy::Move() {
 	// ãˆÚ“®

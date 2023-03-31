@@ -79,12 +79,11 @@ void Map::Update(Player* player, bool MapkeyFlag) {
 		}
 	}*/
 
-	gameCount++;
 
-	if (gameCount >= 1200) {
-		if (AnswerFlag == false) {
-			AnswerFlag = true;
-		}
+
+
+	if (AnswerFlag == false) {
+		AnswerFlag = true;
 	}
 	if (AnswerFlag == true) {
 		AnswerTimer--;
