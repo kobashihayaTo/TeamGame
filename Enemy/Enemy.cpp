@@ -2,12 +2,13 @@
 #include <cassert>
 
 //初期化
-void Enemy::Initialize(Model* model, RailCamera* camera, Vector3 enemyPos) {
+void Enemy::Initialize(Model* model, Model* sensormodel, RailCamera* camera, Vector3 enemyPos) {
 	//NULLポイントチェック
 	assert(model);
 
 	//引数として受け取ったデータをメンバ変数に記憶する
 	model_ = model;
+	sensormodel_ = sensormodel;
 
 	//シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
@@ -25,8 +26,10 @@ void Enemy::Initialize(Model* model, RailCamera* camera, Vector3 enemyPos) {
 	//敵の初期位置の設定
 	worldTransform_.translation_ = enemyPos;
 
+	//敵センサーの大きさ(倍率)
+	sensorTransform_.scale_ = { 2.0f,2.0f,2.0f };
 	//センサーの初期位置の設定
-	sensorTransform_.translation_ = enemyPos;
+	sensorTransform_.translation_ = { enemyPos.x, enemyPos.y + 5.0f, enemyPos.z };
 
 
 	sensorX = worldTransform_.translation_.x;
@@ -51,23 +54,24 @@ void Enemy::Initialize(Model* model, RailCamera* camera, Vector3 enemyPos) {
 	visionHitFlag[2] = {};
 	//視界が再び動くまでのタイマー
 	visionTimer = 15.0f;
+	sensorMovedDis = 0.0f;
 
-	
 }
 
 //更新
-void Enemy::Update(bool keyFlag, Player* player) {
+void Enemy::Update(bool keyFlag, Player* player, float moveDis, bool WidthHeightFlag) {
+
 
 	//センサーを敵に追従
-
 	sensorX = worldTransform_.translation_.x;
 	sensorZ = worldTransform_.translation_.z;
 
-	sensorTransform_ = worldTransform_;
+	sensorTransform_.translation_.x = worldTransform_.translation_.x;
+	sensorTransform_.translation_.z = worldTransform_.translation_.z;
 
 	SensorVision();
 
-	UpSensorVector(player->GetWorldPosition().z, player->GetWorldPosition().x, player->GetRadius());
+	//UpSensorVector(player->GetWorldPosition().z, player->GetWorldPosition().x, player->GetRadius());
 
 	//プレイヤーの移動ベクトル
 	Vector3 move = { 0,0,0 };
@@ -102,39 +106,8 @@ void Enemy::Update(bool keyFlag, Player* player) {
 	prePosition_ = worldTransform_.translation_;
 
 	if (stopFlag == false || stopIntervalFlag == true) {
-		//if (worldTransform_.translation_.x <= -11)
-		//{
-		//	LightFlag = false;
-		//	LeftFlag = true;
-		//}
-		//if (worldTransform_.translation_.x >= 6)
-		//{
-		//	LeftFlag = false;
-		//	LightFlag = true;
-		//}
 
-		////敵の移動処理
-		//if (worldTransform_.translation_.x <= -11)
-		//{
-		//	LightFlag = false;
-		//	LeftFlag = true;
-		//}
-		//if (worldTransform_.translation_.x >= 6)
-		//{
-		//	LeftFlag = false;
-		//	LightFlag = true;
-		//}
-
-		//if (LeftFlag == true)
-		//{
-		//	worldTransform_.translation_.x += 0.1;
-		//}
-		//if (LightFlag == true)
-		//{
-		//	worldTransform_.translation_.x -= 0.1;
-		//}
-
-		Move();
+		EnemyMove(moveDis, WidthHeightFlag);
 
 		EnemyMoveCheck(player->GetWorldPosition().x, player->GetWorldPosition().z, player->GetRadius());
 	}
@@ -167,6 +140,8 @@ void Enemy::Update(bool keyFlag, Player* player) {
 	debugText_->Printf("isMove UP:0 DOWN:1 RIGHT:2 LEFT:3 %d", isMove);
 	debugText_->SetPos(50, 270);
 	debugText_->Printf("enemyPos X:%f Y:%f Z:%f", worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z);
+	debugText_->SetPos(600, 300);
+	debugText_->Printf("move %f", sensorMovedDis);
 }
 
 //描画
@@ -176,7 +151,7 @@ void Enemy::Draw(ViewProjection& viewprojection) {
 }
 
 //センサーの描画
-void Enemy::SensorDraw() {
+void Enemy::SensorDraw(ViewProjection& viewProjection) {
 
 	Vector3 start = { 0,0,0 };
 	Vector3 end = { 0,0,0 };
@@ -185,123 +160,125 @@ void Enemy::SensorDraw() {
 	Vector3 end1 = { sensorVisionX[0] + sensorX,0,sensorVisionZ[0] + sensorZ };
 	Vector4 color1 = { 1,1,1,1 };
 
-//#pragma region 上センサーの描画
-//	if (visionHitFlag[0] == 1 && visionHitFlag[1] == 1 && visionHitFlag[2] == 1)
-//	{
-//		for (int i = 0; i < 2; i++)
-//		{
-//			start = { sensorX , 0, sensorZ };
-//			end = { sensorVisionX[i] + sensorX, 0, sensorVisionZ[i] + sensorZ };
-//			color = { 1,0,0,1 };
-//
-//			primitive_->DrawLine3d(start, end, color);
-//		}
-//		primitive_->DrawLine3d(end, end1, color);
-//
-//	}
-//	else
-//	{
-//		for (int i = 0; i < 2; i++)
-//		{
-//			start = { sensorX , 0, sensorZ };
-//			end = { sensorVisionX[i] + sensorX, 0, sensorVisionZ[i] + sensorZ };
-//			color1 = { 1,1,1,1 };
-//
-//			primitive_->DrawLine3d(start, end, color1);
-//		}
-//		primitive_->DrawLine3d(end, end1, color1);
-//	}
-//#pragma endregion
+	sensormodel_->Draw(sensorTransform_, viewProjection);
 
-//#pragma region 下センサーの描画
-//	if (visionHitFlag[0] == 1 && visionHitFlag[1] == 1 && visionHitFlag[2] == 1)
-//	{
-//		for (int i = 0; i < 2; i++)
-//		{
-//			start = { sensorX , 0, sensorZ };
-//			end = { -sensorVisionX[i] - sensorX, 0, sensorVisionZ[i] + sensorZ };
-//			color = { 1,0,0,1 };
-//
-//			primitive_->DrawLine3d(start, end, color);
-//		}
-//		primitive_->DrawLine3d(end, end1, color);
-//
-//	}
-//	else
-//	{
-//		for (int i = 0; i < 2; i++)
-//		{
-//			start = { sensorX , 0, sensorZ };
-//			end = { sensorVisionX[i] + sensorX, 0, -sensorVisionZ[i] - sensorZ };
-//			color1 = { 1,1,1,1 };
-//
-//			primitive_->DrawLine3d(start, end, color1);
-//		}
-//		end1 = { sensorVisionX[0] + sensorX, 0, -sensorVisionZ[0] - sensorZ };
-//		primitive_->DrawLine3d(end, end1, color1);
-//	}
-//#pragma endregion
+	//#pragma region 上センサーの描画
+	//	if (visionHitFlag[0] == 1 && visionHitFlag[1] == 1 && visionHitFlag[2] == 1)
+	//	{
+	//		for (int i = 0; i < 2; i++)
+	//		{
+	//			start = { sensorX , 0, sensorZ };
+	//			end = { sensorVisionX[i] + sensorX, 0, sensorVisionZ[i] + sensorZ };
+	//			color = { 1,0,0,1 };
+	//
+	//			primitive_->DrawLine3d(start, end, color);
+	//		}
+	//		primitive_->DrawLine3d(end, end1, color);
+	//
+	//	}
+	//	else
+	//	{
+	//		for (int i = 0; i < 2; i++)
+	//		{
+	//			start = { sensorX , 0, sensorZ };
+	//			end = { sensorVisionX[i] + sensorX, 0, sensorVisionZ[i] + sensorZ };
+	//			color1 = { 1,1,1,1 };
+	//
+	//			primitive_->DrawLine3d(start, end, color1);
+	//		}
+	//		primitive_->DrawLine3d(end, end1, color1);
+	//	}
+	//#pragma endregion
 
-//#pragma region 右センサーの描画
-//	if (visionHitFlag[0] == 1 && visionHitFlag[1] == 1 && visionHitFlag[2] == 1)
-//	{
-//		for (int i = 0; i < 2; i++)
-//		{
-//			start = { sensorX , 0, sensorZ };
-//			end = { sensorVisionX[i] + sensorX, 0, sensorVisionZ[i] + sensorZ };
-//			color = { 1,0,0,1 };
-//
-//			primitive_->DrawLine3d(start, end, color);
-//		}
-//		primitive_->DrawLine3d(end, end1, color);
-//
-//	}
-//	else
-//	{
-//		for (int i = 0; i < 2; i++)
-//		{
-//			start = { sensorX , 0, sensorZ };
-//			end = { sensorVisionX[i] + sensorX, 0, sensorVisionZ[i] + sensorZ };
-//			color1 = { 1,1,1,1 };
-//
-//			primitive_->DrawLine3d(start, end, color1);
-//		}
-//		primitive_->DrawLine3d(end, end1, color1);
-//	}
-//#pragma endregion
-//
-//#pragma region 左センサーの描画
-//	if (visionHitFlag[0] == 1 && visionHitFlag[1] == 1 && visionHitFlag[2] == 1)
-//	{
-//		for (int i = 0; i < 2; i++)
-//		{
-//			start = { sensorX , 0, sensorZ };
-//			end = { sensorVisionX[i] + sensorX, 0, sensorVisionZ[i] + sensorZ };
-//			color = { 1,0,0,1 };
-//
-//			primitive_->DrawLine3d(start, end, color);
-//		}
-//		primitive_->DrawLine3d(end, end1, color);
-//
-//	}
-//	else
-//	{
-//		for (int i = 0; i < 2; i++)
-//		{
-//			start = { sensorX , 0, sensorZ };
-//			end = { sensorVisionX[i] + sensorX, 0, sensorVisionZ[i] + sensorZ };
-//			color1 = { 1,1,1,1 };
-//
-//			primitive_->DrawLine3d(start, end, color1);
-//		}
-//		primitive_->DrawLine3d(end, end1, color1);
-//	}
-//#pragma endregion
+	//#pragma region 下センサーの描画
+	//	if (visionHitFlag[0] == 1 && visionHitFlag[1] == 1 && visionHitFlag[2] == 1)
+	//	{
+	//		for (int i = 0; i < 2; i++)
+	//		{
+	//			start = { sensorX , 0, sensorZ };
+	//			end = { -sensorVisionX[i] - sensorX, 0, sensorVisionZ[i] + sensorZ };
+	//			color = { 1,0,0,1 };
+	//
+	//			primitive_->DrawLine3d(start, end, color);
+	//		}
+	//		primitive_->DrawLine3d(end, end1, color);
+	//
+	//	}
+	//	else
+	//	{
+	//		for (int i = 0; i < 2; i++)
+	//		{
+	//			start = { sensorX , 0, sensorZ };
+	//			end = { sensorVisionX[i] + sensorX, 0, -sensorVisionZ[i] - sensorZ };
+	//			color1 = { 1,1,1,1 };
+	//
+	//			primitive_->DrawLine3d(start, end, color1);
+	//		}
+	//		end1 = { sensorVisionX[0] + sensorX, 0, -sensorVisionZ[0] - sensorZ };
+	//		primitive_->DrawLine3d(end, end1, color1);
+	//	}
+	//#pragma endregion
+
+	//#pragma region 右センサーの描画
+	//	if (visionHitFlag[0] == 1 && visionHitFlag[1] == 1 && visionHitFlag[2] == 1)
+	//	{
+	//		for (int i = 0; i < 2; i++)
+	//		{
+	//			start = { sensorX , 0, sensorZ };
+	//			end = { sensorVisionX[i] + sensorX, 0, sensorVisionZ[i] + sensorZ };
+	//			color = { 1,0,0,1 };
+	//
+	//			primitive_->DrawLine3d(start, end, color);
+	//		}
+	//		primitive_->DrawLine3d(end, end1, color);
+	//
+	//	}
+	//	else
+	//	{
+	//		for (int i = 0; i < 2; i++)
+	//		{
+	//			start = { sensorX , 0, sensorZ };
+	//			end = { sensorVisionX[i] + sensorX, 0, sensorVisionZ[i] + sensorZ };
+	//			color1 = { 1,1,1,1 };
+	//
+	//			primitive_->DrawLine3d(start, end, color1);
+	//		}
+	//		primitive_->DrawLine3d(end, end1, color1);
+	//	}
+	//#pragma endregion
+	//
+	//#pragma region 左センサーの描画
+	//	if (visionHitFlag[0] == 1 && visionHitFlag[1] == 1 && visionHitFlag[2] == 1)
+	//	{
+	//		for (int i = 0; i < 2; i++)
+	//		{
+	//			start = { sensorX , 0, sensorZ };
+	//			end = { sensorVisionX[i] + sensorX, 0, sensorVisionZ[i] + sensorZ };
+	//			color = { 1,0,0,1 };
+	//
+	//			primitive_->DrawLine3d(start, end, color);
+	//		}
+	//		primitive_->DrawLine3d(end, end1, color);
+	//
+	//	}
+	//	else
+	//	{
+	//		for (int i = 0; i < 2; i++)
+	//		{
+	//			start = { sensorX , 0, sensorZ };
+	//			end = { sensorVisionX[i] + sensorX, 0, sensorVisionZ[i] + sensorZ };
+	//			color1 = { 1,1,1,1 };
+	//
+	//			primitive_->DrawLine3d(start, end, color1);
+	//		}
+	//		primitive_->DrawLine3d(end, end1, color1);
+	//	}
+	//#pragma endregion
 }
 
 void Enemy::FlagReset()
 {
-	LightFlag = false;
+	RightFlag = true;
 	LeftFlag = false;
 
 
@@ -316,10 +293,9 @@ void Enemy::FlagReset()
 
 }
 
-void Enemy::Reset()
-{
+void Enemy::Reset() {
 
-	LightFlag = false;
+	RightFlag = true;
 	LeftFlag = false;
 
 
@@ -331,6 +307,7 @@ void Enemy::Reset()
 
 	stopTimer = 100;
 	stopIntervalTimer = 100;
+	sensorMovedDis = 0.0f;
 
 }
 
@@ -376,7 +353,9 @@ void Enemy::OnCollision() {
 
 void Enemy::SensorCollision()
 {
-
+	visionHitFlag[0] = 1;
+	visionHitFlag[1] = 1;
+	visionHitFlag[2] = 1;
 	debugText_->SetPos(50, 150);
 	debugText_->Printf("fuck");
 }
@@ -603,7 +582,7 @@ void Enemy::UpSensorVector(float playerZ, float playerX, float playerRadius) {
 
 }
 
-void Enemy::DownSensorVector(float playerZ, float playerX, float playerRadius){
+void Enemy::DownSensorVector(float playerZ, float playerX, float playerRadius) {
 	//それぞれのベクトル
 	Vector3 vec[3];	//線
 	Vector3 vecPlayer[4];	//Playerまでのベクトル
@@ -714,67 +693,79 @@ void Enemy::RightSensorVector(float playerZ, float playerX, float playerRadius)
 {
 }
 
+void Enemy::LeftSensorVector(float playerZ, float playerX, float playerRadius)
+{
+}
 
 
-void Enemy::Move() {
-	// 上移動
-	
+
+void Enemy::EnemyMove(float moveDis, bool WidthHeightFlag) {
+
+	//センサーで検知したとき
 	if (visionHitFlag[0] == 1 && visionHitFlag[1] == 1 && visionHitFlag[2] == 1) {
-		if (isMove == UP)
-		{
+		// 上移動
+		if (isMove == UP) {
 			worldTransform_.translation_.z -= speed;
 		}
 		// 下移動
-		if (isMove == DOWN)
-		{
+		if (isMove == DOWN) {
 			worldTransform_.translation_.z += speed;
 		}
 		// 右移動
-		if (isMove == RIGHT)
-		{
+		if (isMove == RIGHT) {
 			worldTransform_.translation_.x += speed;
 		}
 		// 左移動
-		if (isMove == LEFT)
-		{
+		if (isMove == LEFT) {
 			worldTransform_.translation_.x -= speed;
 		}
 	}
 	else {
-		if (worldTransform_.translation_.x <= -11)
-		{
-			LightFlag = false;
-			LeftFlag = true;
-		}
-		if (worldTransform_.translation_.x >= 6)
-		{
-			LeftFlag = false;
-			LightFlag = true;
-		}
 
-		//敵の移動処理
-		if (worldTransform_.translation_.x <= -11)
-		{
-			LightFlag = false;
-			LeftFlag = true;
-		}
-		if (worldTransform_.translation_.x >= 6)
-		{
-			LeftFlag = false;
-			LightFlag = true;
-		}
+		if (WidthHeightFlag == false) {
+			//敵の移動処理(横)
+			if (sensorMovedDis <= -moveDis) {
+				RightFlag = true;
+				LeftFlag = false;
+			}
+			if (sensorMovedDis >= moveDis) {
+				LeftFlag = true;
+				RightFlag = false;
+			}
 
-		if (LeftFlag == true)
-		{
-			worldTransform_.translation_.x += 0.1;
+
+			if (RightFlag == true) {
+				worldTransform_.translation_.x += 0.1;
+				sensorMovedDis += 0.1;
+			}
+			if (LeftFlag == true) {
+				worldTransform_.translation_.x -= 0.1;
+				sensorMovedDis -= 0.1;
+			}
 		}
-		if (LightFlag == true)
-		{
-			worldTransform_.translation_.x -= 0.1;
+		if (WidthHeightFlag == true) {
+			//敵の移動処理(縦)
+			if (sensorMovedDis >= moveDis) {
+				UpFlag = false;
+				DownFlag = true;
+			}
+			if (sensorMovedDis <= -moveDis) {
+				DownFlag = false;
+				UpFlag = true;
+			}
+
+			if (UpFlag == true) {
+				worldTransform_.translation_.z += 0.1;
+				sensorMovedDis += 0.1;
+			}
+			if (DownFlag == true) {
+				worldTransform_.translation_.z -= 0.1;
+				sensorMovedDis -= 0.1;
+			}
 		}
 	}
 
-	
+
 
 }
 
@@ -795,7 +786,7 @@ void Enemy::EnemyMoveCheck(float playerX, float playerZ, float playerR) {
 }
 
 void Enemy::EnemyMoveSearch(float playerX, float playerZ, float playerR) {
-	
+
 	// プレイヤーが敵の右に居る時
 	if (playerX > worldTransform_.translation_.x + radius) {
 		isMove = RIGHT;

@@ -32,12 +32,12 @@ public:		//メンバ関数
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <param name="texturehandle">テクスチャハンドル</param>
-	void Initialize(Model* model, RailCamera* camera,Vector3 enemyPos);
+	void Initialize(Model* model, Model* sensormodel, RailCamera* camera,Vector3 enemyPos);
 
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update(bool keyFlag, Player* player);
+	void Update(bool keyFlag, Player* player,float moveDis, bool WidthHeightFlag);
 
 	/// <summary>
 	/// 描画
@@ -77,12 +77,12 @@ public:		//メンバ関数
 	/// <summary>
 	/// センサーの描画
 	/// </summary>
-	void SensorDraw();
+	void SensorDraw(ViewProjection& viewProjection);
 
 	/// <summary>
 	/// 移動処理
 	/// </summary>
-	void Move();
+	void EnemyMove(float moveDis, bool WidthHeightFlag);
 
 	/// <summary>
 	/// プレイヤーが敵から見てどこにいるかを見る
@@ -137,6 +137,7 @@ private:	//メンバ変数
 
 	//モデル
 	Model* model_ = nullptr;
+	Model* sensormodel_ = nullptr;
 
 	//入力処理するため
 	Input* input_ = nullptr;
@@ -155,8 +156,10 @@ private:	//メンバ変数
 	std::list<std::unique_ptr<Enemy>>enemys;
 
 	//切り替えフラグ
-	bool LightFlag = false;
+	bool RightFlag = true;
 	bool LeftFlag =  false;
+	bool UpFlag = true;
+	bool DownFlag = false;
 
 	//透明フラグ
 	bool invisibleFlag = false;
@@ -192,5 +195,6 @@ private:	//メンバ変数
 	int isSearch = FALSE;
 	int isMove = UP;
 	int isMove_1 = RIGHT;
+	float sensorMovedDis = 0.0f;
 };
 

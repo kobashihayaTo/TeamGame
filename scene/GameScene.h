@@ -112,6 +112,7 @@ class GameScene {
 	std::unique_ptr<Enemy> newEnemy_1 = std::make_unique<Enemy>();
 	//敵モデル
 	Model* enemyModel_ = nullptr;
+	Model* enemySensorModel_ = nullptr;
 
 	Vector3 cameraPos = newPlayer->GetTransform();
 	Vector3 cameraRot = { 0,0,0 };
@@ -131,7 +132,7 @@ class GameScene {
 	bool playerkeyFlag = false;
 
 	Vector3 enemyPos = { -10.0f, 0.9f, 12.7f };
-	Vector3 enemyPos_1 = { 4.0f, 0.9f, -2.0f };
+	Vector3 enemyPos_1 = { 25.0f, 0.9f, -9.0f };
 
 
 };

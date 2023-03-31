@@ -54,7 +54,7 @@ void Map::Update(Player* player, bool MapkeyFlag) {
 
 	//透明フラグの切り替え
 
-	/*if (MapkeyFlag == true) {
+	if (MapkeyFlag == true) {
 		if (AnswerFlag == false) {
 			AnswerFlag = true;
 		}
@@ -77,34 +77,7 @@ void Map::Update(Player* player, bool MapkeyFlag) {
 			AnswerTimer = 100;
 			AnswerIntervalTimer = 100;
 		}
-	}*/
-
-
-
-
-	if (AnswerFlag == false) {
-		AnswerFlag = true;
 	}
-	if (AnswerFlag == true) {
-		AnswerTimer--;
-		if (AnswerTimer < 0) {
-			AnswerIntervalFlag = true;
-		}
-	}
-	if (AnswerIntervalFlag == true) {
-		AnswerIntervalTimer--;
-		if (AnswerIntervalTimer <= 0.01f) {
-			OKFlag = true;
-		}
-		if (AnswerIntervalTimer < 0) {
-			OKFlag = false;
-			AnswerFlag = false;
-			AnswerIntervalFlag = false;
-			AnswerTimer = 100;
-			AnswerIntervalTimer = 100;
-		}
-	}
-
 
 	//デバッグ用表示
 	debugText_->SetPos(50, 180);
