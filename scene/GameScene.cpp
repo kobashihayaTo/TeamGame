@@ -55,6 +55,8 @@ void GameScene::Update() {
 	newMap->Update(newPlayer.get(), MapkeyFlag);
 
 	newEnemy->Update(keyFlag, newPlayer.get());
+	newMap->EnemyBlockCheck(newEnemy.get());
+
 	//プレイヤー
 	if (input_->TriggerKey(DIK_A)) {
 		if (MapkeyFlag == false && keyFlag == false) {

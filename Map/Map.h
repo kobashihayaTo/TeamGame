@@ -9,6 +9,7 @@
 #include "MathUtility.h"
 #include "ViewProjection.h"
 #include <Player/Player.h>
+#include <Enemy/Enemy.h>
 #include "Enum.h"
 
 class Map
@@ -52,9 +53,9 @@ public:		//ƒƒ“ƒoŠÖ”
 	/// <param name="line"></param>
 	/// <param name="culumn"></param>
 	/// <returns></returns>
-	int BlockCheck(int line, int culumn);
+	void EnemyBlockCheck(Enemy* enemy);
 	
-	void BlockCheck(Player* player);
+	void PlayerBlockCheck(Player* player);
 
 	bool CheckCollision(Vector3 pos1, Vector3 pos2, float radius1, float radius2);
 

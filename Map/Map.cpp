@@ -43,7 +43,7 @@ void Map::Initialize(Model* model, Model* floorModel) {
 void Map::Update(Player* player, bool MapkeyFlag) {
 
 	//マップチップとプレイヤーが当たっているか確認する
-	BlockCheck(player);
+	PlayerBlockCheck(player);
 
 	//マップフラグの切り替え
 	if (input_->TriggerKey(DIK_L)) {
@@ -183,7 +183,7 @@ void Map::OnCollision(Vector3 playerPos, float radius) {
 }
 
 
-void Map::BlockCheck(Player* player) {
+void Map::PlayerBlockCheck(Player* player) {
 	if (MapFlag == 0) {
 		for (int z = 0; z < Map_Z; z++) {
 			for (int x = 0; x < Map_X; x++) {
@@ -416,108 +416,211 @@ void Map::BlockCheck(Player* player) {
 		}
 
 	}
+}
 
+void Map::EnemyBlockCheck(Enemy* enemy) {
+	if (MapFlag == 0) {
+		for (int z = 0; z < Map_Z; z++) {
+			for (int x = 0; x < Map_X; x++) {
+				// ブロックの座標
+				worldTransform_[z][x].translation_;
 
-	//if (MapFlag == 1) {
-	//	for (int z = 0; z < 20; z++) {
-	//		for (int x = 0; x < 25; x++) {
-	//			if (SecondMap[z][x] == BLOCK) {
-	//				// ブロックの座標
-	//				worldTransform_[z][x].translation_;
+				// プレイヤーの座標
+				enemy->GetWorldPosition();
 
-	//				// プレイヤーの座標
-	//				player->GetWorldPosition();
+				//プレイヤーの移動する前の場所を保存する変数
+				Vector3 oldPlayerPos;
 
-	//				// プレイヤーとブロック衝突判定
-	//				if (CheckCollision(worldTransform_[z][x].translation_, player->GetWorldPosition(), radius, player->GetRadius())) {
-	//					//プレイヤーの移動する前の場所を保存する変数
-	//					Vector3 oldPlayerPos;
+				oldPlayerPos = enemy->GetprePosition();
 
-	//					oldPlayerPos = player->GetprePosition();
+				// ブロックのどちら側からぶつかったか
+				float blockLeftX = worldTransform_[z][x].translation_.x - radius;
+				float blockRightX = worldTransform_[z][x].translation_.x + radius;
+				float blockUpZ = worldTransform_[z][x].translation_.z + radius;
+				float blockDownZ = worldTransform_[z][x].translation_.z - radius;
 
-	//					// ブロックのどちら側からぶつかったか
-	//					float blockLeftX = worldTransform_[z][x].translation_.x - radius;
-	//					float blockRightX = worldTransform_[z][x].translation_.x + radius;
-	//					float blockUpZ = worldTransform_[z][x].translation_.z + radius;
-	//					float blockDownZ = worldTransform_[z][x].translation_.z - radius;
+				float playerLeftX = oldPlayerPos.x - enemy->GetRadius();
+				float playerRightX = oldPlayerPos.x + enemy->GetRadius();
+				float playerUpZ = oldPlayerPos.z + enemy->GetRadius();
+				float playerDownZ = oldPlayerPos.z - enemy->GetRadius();
 
-	//					float playerLeftX = oldPlayerPos.x - player->GetRadius();
-	//					float playerRightX = oldPlayerPos.x + player->GetRadius();
-	//					float playerUpZ = oldPlayerPos.z + player->GetRadius();
-	//					float playerDownZ = oldPlayerPos.z - player->GetRadius();
+				float distance = 0.1f;
 
-	//					float distance = 0.1f;
+				//進んだ先がBLOCKだったら進ませなくする
+				if (FirstMap[z][x] == BLOCK) {
 
-	//					/*
-	//						ブロックかプレイヤーの四角の左端、右端、上端、下端、中心点を比較してぶつかった方向判別する
+					// プレイヤーとブロック衝突判定
+					if (CheckCollision(worldTransform_[z][x].translation_, enemy->GetWorldPosition(), radius, enemy->GetRadius())) {
 
-	//						例　下から
-	//						プレイヤーの中心点とブロックの中心点比べてプレイヤーが下にいるはず
-	//						まだこれだと左、右からぶつかってきた場合がある
+						/*
+							ブロックかプレイヤーの四角の左端、右端、上端、下端、中心点を比較してぶつかった方向判別する
 
-	//						移動する前のプレイヤー(oldPlayerPos)に右端とブロックの左端を比べてプレイヤーの右端が大きかったら左からぶつかるのはありえない
-	//						逆のこと言える、右からぶつかるのもありえないことが分かるのでその三つの条件が達成されている場合下からぶつかっている
-	//					*/
+							例　下から
+							プレイヤーの中心点とブロックの中心点比べてプレイヤーが下にいるはず
+							まだこれだと左、右からぶつかってきた場合がある
 
-	//					// 上下
-	//					if (playerRightX > blockLeftX && playerLeftX < blockRightX) {
-	//						if (player->GetWorldPosition().z < worldTransform_[z][x].translation_.z) {
-	//							oldPlayerPos.z -= distance;
-	//							player->SetWorldPosition(oldPlayerPos);
-	//						}
-	//						else if (player->GetWorldPosition().z > worldTransform_[z][x].translation_.z) {
-	//							oldPlayerPos.z += distance;
-	//							player->SetWorldPosition(oldPlayerPos);
-	//						}
-	//					}
-	//					// 左右
-	//					else if (playerUpZ > blockDownZ && playerDownZ < blockUpZ) {
-	//						if (player->GetWorldPosition().x < worldTransform_[z][x].translation_.x) {
-	//							oldPlayerPos.x -= distance;
-	//							player->SetWorldPosition(oldPlayerPos);
-	//						}
-	//						else if (player->GetWorldPosition().x > worldTransform_[z][x].translation_.x) {
-	//							oldPlayerPos.x += distance;
-	//							player->SetWorldPosition(oldPlayerPos);
-	//						}
-	//					}
+							移動する前のプレイヤー(oldPlayerPos)に右端とブロックの左端を比べてプレイヤーの右端が大きかったら左からぶつかるのはありえない
+							逆のこと言える、右からぶつかるのもありえないことが分かるのでその三つの条件が達成されている場合下からぶつかっている
+						*/
 
-	//					// 下から 
-	//					if (player->GetWorldPosition().z < worldTransform_[z][x].translation_.z &&
-	//						playerRightX > blockLeftX &&
-	//						playerLeftX < blockRightX) {
-	//						debugText_->SetPos(50, 250);
-	//						debugText_->Printf("down:hit");
-	//					}
+						// 上下
+						if (playerRightX > blockLeftX && playerLeftX < blockRightX) {
+							if (enemy->GetWorldPosition().z < worldTransform_[z][x].translation_.z) {
+								oldPlayerPos.z -= distance;
+								enemy->SetWorldPosition(oldPlayerPos);
+							}
+							else if (enemy->GetWorldPosition().z > worldTransform_[z][x].translation_.z) {
+								oldPlayerPos.z += distance;
+								enemy->SetWorldPosition(oldPlayerPos);
+							}
+						}
+						// 左右
+						else if (playerUpZ > blockDownZ && playerDownZ < blockUpZ) {
+							if (enemy->GetWorldPosition().x < worldTransform_[z][x].translation_.x) {
+								oldPlayerPos.x -= distance;
+								enemy->SetWorldPosition(oldPlayerPos);
+							}
+							else if (enemy->GetWorldPosition().x > worldTransform_[z][x].translation_.x) {
+								oldPlayerPos.x += distance;
+								enemy->SetWorldPosition(oldPlayerPos);
+							}
+						}
 
-	//					// 上から
-	//					if (player->GetWorldPosition().z > worldTransform_[z][x].translation_.z &&
-	//						playerRightX > blockLeftX &&
-	//						playerLeftX < blockRightX) {
-	//						debugText_->SetPos(50, 270);
-	//						debugText_->Printf("up:hit");
-	//					}
+						// 下から 
+						if (enemy->GetWorldPosition().z < worldTransform_[z][x].translation_.z &&
+							playerRightX > blockLeftX &&
+							playerLeftX < blockRightX) {
+							debugText_->SetPos(50, 250);
+							debugText_->Printf("down:hit");
+						}
 
-	//					// 左から
-	//					if (player->GetWorldPosition().x < worldTransform_[z][x].translation_.x &&
-	//						playerUpZ > blockDownZ &&
-	//						playerDownZ < blockUpZ) {
-	//						debugText_->SetPos(50, 290);
-	//						debugText_->Printf("left:hit");
-	//					}
+						// 上から
+						if (enemy->GetWorldPosition().z > worldTransform_[z][x].translation_.z &&
+							playerRightX > blockLeftX &&
+							playerLeftX < blockRightX) {
+							debugText_->SetPos(50, 270);
+							debugText_->Printf("up:hit");
+						}
 
-	//					// 右から
-	//					if (player->GetWorldPosition().x > worldTransform_[z][x].translation_.x &&
-	//						playerUpZ > blockDownZ &&
-	//						playerDownZ < blockUpZ) {
-	//						debugText_->SetPos(50, 310);
-	//						debugText_->Printf("right:hit");
-	//					}
-	//				}
-	//			}
-	//		}
-	//	}
-	//}
+						// 左から
+						if (enemy->GetWorldPosition().x < worldTransform_[z][x].translation_.x &&
+							playerUpZ > blockDownZ &&
+							playerDownZ < blockUpZ) {
+							debugText_->SetPos(50, 290);
+							debugText_->Printf("left:hit");
+						}
+
+						// 右から
+						if (enemy->GetWorldPosition().x > worldTransform_[z][x].translation_.x &&
+							playerUpZ > blockDownZ &&
+							playerDownZ < blockUpZ) {
+							debugText_->SetPos(50, 310);
+							debugText_->Printf("right:hit");
+						}
+					}
+				}
+				//進んだ先がWALLだったら進ませなくする
+				if (FirstMap[z][x] == WALL) {
+
+					// プレイヤーとブロック衝突判定
+					if (CheckCollision(worldTransform_[z][x].translation_, enemy->GetWorldPosition(), radius, enemy->GetRadius())) {
+
+						/*
+							ブロックかプレイヤーの四角の左端、右端、上端、下端、中心点を比較してぶつかった方向判別する
+
+							例　下から
+							プレイヤーの中心点とブロックの中心点比べてプレイヤーが下にいるはず
+							まだこれだと左、右からぶつかってきた場合がある
+
+							移動する前のプレイヤー(oldPlayerPos)に右端とブロックの左端を比べてプレイヤーの右端が大きかったら左からぶつかるのはありえない
+							逆のこと言える、右からぶつかるのもありえないことが分かるのでその三つの条件が達成されている場合下からぶつかっている
+						*/
+
+						// 上下
+						if (playerRightX > blockLeftX && playerLeftX < blockRightX) {
+							if (enemy->GetWorldPosition().z < worldTransform_[z][x].translation_.z) {
+								oldPlayerPos.z -= distance;
+								enemy->SetWorldPosition(oldPlayerPos);
+							}
+							else if (enemy->GetWorldPosition().z > worldTransform_[z][x].translation_.z) {
+								oldPlayerPos.z += distance;
+								enemy->SetWorldPosition(oldPlayerPos);
+							}
+						}
+						// 左右
+						else if (playerUpZ > blockDownZ && playerDownZ < blockUpZ) {
+							if (enemy->GetWorldPosition().x < worldTransform_[z][x].translation_.x) {
+								oldPlayerPos.x -= distance;
+								enemy->SetWorldPosition(oldPlayerPos);
+							}
+							else if (enemy->GetWorldPosition().x > worldTransform_[z][x].translation_.x) {
+								oldPlayerPos.x += distance;
+								enemy->SetWorldPosition(oldPlayerPos);
+							}
+						}
+
+					}
+				}
+				//進んだ先がGOALだったらクリア画面に移行する
+				if (FirstMap[z][x] == GOAL) {
+
+					// プレイヤーとブロック衝突判定
+					if (CheckCollision(worldTransform_[z][x].translation_, enemy->GetWorldPosition(), radius, enemy->GetRadius())) {
+
+						/*
+							ブロックかプレイヤーの四角の左端、右端、上端、下端、中心点を比較してぶつかった方向判別する
+
+							例　下から
+							プレイヤーの中心点とブロックの中心点比べてプレイヤーが下にいるはず
+							まだこれだと左、右からぶつかってきた場合がある
+
+							移動する前のプレイヤー(oldPlayerPos)に右端とブロックの左端を比べてプレイヤーの右端が大きかったら左からぶつかるのはありえない
+							逆のこと言える、右からぶつかるのもありえないことが分かるのでその三つの条件が達成されている場合下からぶつかっている
+						*/
+
+						// 上下
+						if (playerRightX > blockLeftX && playerLeftX < blockRightX) {
+							if (enemy->GetWorldPosition().z < worldTransform_[z][x].translation_.z) {
+								GoalCount++;
+								if (GoalCount > 100)
+								{
+									goalFlag = true;
+
+								}
+							}
+							else if (enemy->GetWorldPosition().z > worldTransform_[z][x].translation_.z) {
+								GoalCount++;
+								if (GoalCount > 100)
+								{
+									goalFlag = true;
+								}
+							}
+						}
+						// 左右
+						else if (playerUpZ > blockDownZ && playerDownZ < blockUpZ) {
+							if (enemy->GetWorldPosition().x < worldTransform_[z][x].translation_.x) {
+								GoalCount++;
+								if (GoalCount > 100)
+								{
+									goalFlag = true;
+								}
+							}
+							else if (enemy->GetWorldPosition().x > worldTransform_[z][x].translation_.x) {
+								GoalCount++;
+								if (GoalCount > 100)
+								{
+									goalFlag = true;
+								}
+							}
+						}
+
+					}
+				}
+
+			}
+		}
+
+	}
 }
 
 bool Map::CheckCollision(Vector3 pos1, Vector3 pos2, float radius1, float radius2) {

@@ -88,9 +88,13 @@ public:		//メンバ関数
 	//衝突を検出したら呼び出されるコールバック関数
 	void OnCollision();
 
+	void SetWorldPosition(Vector3 worldPosition) { worldTransform_.translation_ = worldPosition; }
+
 	float GetRadius() { return radius; }
 
 	bool GetStopFlag() { return stopFlag; }
+
+	Vector3 GetprePosition() { return prePosition_; }
 
 	bool GetOKFlag() { return OKFlag; }
 private:
@@ -110,6 +114,9 @@ private:	//メンバ変数
 
 	//デバッグテキスト
 	DebugText* debugText_ = nullptr;
+
+	// 移動する前の座標
+	Vector3 prePosition_;
 
 	PrimitiveDrawer* primitive_ = nullptr;
 

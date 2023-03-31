@@ -22,7 +22,7 @@ void Enemy::Initialize(Model* model, RailCamera* camera) {
 	//“G‚Ì‘å‚«‚³(”{—¦)
 	worldTransform_.scale_ = { 0.5f,0.5f,0.5f };
 	//“G‚Ì‰ŠúˆÊ’u‚ÌÝ’è
-	worldTransform_.translation_ = { 6.0f, 0.9f, -2.7f };
+	worldTransform_.translation_ = { -10.0f, 0.9f, 12.7f };
 
 	sensorX = worldTransform_.translation_.x;
 	sensorZ = worldTransform_.translation_.z;
@@ -54,8 +54,8 @@ void Enemy::Initialize(Model* model, RailCamera* camera) {
 void Enemy::Update(bool keyFlag, Player* player) {
 
 	//ƒZƒ“ƒT[‚ð“G‚É’Ç]
-	sensorX = worldTransform_.translation_.x;
-	sensorZ = worldTransform_.translation_.z;
+	sensorX = player->GetWorldPosition().x;
+	sensorZ = player->GetWorldPosition().z;
 
 	SensorVision();
 
@@ -90,6 +90,8 @@ void Enemy::Update(bool keyFlag, Player* player) {
 			stopIntervalTimer = 100;
 		}
 	}
+
+	prePosition_ = worldTransform_.translation_;
 
 	if (stopFlag == false || stopIntervalFlag == true) {
 		//if (worldTransform_.translation_.x <= -11)
@@ -152,6 +154,8 @@ void Enemy::Update(bool keyFlag, Player* player) {
 	debugText_->Printf("visionHitFlag [0]:%d [1]:%d [2]:%d", visionHitFlag[0], visionHitFlag[1], visionHitFlag[2]);
 	debugText_->SetPos(50, 250);
 	debugText_->Printf("isMove UP:0 DOWN:1 RIGHT:2 LEFT:3 %d", isMove);
+	debugText_->SetPos(50, 270);
+	debugText_->Printf("enemyPos X:%f Y:%f Z:%f", worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z);
 }
 
 //•`‰æ
@@ -214,7 +218,7 @@ void Enemy::FlagReset()
 
 void Enemy::Reset()
 {
-	worldTransform_.translation_ = { 6.0f, 0.9f, -2.7f };
+	//worldTransform_.translation_ = { 6.0f, 0.9f, -2.7f };
 	stopFlag = false;
 	/*stopIntervalFlag = false;
 	stopTimer = 100;
