@@ -38,7 +38,7 @@ void Enemy::Initialize(Model* model, RailCamera* camera, Vector3 enemyPos) {
 	sensorVisionX[1] = -5;
 	sensorVisionZ[1] = 10;
 
-	speed = 1;
+	speed = 0.2f;
 
 	//視界移動の記録用
 	for (int i = 0; i < 2; i++) {
@@ -51,6 +51,8 @@ void Enemy::Initialize(Model* model, RailCamera* camera, Vector3 enemyPos) {
 	visionHitFlag[2] = {};
 	//視界が再び動くまでのタイマー
 	visionTimer = 15.0f;
+
+	
 }
 
 //更新
@@ -97,43 +99,46 @@ void Enemy::Update(bool keyFlag, Player* player) {
 		}
 	}
 
-
+	prePosition_ = worldTransform_.translation_;
 
 	if (stopFlag == false || stopIntervalFlag == true) {
-		//敵の移動処理
-		if (worldTransform_.translation_.x <= -11)
-		{
-			LightFlag = false;
-			LeftFlag = true;
-		}
-		if (worldTransform_.translation_.x >= 6)
-		{
-			LeftFlag = false;
-			LightFlag = true;
-		}
+		//if (worldTransform_.translation_.x <= -11)
+		//{
+		//	LightFlag = false;
+		//	LeftFlag = true;
+		//}
+		//if (worldTransform_.translation_.x >= 6)
+		//{
+		//	LeftFlag = false;
+		//	LightFlag = true;
+		//}
 
-		if (worldTransform_.translation_.x <= -11)
-		{
-			LightFlag = false;
-			LeftFlag = true;
-		}
-		if (worldTransform_.translation_.x >= 4)
-		{
-			LeftFlag = false;
-			LightFlag = true;
-		}
+		////敵の移動処理
+		//if (worldTransform_.translation_.x <= -11)
+		//{
+		//	LightFlag = false;
+		//	LeftFlag = true;
+		//}
+		//if (worldTransform_.translation_.x >= 6)
+		//{
+		//	LeftFlag = false;
+		//	LightFlag = true;
+		//}
 
-		if (LeftFlag == true)
-		{
-			worldTransform_.translation_.x += 0.1;
-			worldTransform_.rotation_.y = RadianConversion(90);
-		}
-		if (LightFlag == true)
-		{
-			worldTransform_.translation_.x -= 0.1;
-			worldTransform_.rotation_.y = RadianConversion(270);
-		}
+		//if (LeftFlag == true)
+		//{
+		//	worldTransform_.translation_.x += 0.1;
+		//}
+		//if (LightFlag == true)
+		//{
+		//	worldTransform_.translation_.x -= 0.1;
+		//}
+
+		Move();
+
+		EnemyMoveCheck(player->GetWorldPosition().x, player->GetWorldPosition().z, player->GetRadius());
 	}
+
 
 
 	//行列の更新
@@ -158,7 +163,10 @@ void Enemy::Update(bool keyFlag, Player* player) {
 
 	debugText_->SetPos(50, 90);
 	debugText_->Printf("visionHitFlag [0]:%d [1]:%d [2]:%d", visionHitFlag[0], visionHitFlag[1], visionHitFlag[2]);
-
+	debugText_->SetPos(50, 250);
+	debugText_->Printf("isMove UP:0 DOWN:1 RIGHT:2 LEFT:3 %d", isMove);
+	debugText_->SetPos(50, 270);
+	debugText_->Printf("enemyPos X:%f Y:%f Z:%f", worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z);
 }
 
 //描画
@@ -706,7 +714,103 @@ void Enemy::RightSensorVector(float playerZ, float playerX, float playerRadius)
 {
 }
 
-void Enemy::LeftSensorVector(float playerZ, float playerX, float playerRadius)
-{
+}
+
+void Enemy::Move() {
+	// 上移動
+	
+	if (visionHitFlag[0] == 1 && visionHitFlag[1] == 1 && visionHitFlag[2] == 1) {
+		if (isMove == UP)
+		{
+			worldTransform_.translation_.z -= speed;
+		}
+		// 下移動
+		if (isMove == DOWN)
+		{
+			worldTransform_.translation_.z += speed;
+		}
+		// 右移動
+		if (isMove == RIGHT)
+		{
+			worldTransform_.translation_.x += speed;
+		}
+		// 左移動
+		if (isMove == LEFT)
+		{
+			worldTransform_.translation_.x -= speed;
+		}
+	}
+	else {
+		if (worldTransform_.translation_.x <= -11)
+		{
+			LightFlag = false;
+			LeftFlag = true;
+		}
+		if (worldTransform_.translation_.x >= 6)
+		{
+			LeftFlag = false;
+			LightFlag = true;
+		}
+
+		//敵の移動処理
+		if (worldTransform_.translation_.x <= -11)
+		{
+			LightFlag = false;
+			LeftFlag = true;
+		}
+		if (worldTransform_.translation_.x >= 6)
+		{
+			LeftFlag = false;
+			LightFlag = true;
+		}
+
+		if (LeftFlag == true)
+		{
+			worldTransform_.translation_.x += 0.1;
+		}
+		if (LightFlag == true)
+		{
+			worldTransform_.translation_.x -= 0.1;
+		}
+	}
+
+	
+
+}
+
+void Enemy::EnemyMoveCheck(float playerX, float playerZ, float playerR) {
+	count--;
+	if (count > 0) {
+		isSearch = 0;
+	}
+	if (count < 0) {
+		isSearch = TRUE;
+		// searchFlagが呼ばれたときにmoveFlagを変更するようにする
+		if (isSearch == TRUE) {
+			EnemyMoveSearch(playerX, playerZ, playerR);
+			// カウントを戻す
+			count = 20;
+		}
+	}
+}
+
+void Enemy::EnemyMoveSearch(float playerX, float playerZ, float playerR) {
+	
+	// プレイヤーが敵の右に居る時
+	if (playerX > worldTransform_.translation_.x + radius) {
+		isMove = RIGHT;
+	}
+	// プレイヤーが敵の左に居る時
+	if (playerX + playerR < worldTransform_.translation_.x) {
+		isMove = LEFT;
+	}
+	// プレイヤーが敵の上に居る時
+	if (playerZ + playerR < worldTransform_.translation_.z) {
+		isMove = UP;
+	}
+	// プレイヤーが敵の下にいる時
+	if (playerZ > worldTransform_.translation_.z + radius) {
+		isMove = DOWN;
+	}
 }
 

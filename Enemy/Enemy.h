@@ -17,6 +17,14 @@
 
 class Enemy
 {
+public:
+	enum Move {
+		UP,		// 0
+		DOWN,	// 1
+		RIGHT,	// 2
+		LEFT	// 3
+	};
+
 public:		//メンバ関数
 
 	/// <summary>
@@ -71,6 +79,24 @@ public:		//メンバ関数
 	/// </summary>
 	void SensorDraw();
 
+	/// <summary>
+	/// 移動処理
+	/// </summary>
+	void Move();
+
+	/// <summary>
+	/// プレイヤーが敵から見てどこにいるかを見る
+	/// </summary>
+	void EnemyMoveSearch(float playerX, float playerZ, float playerR);
+
+	/// <summary>
+	/// 
+	/// </summary>
+	void EnemyMoveCheck(float playerX, float playerZ, float playerR);
+
+	/// <summary>
+	/// 変数の初期化
+	/// </summary>
 	void FlagReset();
 
 	//ワールド座標を取得
@@ -81,6 +107,8 @@ public:		//メンバ関数
 	//衝突を検出したら呼び出されるコールバック関数
 	void OnCollision();
 
+	void SetWorldPosition(Vector3 worldPosition) { worldTransform_.translation_ = worldPosition; }
+
 	void SensorCollision();
 
 	float GetRadius() { return radius; }
@@ -88,6 +116,8 @@ public:		//メンバ関数
 	float GetSensorRadius() { return sensorRadius; }
 
 	bool GetStopFlag() { return stopFlag; }
+
+	Vector3 GetprePosition() { return prePosition_; }
 
 	bool GetOKFlag() { return OKFlag; }
 
@@ -113,6 +143,9 @@ private:	//メンバ変数
 
 	//デバッグテキスト
 	DebugText* debugText_ = nullptr;
+
+	// 移動する前の座標
+	Vector3 prePosition_;
 
 	PrimitiveDrawer* primitive_ = nullptr;
 
@@ -151,8 +184,13 @@ private:	//メンバ変数
 	int visionFlag; //視界の移動を制御するフラグ
 	int visionHitFlag[3]; //視界の当たり判定用フラグ
 
-	int speed;
+	float speed;
 
 	float visionTimer; //視界が再び動くまでのタイマー
+
+	int count = 20;
+	int isSearch = FALSE;
+	int isMove = UP;
+	int isMove_1 = RIGHT;
 };
 

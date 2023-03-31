@@ -22,7 +22,7 @@ void GameScene::Initialize() {
 
 	//3Dモデルを生成
 	mapModel_ = Model::CreateFromOBJ("cube", true);
-	playerModel_ = Model::CreateFromOBJ("player", true);
+	playerModel_ = Model::CreateFromOBJ("charactor_Head", true);
 	floorModel_ = Model::CreateFromOBJ("floor", true);
 	enemyModel_ = Model::CreateFromOBJ("enemy", true);
 
@@ -59,6 +59,8 @@ void GameScene::Update() {
 	newMap->Update(newPlayer.get(), MapkeyFlag);
 
 	newEnemy->Update(keyFlag, newPlayer.get());
+	newMap->EnemyBlockCheck(newEnemy.get());
+
 	newEnemy_1->Update(keyFlag, newPlayer.get());
 	//プレイヤー
 	if (input_->TriggerKey(DIK_A)) {
