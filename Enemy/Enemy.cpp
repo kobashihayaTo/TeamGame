@@ -185,62 +185,62 @@ void Enemy::SensorDraw() {
 	Vector3 end1 = { sensorVisionX[0] + sensorX,0,sensorVisionZ[0] + sensorZ };
 	Vector4 color1 = { 1,1,1,1 };
 
-#pragma region 上センサーの描画
-	if (visionHitFlag[0] == 1 && visionHitFlag[1] == 1 && visionHitFlag[2] == 1)
-	{
-		for (int i = 0; i < 2; i++)
-		{
-			start = { sensorX , 0, sensorZ };
-			end = { sensorVisionX[i] + sensorX, 0, sensorVisionZ[i] + sensorZ };
-			color = { 1,0,0,1 };
+//#pragma region 上センサーの描画
+//	if (visionHitFlag[0] == 1 && visionHitFlag[1] == 1 && visionHitFlag[2] == 1)
+//	{
+//		for (int i = 0; i < 2; i++)
+//		{
+//			start = { sensorX , 0, sensorZ };
+//			end = { sensorVisionX[i] + sensorX, 0, sensorVisionZ[i] + sensorZ };
+//			color = { 1,0,0,1 };
+//
+//			primitive_->DrawLine3d(start, end, color);
+//		}
+//		primitive_->DrawLine3d(end, end1, color);
+//
+//	}
+//	else
+//	{
+//		for (int i = 0; i < 2; i++)
+//		{
+//			start = { sensorX , 0, sensorZ };
+//			end = { sensorVisionX[i] + sensorX, 0, sensorVisionZ[i] + sensorZ };
+//			color1 = { 1,1,1,1 };
+//
+//			primitive_->DrawLine3d(start, end, color1);
+//		}
+//		primitive_->DrawLine3d(end, end1, color1);
+//	}
+//#pragma endregion
 
-			primitive_->DrawLine3d(start, end, color);
-		}
-		primitive_->DrawLine3d(end, end1, color);
-
-	}
-	else
-	{
-		for (int i = 0; i < 2; i++)
-		{
-			start = { sensorX , 0, sensorZ };
-			end = { sensorVisionX[i] + sensorX, 0, sensorVisionZ[i] + sensorZ };
-			color1 = { 1,1,1,1 };
-
-			primitive_->DrawLine3d(start, end, color1);
-		}
-		primitive_->DrawLine3d(end, end1, color1);
-	}
-#pragma endregion
-
-#pragma region 下センサーの描画
-	if (visionHitFlag[0] == 1 && visionHitFlag[1] == 1 && visionHitFlag[2] == 1)
-	{
-		for (int i = 0; i < 2; i++)
-		{
-			start = { sensorX , 0, sensorZ };
-			end = { -sensorVisionX[i] - sensorX, 0, sensorVisionZ[i] + sensorZ };
-			color = { 1,0,0,1 };
-
-			primitive_->DrawLine3d(start, end, color);
-		}
-		primitive_->DrawLine3d(end, end1, color);
-
-	}
-	else
-	{
-		for (int i = 0; i < 2; i++)
-		{
-			start = { sensorX , 0, sensorZ };
-			end = { sensorVisionX[i] + sensorX, 0, -sensorVisionZ[i] - sensorZ };
-			color1 = { 1,1,1,1 };
-
-			primitive_->DrawLine3d(start, end, color1);
-		}
-		end1 = { sensorVisionX[0] + sensorX, 0, -sensorVisionZ[0] - sensorZ };
-		primitive_->DrawLine3d(end, end1, color1);
-	}
-#pragma endregion
+//#pragma region 下センサーの描画
+//	if (visionHitFlag[0] == 1 && visionHitFlag[1] == 1 && visionHitFlag[2] == 1)
+//	{
+//		for (int i = 0; i < 2; i++)
+//		{
+//			start = { sensorX , 0, sensorZ };
+//			end = { -sensorVisionX[i] - sensorX, 0, sensorVisionZ[i] + sensorZ };
+//			color = { 1,0,0,1 };
+//
+//			primitive_->DrawLine3d(start, end, color);
+//		}
+//		primitive_->DrawLine3d(end, end1, color);
+//
+//	}
+//	else
+//	{
+//		for (int i = 0; i < 2; i++)
+//		{
+//			start = { sensorX , 0, sensorZ };
+//			end = { sensorVisionX[i] + sensorX, 0, -sensorVisionZ[i] - sensorZ };
+//			color1 = { 1,1,1,1 };
+//
+//			primitive_->DrawLine3d(start, end, color1);
+//		}
+//		end1 = { sensorVisionX[0] + sensorX, 0, -sensorVisionZ[0] - sensorZ };
+//		primitive_->DrawLine3d(end, end1, color1);
+//	}
+//#pragma endregion
 
 //#pragma region 右センサーの描画
 //	if (visionHitFlag[0] == 1 && visionHitFlag[1] == 1 && visionHitFlag[2] == 1)
@@ -377,7 +377,7 @@ void Enemy::OnCollision() {
 void Enemy::SensorCollision()
 {
 
-	debugText_->SetPos(100, 100);
+	debugText_->SetPos(50, 150);
 	debugText_->Printf("fuck");
 }
 

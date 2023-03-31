@@ -233,7 +233,7 @@ void GameScene::CheckAllCollisions(Enemy* enemy_) {
 	//自キャラとマップの当たり判定
 	if (distance <= radius * radius) {
 		//自キャラの衝突時コールバックを呼び出す
-		newPlayer->OnCollision();
+		//newPlayer->OnCollision();
 		//マップの衝突時コールバックを呼び出す
 		enemy_->OnCollision();
 	}

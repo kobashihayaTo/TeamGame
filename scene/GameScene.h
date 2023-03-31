@@ -130,7 +130,7 @@ class GameScene {
 	bool MapkeyFlag = false;
 	bool playerkeyFlag = false;
 
-	Vector3 enemyPos = { 6.0f, 0.9f, -2.7f };
+	Vector3 enemyPos = { -10.0f, 0.9f, 12.7f };
 	Vector3 enemyPos_1 = { 4.0f, 0.9f, -2.0f };
 
 

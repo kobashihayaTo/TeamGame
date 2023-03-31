@@ -102,8 +102,8 @@ void Player::Update(bool PlayerKeyFlag) {
 	//行列の更新
 	myFunc_.UpdateWorldTransform(worldTransform_);
 	//デバッグ用表示
-	debugText_->SetPos(50, 150);
-	debugText_->Printf("Player pos:(%f, %f, %f)", worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z);
+	/*debugText_->SetPos(50, 150);
+	debugText_->Printf("Player pos:(%f, %f, %f)", worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z);*/
 
 	debugText_->SetPos(50, 300);
 	debugText_->Printf("playerSecretFlag:%d", playerSecretFlag);
