@@ -74,6 +74,8 @@ void Enemy::Update(bool keyFlag, Player* player, float moveDis, bool WidthHeight
 
 	//UpSensorVector(player->GetWorldPosition().z, player->GetWorldPosition().x, player->GetRadius());
 
+	sensorTransform_.ColorSetter(sensorColor);
+
 	//プレイヤーの移動ベクトル
 	Vector3 move = { 0,0,0 };
 

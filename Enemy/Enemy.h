@@ -196,5 +196,7 @@ private:	//ƒƒ“ƒo•Ï”
 	int isMove = UP;
 	int isMove_1 = RIGHT;
 	float sensorMovedDis = 0.0f;
+
+	XMFLOAT4 sensorColor = { 1.0f,1.0f,1.0f,0.2f };
 };
 
