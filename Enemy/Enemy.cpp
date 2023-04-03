@@ -5,6 +5,7 @@
 void Enemy::Initialize(Model* model, Model* sensormodel, RailCamera* camera, Vector3 enemyPos) {
 	//NULLポイントチェック
 	assert(model);
+	assert(sensormodel);
 
 	//引数として受け取ったデータをメンバ変数に記憶する
 	model_ = model;
@@ -29,7 +30,7 @@ void Enemy::Initialize(Model* model, Model* sensormodel, RailCamera* camera, Vec
 	//敵センサーの大きさ(倍率)
 	sensorTransform_.scale_ = { 2.0f,2.0f,2.0f };
 	//センサーの初期位置の設定
-	sensorTransform_.translation_ = { enemyPos.x, enemyPos.y + 5.0f, enemyPos.z };
+	sensorTransform_.translation_ = { enemyPos.x, enemyPos.y, enemyPos.z };
 
 
 	sensorX = worldTransform_.translation_.x;
@@ -117,6 +118,7 @@ void Enemy::Update(bool keyFlag, Player* player, float moveDis, bool WidthHeight
 	//行列の更新
 	myFunc_.UpdateWorldTransform(worldTransform_);
 	myFunc_.UpdateWorldTransform(sensorTransform_);
+	sensorTransform_.TransferColorMatrix();
 	worldTransform_.TransferColorMatrix();
 
 
@@ -138,8 +140,10 @@ void Enemy::Update(bool keyFlag, Player* player, float moveDis, bool WidthHeight
 	debugText_->Printf("visionHitFlag [0]:%d [1]:%d [2]:%d", visionHitFlag[0], visionHitFlag[1], visionHitFlag[2]);
 	debugText_->SetPos(50, 250);
 	debugText_->Printf("isMove UP:0 DOWN:1 RIGHT:2 LEFT:3 %d", isMove);
-	debugText_->SetPos(50, 270);
+	debugText_->SetPos(50, 540);
 	debugText_->Printf("enemyPos X:%f Y:%f Z:%f", worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z);
+	debugText_->SetPos(50, 570);
+	debugText_->Printf("sensorPos X:%f Y:%f Z:%f", sensorTransform_.translation_.x, sensorTransform_.translation_.y, sensorTransform_.translation_.z);
 	debugText_->SetPos(600, 300);
 	debugText_->Printf("move %f", sensorMovedDis);
 }
@@ -153,12 +157,12 @@ void Enemy::Draw(ViewProjection& viewprojection) {
 //センサーの描画
 void Enemy::SensorDraw(ViewProjection& viewProjection) {
 
-	Vector3 start = { 0,0,0 };
+	/*Vector3 start = { 0,0,0 };
 	Vector3 end = { 0,0,0 };
 	Vector4 color = { 1,0,0,1 };
 	Vector3 start1 = { sensorVisionX[0] + sensorX,0,sensorVisionZ[0] + sensorZ };
 	Vector3 end1 = { sensorVisionX[0] + sensorX,0,sensorVisionZ[0] + sensorZ };
-	Vector4 color1 = { 1,1,1,1 };
+	Vector4 color1 = { 1,1,1,1 };*/
 
 	sensormodel_->Draw(sensorTransform_, viewProjection);
 
