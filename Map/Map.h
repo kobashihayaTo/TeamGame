@@ -29,7 +29,7 @@ public:		//メンバ関数
 	~Map();
 
 	//初期化
-	void Initialize(Model* model, Model* floorModel);
+	void Initialize(Model* model, Model* floorModel, Model* effectmodel_);
 
 	//更新
 	void Update(Player* player, bool MapkeyFlag);
@@ -70,6 +70,8 @@ public:		//メンバ関数
 	void Reset();
 
 	void FlagReset();
+
+
 public:
 	//半径
 	const float radius = 0.9f;
@@ -141,12 +143,13 @@ private:	//メンバ変数
 	WorldTransform worldTransform_[30][25] = {};
 	int BlockSize;
 	WorldTransform floorWorldTransform_;
-
+	WorldTransform effectworldTrans;
 
 	//操作
 	Input* input_ = nullptr;
 	//モデル
 	Model* model_ = nullptr;
+	Model* effectmodel = nullptr;
 
 	//床のモデル
 	Model* floorModel_ = nullptr;
@@ -156,6 +159,8 @@ private:	//メンバ変数
 
 	//ファンクション
 	MyFunc myFunc_;
+	
+	Player* player_ = nullptr;
 
 	//マップフラグ
 	int MapFlag = 0;
@@ -167,7 +172,10 @@ private:	//メンバ変数
 	int  AnswerIntervalTimer = 100;
 
 	bool goalFlag = false;
+	bool goalReadyFlag = false;
 	int GoalCount = 0;
+
+	int goalcount = 0;
 
 	int Map_Z = 30;
 	int Map_X = 25;

@@ -26,12 +26,13 @@ void GameScene::Initialize() {
 	floorModel_ = Model::CreateFromOBJ("floor", true);
 	enemyModel_ = Model::CreateFromOBJ("enemy", true);
 	enemySensorModel_ = Model::CreateFromOBJ("sensor", true);
+	effectModel = Model::CreateFromOBJ("effect", true);
 
 	//UIの初期化
 	newUI->Initialize();
 #pragma  region 初期化
 	//マップの初期化
-	newMap->Initialize(mapModel_, floorModel_);
+	newMap->Initialize(mapModel_, floorModel_, effectModel);
 	//カメラの初期位置を設定
 	cameraPos = { 10,10,10 };
 	cameraRot = { 0,0,0 };
@@ -276,6 +277,8 @@ void GameScene::SceneChange() {
 		nextScene_ = Scene::END;
 		isEnd_ = true;
 	}
+
+
 	if (newPlayer->GetDeathFlag() == true)
 	{
 		nextScene_ = Scene::BADEND;

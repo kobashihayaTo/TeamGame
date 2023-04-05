@@ -120,6 +120,9 @@ class GameScene {
 	//UI
 	std::unique_ptr<UI> newUI = std::make_unique<UI>();
 
+	//エフェクト
+	Model* effectModel = nullptr;
+
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>

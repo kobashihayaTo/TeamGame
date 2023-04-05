@@ -87,6 +87,8 @@ public:
 
 	float GetRadius() { return radius; }
 
+
+
 	//カメラのトランスのセッター
 
 
@@ -99,11 +101,14 @@ private:	//メンバ変数
 	//ワールド変換データ
 	WorldTransform worldTransform_;
 
+	WorldTransform effectTransform;
+
 	// 移動する前の座標
 	Vector3 prePosition_;
 
 	//モデル
 	Model* model_ = nullptr;
+	Model* effectmodel = nullptr;
 
 	//入力処理するため
 	Input* input_ = nullptr;
@@ -117,6 +122,8 @@ private:	//メンバ変数
 	Material* material = nullptr;
 
 	PrimitiveDrawer* primitiveDrawer = nullptr;
+
+
 
 	//右上、右下の座標の変数
 	int rightTopZ = 0;
