@@ -6,8 +6,10 @@ void Player::Initialize(Model* model) {
 	//NULLポイントチェック
 	assert(model);
 
+
 	//引数として受け取ったデータをメンバ変数に記憶する
 	model_ = model;
+
 
 	//シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
@@ -16,16 +18,22 @@ void Player::Initialize(Model* model) {
 	//ワールド変換の初期化
 	worldTransform_.Initialize();
 
+
 	//プレイヤーの大きさ(倍率)
 	worldTransform_.scale_ = { 2.0f,2.0f,2.0f };
+
 	//プレイヤーの初期位置の設定
 	Trans = { -11.0f, 0.0f, -18.0f };
 	worldTransform_.translation_ = Trans;
+
+
 
 }
 
 //更新
 void Player::Update(bool PlayerKeyFlag) {
+	Trans.x = worldTransform_.translation_.x;
+	Trans.z = worldTransform_.translation_.z;
 
 	//プレイヤーの移動ベクトル
 	if (playerSecretFlag == false ) {
@@ -42,7 +50,9 @@ void Player::Update(bool PlayerKeyFlag) {
 	}
 	worldTransform_.TransferColorMatrix();
 
+
 	prePosition_ = worldTransform_.translation_;
+
 
 	//プレイヤー移動処理
 	//上下
@@ -64,10 +74,9 @@ void Player::Update(bool PlayerKeyFlag) {
 		worldTransform_.rotation_.y = RadianConversion(270);
 	}
 
+
+
 	if (PlayerKeyFlag == true) {
-	/*	if (playerSecretFlag == false) {
-			
-		}*/
 		playerSecretFlag = true;
 	}
 
@@ -92,18 +101,15 @@ void Player::Update(bool PlayerKeyFlag) {
 			SecretIntervalTimer = 100;
 
 		}
-
-
 	}
 	move = worldTransform_.translation_;
 
-
-
 	//行列の更新
 	myFunc_.UpdateWorldTransform(worldTransform_);
+
+
+
 	//デバッグ用表示
-	/*debugText_->SetPos(50, 150);
-	debugText_->Printf("Player pos:(%f, %f, %f)", worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z);*/
 
 	debugText_->SetPos(50, 300);
 	debugText_->Printf("playerSecretFlag:%d", playerSecretFlag);

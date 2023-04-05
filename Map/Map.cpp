@@ -7,11 +7,15 @@ Map::Map()
 
 Map::~Map() {}
 
-void Map::Initialize(Model* model, Model* floorModel) {
+void Map::Initialize(Model* model, Model* floorModel, Model* effectmodel_) {
 	//引数として受け取ったデータをメンバ変数に記録する
 	BlockSize = 32;
 	input_ = Input::GetInstance();
 	model_ = model;
+
+	assert(effectmodel_);
+	effectmodel = effectmodel_;
+
 	floorModel_ = floorModel;
 
 	debugText_ = DebugText::GetInstance();
@@ -38,9 +42,17 @@ void Map::Initialize(Model* model, Model* floorModel) {
 	debugText_->Printf(" pos:(%f, %f, %f)", worldTransform_[0][0].translation_.x, worldTransform_[0][0].translation_.y, worldTransform_[0][0].translation_.z);
 
 	goalFlag = false;
+	effectworldTrans.Initialize();
+	effectworldTrans.scale_ = { 2.0f,2.0f,2.0f };
+	effectworldTrans.translation_ = { -11.0f, 0.0f, -18.0f };
+	effectworldTrans.translation_.y -= 10.0f;
+
 }
 
 void Map::Update(Player* player, bool MapkeyFlag) {
+
+	effectworldTrans.translation_.x = player->GetTransform().x;
+	effectworldTrans.translation_.z = player->GetTransform().z;
 
 	//マップチップとプレイヤーが当たっているか確認する
 	PlayerBlockCheck(player);
@@ -79,7 +91,16 @@ void Map::Update(Player* player, bool MapkeyFlag) {
 		}
 	}
 
+
+	effectworldTrans.TransferColorMatrix();
+	myFunc_.UpdateWorldTransform(effectworldTrans);
+	
+
 	//デバッグ用表示
+
+	debugText_->SetPos(50, 150);
+	debugText_->Printf("effect pos:(%f, %f, %f)", effectworldTrans.translation_.x, effectworldTrans.translation_.y, effectworldTrans.translation_.z);
+
 	debugText_->SetPos(50, 180);
 	debugText_->Printf("MapPlayer pos:(%f, %f, %f)", player->GetWorldPosition().x, player->GetWorldPosition().y, player->GetWorldPosition().z);
 
@@ -127,7 +148,7 @@ void Map::Draw(ViewProjection& viewProjection) {
 			}
 		}
 	}
-
+	effectmodel->Draw(effectworldTrans, viewProjection);
 	//if (MapFlag == 1)
 	//{
 	//	//3Dモデルを描画
@@ -139,7 +160,6 @@ void Map::Draw(ViewProjection& viewProjection) {
 	//		}
 	//	}
 	//}
-
 }
 
 void Map::FloorDraw(ViewProjection& viewProjection) {
@@ -335,38 +355,54 @@ void Map::PlayerBlockCheck(Player* player) {
 					// プレイヤーとブロック衝突判定
 					if (CheckCollision(worldTransform_[z][x].translation_, player->GetWorldPosition(), radius, player->GetRadius())) {
 						GoalCount++;
-						if (GoalCount >= 120) {
-
-							/*
-								ブロックかプレイヤーの四角の左端、右端、上端、下端、中心点を比較してぶつかった方向判別する
-
-								例　下から
-								プレイヤーの中心点とブロックの中心点比べてプレイヤーが下にいるはず
-								まだこれだと左、右からぶつかってきた場合がある
-
-								移動する前のプレイヤー(oldPlayerPos)に右端とブロックの左端を比べてプレイヤーの右端が大きかったら左からぶつかるのはありえない
-								逆のこと言える、右からぶつかるのもありえないことが分かるのでその三つの条件が達成されている場合下からぶつかっている
-							*/
-
-							// 上下
-							if (playerRightX > blockLeftX && playerLeftX < blockRightX) {
-								if (player->GetWorldPosition().z < worldTransform_[z][x].translation_.z) {
+						if (GoalCount >= 100) {
+							goalReadyFlag = true;
+						}
+						if (goalReadyFlag == true) {
+							effectworldTrans.translation_.y += 0.05f;
+							if (effectworldTrans.translation_.y >= 0.0f) {
+								effectworldTrans.translation_.y = 0.0f;
+								goalcount++;
+								if (goalcount > 100) {
 									goalFlag = true;
 								}
-								else if (player->GetWorldPosition().z > worldTransform_[z][x].translation_.z) {
-									goalFlag = true;
-								}
-							}
-							// 左右
-							else if (playerUpZ > blockDownZ && playerDownZ < blockUpZ) {
-								if (player->GetWorldPosition().x < worldTransform_[z][x].translation_.x) {
-									goalFlag = true;
-								}
-								else if (player->GetWorldPosition().x > worldTransform_[z][x].translation_.x) {
-									goalFlag = true;
-								}
+								
 							}
 						}
+
+
+						//if (GoalCount >= 120) {
+
+						//	/*
+						//		ブロックかプレイヤーの四角の左端、右端、上端、下端、中心点を比較してぶつかった方向判別する
+
+						//		例　下から
+						//		プレイヤーの中心点とブロックの中心点比べてプレイヤーが下にいるはず
+						//		まだこれだと左、右からぶつかってきた場合がある
+
+						//		移動する前のプレイヤー(oldPlayerPos)に右端とブロックの左端を比べてプレイヤーの右端が大きかったら左からぶつかるのはありえない
+						//		逆のこと言える、右からぶつかるのもありえないことが分かるのでその三つの条件が達成されている場合下からぶつかっている
+						//	*/
+
+						//	// 上下
+						//	if (playerRightX > blockLeftX && playerLeftX < blockRightX) {
+						//		if (player->GetWorldPosition().z < worldTransform_[z][x].translation_.z) {
+						//			goalFlag = true;
+						//		}
+						//		else if (player->GetWorldPosition().z > worldTransform_[z][x].translation_.z) {
+						//			goalFlag = true;
+						//		}
+						//	}
+						//	// 左右
+						//	else if (playerUpZ > blockDownZ && playerDownZ < blockUpZ) {
+						//		if (player->GetWorldPosition().x < worldTransform_[z][x].translation_.x) {
+						//			goalFlag = true;
+						//		}
+						//		else if (player->GetWorldPosition().x > worldTransform_[z][x].translation_.x) {
+						//			goalFlag = true;
+						//		}
+						//	}
+						//}
 
 					}
 				}
@@ -519,61 +555,7 @@ void Map::EnemyBlockCheck(Enemy* enemy) {
 						}
 
 					}
-				}
-				//進んだ先がGOALだったらクリア画面に移行する
-				if (FirstMap[z][x] == GOAL) {
-
-					// プレイヤーとブロック衝突判定
-					if (CheckCollision(worldTransform_[z][x].translation_, enemy->GetWorldPosition(), radius, enemy->GetRadius())) {
-
-						/*
-							ブロックかプレイヤーの四角の左端、右端、上端、下端、中心点を比較してぶつかった方向判別する
-
-							例　下から
-							プレイヤーの中心点とブロックの中心点比べてプレイヤーが下にいるはず
-							まだこれだと左、右からぶつかってきた場合がある
-
-							移動する前のプレイヤー(oldPlayerPos)に右端とブロックの左端を比べてプレイヤーの右端が大きかったら左からぶつかるのはありえない
-							逆のこと言える、右からぶつかるのもありえないことが分かるのでその三つの条件が達成されている場合下からぶつかっている
-						*/
-
-						// 上下
-						if (playerRightX > blockLeftX && playerLeftX < blockRightX) {
-							if (enemy->GetWorldPosition().z < worldTransform_[z][x].translation_.z) {
-								GoalCount++;
-								if (GoalCount > 100)
-								{
-									goalFlag = true;
-
-								}
-							}
-							else if (enemy->GetWorldPosition().z > worldTransform_[z][x].translation_.z) {
-								GoalCount++;
-								if (GoalCount > 100)
-								{
-									goalFlag = true;
-								}
-							}
-						}
-						// 左右
-						else if (playerUpZ > blockDownZ && playerDownZ < blockUpZ) {
-							if (enemy->GetWorldPosition().x < worldTransform_[z][x].translation_.x) {
-								GoalCount++;
-								if (GoalCount > 100)
-								{
-									goalFlag = true;
-								}
-							}
-							else if (enemy->GetWorldPosition().x > worldTransform_[z][x].translation_.x) {
-								GoalCount++;
-								if (GoalCount > 100)
-								{
-									goalFlag = true;
-								}
-							}
-						}
-
-					}
+				
 				}
 
 			}
@@ -601,6 +583,9 @@ void Map::Reset()
 	AnswerIntervalFlag = false;
 	AnswerTimer = 100;
 	AnswerIntervalTimer = 100;
+
+	effectworldTrans.translation_ = { -11.0f, 0.0f, -18.0f };
+	effectworldTrans.translation_.y -= 10.0f;
 }
 
 void Map::FlagReset()
@@ -609,4 +594,7 @@ void Map::FlagReset()
 	AnswerIntervalFlag = false;
 	AnswerTimer = 100;
 	AnswerIntervalTimer = 100;
+
+	effectworldTrans.translation_ = { -11.0f, 0.0f, -18.0f };
+	effectworldTrans.translation_.y -= 10.0f;
 }
