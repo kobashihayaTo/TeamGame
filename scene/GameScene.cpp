@@ -54,11 +54,16 @@ void GameScene::Initialize() {
 
 void GameScene::Update() {
 
+	if (newMap->GetFlag() == false) {
 	//プレイヤーの更新
 	newPlayer->Update(playerkeyFlag);
+	}
+
 
 	//マップの更新
 	newMap->Update(newPlayer.get(), MapkeyFlag);
+
+
 
 	newEnemy->Update(keyFlag, newPlayer.get(), 2.0f, false);
 	newMap->EnemyBlockCheck(newEnemy.get());

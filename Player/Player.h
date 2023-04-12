@@ -123,8 +123,6 @@ private:	//メンバ変数
 
 	PrimitiveDrawer* primitiveDrawer = nullptr;
 
-
-
 	//右上、右下の座標の変数
 	int rightTopZ = 0;
 	int rightTopX = 0;
