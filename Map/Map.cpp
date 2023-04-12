@@ -176,6 +176,7 @@ void Map::OnCollision(Vector3 playerPos, float radius) {
 
 
 void Map::PlayerBlockCheck(Player* player) {
+	
 	if (MapFlag == 0) {
 		for (int z = 0; z < Map_Z; z++) {
 			for (int x = 0; x < Map_X; x++) {
@@ -355,21 +356,32 @@ void Map::PlayerBlockCheck(Player* player) {
 					// プレイヤーとブロック衝突判定
 					if (CheckCollision(worldTransform_[z][x].translation_, player->GetWorldPosition(), radius, player->GetRadius())) {
 						GoalCount++;
-						if (GoalCount >= 100) {
+						if (GoalCount > 200) {
 							goalReadyFlag = true;
 						}
 						if (goalReadyFlag == true) {
 							effectworldTrans.translation_.y += 0.05f;
 							if (effectworldTrans.translation_.y >= 0.0f) {
 								effectworldTrans.translation_.y = 0.0f;
+								effectOffFlag = true;
+								goalReadyFlag = false;
+								
+							}
+						}
+						if (effectOffFlag == true) {
+							effectworldTrans.translation_.y -= 0.1f;
+							/*debugText_->SetPos(50, 710);
+							debugText_->Printf("FFFFFFFFFFFFFFFFF");*/
+							if (effectworldTrans.translation_.y <= -10.0f) {
+								effectworldTrans.translation_.y = -10.0f;
 								goalcount++;
 								if (goalcount > 100) {
 									goalFlag = true;
 								}
-								
 							}
 						}
-
+						debugText_->SetPos(50, 710);
+						debugText_->Printf("effectworldTrans.translation_.y:%f", effectworldTrans.translation_.y);
 
 						//if (GoalCount >= 120) {
 
@@ -578,6 +590,7 @@ void Map::Reset()
 {
 	goalFlag = false;
 	GoalCount = 0;
+	goalcount = 0;
 
 	AnswerFlag = false;
 	AnswerIntervalFlag = false;
@@ -586,6 +599,8 @@ void Map::Reset()
 
 	effectworldTrans.translation_ = { -11.0f, 0.0f, -18.0f };
 	effectworldTrans.translation_.y -= 10.0f;
+
+	effectOffFlag = false;
 }
 
 void Map::FlagReset()
