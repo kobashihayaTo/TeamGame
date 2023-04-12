@@ -30,17 +30,21 @@ void Enemy::Initialize(Model* model, Model* sensormodel, RailCamera* camera, Vec
 	//敵センサーの大きさ(倍率)
 	sensorTransform_.scale_ = { 2.0f,2.0f,2.0f };
 	//センサーの初期位置の設定
-	sensorTransform_.translation_ = { enemyPos.x, enemyPos.y, enemyPos.z };
+	sensorTransform_.translation_ = { enemyPos.x, 1000.0f, enemyPos.z };
 
 
 	sensorX = worldTransform_.translation_.x;
 	sensorZ = worldTransform_.translation_.z;
 
-	sensorVisionX[0] = 5;
-	sensorVisionZ[0] = 10;
+	HeightSensorVisionX[0] = 5;
+	HeightSensorVisionZ[0] = 10;
+	HeightSensorVisionX[1] = -5;
+	HeightSensorVisionZ[1] = 10;
 
-	sensorVisionX[1] = -5;
-	sensorVisionZ[1] = 10;
+	WidthSensorVisionX[0] = 10;
+	WidthSensorVisionZ[0] = 5;
+	WidthSensorVisionX[1] = -10;
+	WidthSensorVisionZ[1] = 5;
 
 	speed = 0.2f;
 
@@ -72,9 +76,30 @@ void Enemy::Update(bool keyFlag, Player* player, float moveDis, bool WidthHeight
 
 	SensorVision();
 
+
+
 	//UpSensorVector(player->GetWorldPosition().z, player->GetWorldPosition().x, player->GetRadius());
+	//DownSensorVector(player->GetWorldPosition().z, player->GetWorldPosition().x, player->GetRadius());
 
 	sensorTransform_.ColorSetter(sensorColor);
+
+	if (WidthHeightFlag == false) {
+		if (RightMoveFlag == true) {
+			rightFlag = VectorLineCollision(player->GetWorldPosition(), player->GetRadius(), RightStart, RightEnd, RightEnd1);
+		}
+		if (LeftMoveFlag == true) {
+			leftFlag = VectorLineCollision(player->GetWorldPosition(), player->GetRadius(), LeftStart, LeftEnd, LeftEnd1);
+		}
+	}
+
+	if (WidthHeightFlag == true) {
+		if (UpMoveFlag == true) {
+			upFlag = VectorLineCollision(player->GetWorldPosition(), player->GetRadius(), UpStart, UpEnd, UpEnd1);
+		}
+		if (DownMoveFlag == true) {
+			downFlag = VectorLineCollision(player->GetWorldPosition(), player->GetRadius(), DownStart, DownEnd, DownEnd1);
+		}
+	}
 
 	//プレイヤーの移動ベクトル
 	Vector3 move = { 0,0,0 };
@@ -139,7 +164,9 @@ void Enemy::Update(bool keyFlag, Player* player, float moveDis, bool WidthHeight
 	debugText_->Printf("stopIntervalTimer:%d", stopIntervalTimer);*/
 
 	debugText_->SetPos(50, 90);
-	debugText_->Printf("visionHitFlag [0]:%d [1]:%d [2]:%d", visionHitFlag[0], visionHitFlag[1], visionHitFlag[2]);
+	debugText_->Printf("up:%d down:%d right:%d left:%d", upFlag, downFlag, rightFlag, leftFlag);
+	debugText_->SetPos(50, 120);
+	debugText_->Printf("upMove:%d downMove:%d rightMove:%d leftMove:%d", UpMoveFlag, DownMoveFlag, RightMoveFlag, LeftMoveFlag);
 	debugText_->SetPos(50, 250);
 	debugText_->Printf("isMove UP:0 DOWN:1 RIGHT:2 LEFT:3 %d", isMove);
 	debugText_->SetPos(50, 540);
@@ -159,133 +186,125 @@ void Enemy::Draw(ViewProjection& viewprojection) {
 //センサーの描画
 void Enemy::SensorDraw(ViewProjection& viewProjection) {
 
-	/*Vector3 start = { 0,0,0 };
-	Vector3 end = { 0,0,0 };
+
 	Vector4 color = { 1,0,0,1 };
-	Vector3 start1 = { sensorVisionX[0] + sensorX,0,sensorVisionZ[0] + sensorZ };
-	Vector3 end1 = { sensorVisionX[0] + sensorX,0,sensorVisionZ[0] + sensorZ };
-	Vector4 color1 = { 1,1,1,1 };*/
+	Vector4 color1 = { 1,1,1,1 };
 
-	sensormodel_->Draw(sensorTransform_, viewProjection);
+	//sensormodel_->Draw(sensorTransform_, viewProjection);
 
-	//#pragma region 上センサーの描画
-	//	if (visionHitFlag[0] == 1 && visionHitFlag[1] == 1 && visionHitFlag[2] == 1)
-	//	{
-	//		for (int i = 0; i < 2; i++)
-	//		{
-	//			start = { sensorX , 0, sensorZ };
-	//			end = { sensorVisionX[i] + sensorX, 0, sensorVisionZ[i] + sensorZ };
-	//			color = { 1,0,0,1 };
-	//
-	//			primitive_->DrawLine3d(start, end, color);
-	//		}
-	//		primitive_->DrawLine3d(end, end1, color);
-	//
-	//	}
-	//	else
-	//	{
-	//		for (int i = 0; i < 2; i++)
-	//		{
-	//			start = { sensorX , 0, sensorZ };
-	//			end = { sensorVisionX[i] + sensorX, 0, sensorVisionZ[i] + sensorZ };
-	//			color1 = { 1,1,1,1 };
-	//
-	//			primitive_->DrawLine3d(start, end, color1);
-	//		}
-	//		primitive_->DrawLine3d(end, end1, color1);
-	//	}
-	//#pragma endregion
+#pragma region 上センサーの描画
 
-	//#pragma region 下センサーの描画
-	//	if (visionHitFlag[0] == 1 && visionHitFlag[1] == 1 && visionHitFlag[2] == 1)
-	//	{
-	//		for (int i = 0; i < 2; i++)
-	//		{
-	//			start = { sensorX , 0, sensorZ };
-	//			end = { -sensorVisionX[i] - sensorX, 0, sensorVisionZ[i] + sensorZ };
-	//			color = { 1,0,0,1 };
-	//
-	//			primitive_->DrawLine3d(start, end, color);
-	//		}
-	//		primitive_->DrawLine3d(end, end1, color);
-	//
-	//	}
-	//	else
-	//	{
-	//		for (int i = 0; i < 2; i++)
-	//		{
-	//			start = { sensorX , 0, sensorZ };
-	//			end = { sensorVisionX[i] + sensorX, 0, -sensorVisionZ[i] - sensorZ };
-	//			color1 = { 1,1,1,1 };
-	//
-	//			primitive_->DrawLine3d(start, end, color1);
-	//		}
-	//		end1 = { sensorVisionX[0] + sensorX, 0, -sensorVisionZ[0] - sensorZ };
-	//		primitive_->DrawLine3d(end, end1, color1);
-	//	}
-	//#pragma endregion
+	if (UpMoveFlag == true) {
+		if (upFlag == true) {
+			UpStart = { sensorX , 0, sensorZ };
+			UpEnd = { HeightSensorVisionX[0] + sensorX, 0, HeightSensorVisionZ[0] + sensorZ };
+			UpEnd1 = { HeightSensorVisionX[1] + sensorX,0,HeightSensorVisionZ[1] + sensorZ };
 
-	//#pragma region 右センサーの描画
-	//	if (visionHitFlag[0] == 1 && visionHitFlag[1] == 1 && visionHitFlag[2] == 1)
-	//	{
-	//		for (int i = 0; i < 2; i++)
-	//		{
-	//			start = { sensorX , 0, sensorZ };
-	//			end = { sensorVisionX[i] + sensorX, 0, sensorVisionZ[i] + sensorZ };
-	//			color = { 1,0,0,1 };
-	//
-	//			primitive_->DrawLine3d(start, end, color);
-	//		}
-	//		primitive_->DrawLine3d(end, end1, color);
-	//
-	//	}
-	//	else
-	//	{
-	//		for (int i = 0; i < 2; i++)
-	//		{
-	//			start = { sensorX , 0, sensorZ };
-	//			end = { sensorVisionX[i] + sensorX, 0, sensorVisionZ[i] + sensorZ };
-	//			color1 = { 1,1,1,1 };
-	//
-	//			primitive_->DrawLine3d(start, end, color1);
-	//		}
-	//		primitive_->DrawLine3d(end, end1, color1);
-	//	}
-	//#pragma endregion
-	//
-	//#pragma region 左センサーの描画
-	//	if (visionHitFlag[0] == 1 && visionHitFlag[1] == 1 && visionHitFlag[2] == 1)
-	//	{
-	//		for (int i = 0; i < 2; i++)
-	//		{
-	//			start = { sensorX , 0, sensorZ };
-	//			end = { sensorVisionX[i] + sensorX, 0, sensorVisionZ[i] + sensorZ };
-	//			color = { 1,0,0,1 };
-	//
-	//			primitive_->DrawLine3d(start, end, color);
-	//		}
-	//		primitive_->DrawLine3d(end, end1, color);
-	//
-	//	}
-	//	else
-	//	{
-	//		for (int i = 0; i < 2; i++)
-	//		{
-	//			start = { sensorX , 0, sensorZ };
-	//			end = { sensorVisionX[i] + sensorX, 0, sensorVisionZ[i] + sensorZ };
-	//			color1 = { 1,1,1,1 };
-	//
-	//			primitive_->DrawLine3d(start, end, color1);
-	//		}
-	//		primitive_->DrawLine3d(end, end1, color1);
-	//	}
-	//#pragma endregion
+			primitive_->DrawLine3d(UpStart, UpEnd, color);
+			primitive_->DrawLine3d(UpEnd, UpEnd1, color);
+			primitive_->DrawLine3d(UpEnd1, UpStart, color);
+
+		}
+		else {
+			UpStart = { sensorX , 0, sensorZ };
+			UpEnd = { HeightSensorVisionX[0] + sensorX, 0, HeightSensorVisionZ[0] + sensorZ };
+			UpEnd1 = { HeightSensorVisionX[1] + sensorX,0,HeightSensorVisionZ[1] + sensorZ };
+
+			primitive_->DrawLine3d(UpStart, UpEnd, color1);
+			primitive_->DrawLine3d(UpEnd, UpEnd1, color1);
+			primitive_->DrawLine3d(UpEnd1, UpStart, color1);
+
+		}
+	}
+#pragma endregion
+
+#pragma region 下センサーの描画
+
+	if (DownMoveFlag == true) {
+		if (downFlag == true) {
+			DownStart = { sensorX , 0, sensorZ };
+			DownEnd = { HeightSensorVisionX[1] + sensorX,0,-HeightSensorVisionZ[1] + sensorZ };
+			DownEnd1 = { HeightSensorVisionX[0] + sensorX, 0, -HeightSensorVisionZ[0] + sensorZ };
+
+			primitive_->DrawLine3d(DownStart, DownEnd, color);
+			primitive_->DrawLine3d(DownEnd, DownEnd1, color);
+			primitive_->DrawLine3d(DownEnd1, DownStart, color);
+
+		}
+		else {
+			DownStart = { sensorX , 0, sensorZ };
+			DownEnd = { HeightSensorVisionX[1] + sensorX,0,-HeightSensorVisionZ[1] + sensorZ };
+			DownEnd1 = { HeightSensorVisionX[0] + sensorX, 0, -HeightSensorVisionZ[0] + sensorZ };
+
+			primitive_->DrawLine3d(DownStart, DownEnd, color1);
+			primitive_->DrawLine3d(DownEnd, DownEnd1, color1);
+			primitive_->DrawLine3d(DownEnd1, DownStart, color1);
+
+		}
+	}
+
+#pragma endregion
+
+#pragma region 右センサーの描画
+
+	if (RightMoveFlag == true) {
+		if (rightFlag == true) {
+			RightStart = { sensorX , 0, sensorZ };
+			RightEnd = { WidthSensorVisionX[0] + sensorX,0,-WidthSensorVisionZ[0] + sensorZ };
+			RightEnd1 = { WidthSensorVisionX[0] + sensorX, 0, WidthSensorVisionZ[0] + sensorZ };
+
+			primitive_->DrawLine3d(RightStart, RightEnd, color);
+			primitive_->DrawLine3d(RightEnd, RightEnd1, color);
+			primitive_->DrawLine3d(RightEnd1, RightStart, color);
+
+		}
+		else {
+			RightStart = { sensorX , 0, sensorZ };
+			RightEnd = { WidthSensorVisionX[0] + sensorX,0,-WidthSensorVisionZ[0] + sensorZ };
+			RightEnd1 = { WidthSensorVisionX[0] + sensorX, 0, WidthSensorVisionZ[0] + sensorZ };
+
+			primitive_->DrawLine3d(RightStart, RightEnd, color1);
+			primitive_->DrawLine3d(RightEnd, RightEnd1, color1);
+			primitive_->DrawLine3d(RightEnd1, RightStart, color1);
+		}
+	}
+
+#pragma endregion
+
+
+#pragma region 左センサーの描画
+
+	if (LeftMoveFlag == true) {
+		if (leftFlag == true) {
+			LeftStart = { sensorX , 0, sensorZ };
+			LeftEnd = { WidthSensorVisionX[1] + sensorX,0,WidthSensorVisionZ[1] + sensorZ };
+			LeftEnd1 = { WidthSensorVisionX[1] + sensorX, 0, -WidthSensorVisionZ[1] + sensorZ };
+
+			primitive_->DrawLine3d(LeftStart, LeftEnd, color);
+			primitive_->DrawLine3d(LeftEnd, LeftEnd1, color);
+			primitive_->DrawLine3d(LeftEnd1, LeftStart, color);
+
+		}
+		else {
+			LeftStart = { sensorX , 0, sensorZ };
+			LeftEnd = { WidthSensorVisionX[1] + sensorX,0,WidthSensorVisionZ[1] + sensorZ };
+			LeftEnd1 = { WidthSensorVisionX[1] + sensorX, 0, -WidthSensorVisionZ[1] + sensorZ };
+
+			primitive_->DrawLine3d(LeftStart, LeftEnd, color1);
+			primitive_->DrawLine3d(LeftEnd, LeftEnd1, color1);
+			primitive_->DrawLine3d(LeftEnd1, LeftStart, color1);
+
+		}
+	}
+
+#pragma endregion
+
 }
 
 void Enemy::FlagReset()
 {
-	RightFlag = true;
-	LeftFlag = false;
+	RightMoveFlag = true;
+	LeftMoveFlag = false;
 
 
 	//透明フラグ
@@ -301,8 +320,8 @@ void Enemy::FlagReset()
 
 void Enemy::Reset() {
 
-	RightFlag = true;
-	LeftFlag = false;
+	RightMoveFlag = true;
+	LeftMoveFlag = false;
 
 
 	//透明フラグ
@@ -324,6 +343,82 @@ void Enemy::Reset() {
 //	stopTimer = 100;
 //	stopIntervalTimer = 100;
 //}
+
+bool Enemy::VectorLineCollision(Vector3 player, float playerRadius, Vector3 pt1, Vector3 pt2, Vector3 pt3) {
+	//それぞれのベクトル
+	Vector3 vec[3];	//線
+	Vector3 vecPlayer[4];	//Playerまでのベクトル
+
+
+	//右ラインのベクトル
+	vec[0].x = pt2.x - pt1.x;
+	vec[0].y = 0;
+	vec[0].z = pt2.z - pt1.z;
+	vec[0] = Normalize(vec[0]);
+	//横ラインのベクトル
+	vec[1].x = pt3.x - pt2.x;
+	vec[1].y = 0;
+	vec[1].z = pt3.z - pt2.z;
+	vec[1] = Normalize(vec[1]);
+	//左ラインのベクトル
+	vec[2].x = pt1.x - pt3.x;
+	vec[2].y = 0;
+	vec[2].z = pt1.z - pt3.z;
+	vec[2] = Normalize(vec[2]);
+
+	//右ラインとプレイヤーのベクトル
+	vecPlayer[0].x = player.x - pt1.x;
+	vecPlayer[0].y = 0;
+	vecPlayer[0].z = player.z - pt1.z;
+	vecPlayer[0] = Normalize(vecPlayer[0]);
+
+	//プレイヤーがラインの左側にいたら
+	if (vec[0].x * vecPlayer[0].z - vec[0].z * vecPlayer[0].x > 0) {
+		visionHitFlag[0] = true;
+	}
+	else {
+		visionHitFlag[0] = false;
+	}
+
+	//横ラインとプレイヤーのベクトル
+	vecPlayer[1].x = player.x - pt2.x;
+	vecPlayer[1].y = 0;
+	vecPlayer[1].z = player.z - pt2.z;
+	vecPlayer[1] = Normalize(vecPlayer[1]);
+
+	//プレイヤーがラインの左側にいたら
+	if (vec[1].x * vecPlayer[1].z - vec[1].z * vecPlayer[1].x > 0) {
+		visionHitFlag[1] = true;
+	}
+	else {
+		visionHitFlag[1] = false;
+	}
+
+	//左ラインとプレイヤーのベクトル
+	vecPlayer[2].x = player.x - pt3.x;
+	vecPlayer[2].y = 0;
+	vecPlayer[2].z = player.z - pt3.z;
+	vecPlayer[2] = Normalize(vecPlayer[2]);
+
+	//プレイヤーがラインの左側にいたら
+	if (vec[2].x * vecPlayer[2].z - vec[2].z * vecPlayer[2].x > 0) {
+		visionHitFlag[2] = true;
+	}
+	else {
+		visionHitFlag[2] = false;
+	}
+
+	//行けたら行く(行かない)
+	if (visionHitFlag[0] == true && visionHitFlag[1] == true && visionHitFlag[2] == true) {
+		return true;
+	}
+	else {
+		return false;
+	}
+
+
+
+}
 
 Vector3 Enemy::GetWorldPosition() {
 	//ワールド座標を入れる変数
@@ -411,8 +506,8 @@ void Enemy::SensorVision() {
 		//座標を回転させる
 		for (int i = 0; i < 2; i++)
 		{
-			visionMemoryX[i] = sensorVisionX[i];
-			visionMemoryZ[i] = sensorVisionZ[i];
+			visionMemoryX[i] = HeightSensorVisionX[i];
+			visionMemoryZ[i] = HeightSensorVisionX[i];
 		}
 	}
 	else if (visionFlag == 1)
@@ -420,19 +515,19 @@ void Enemy::SensorVision() {
 		//座標を回転させる
 		for (int i = 0; i < 2; i++)
 		{
-			visionMemoryX[i] = sensorVisionX[i];
-			visionMemoryZ[i] = sensorVisionZ[i];
+			visionMemoryX[i] = HeightSensorVisionX[i];
+			visionMemoryZ[i] = HeightSensorVisionX[i];
 		}
 	}
 
 #pragma endregion
 	//角度決め
-	if (visionFlag == 0 && sensorVisionX[0] <= 7.3 && sensorVisionZ[0] <= 7.2)
+	if (visionFlag == 0 && HeightSensorVisionX[0] <= 7.3 && HeightSensorVisionX[0] <= 7.2)
 	{
 		visionFlag = 3;
 	}
 
-	if (visionFlag == 1 && sensorVisionX[1] >= -7.2 && sensorVisionZ[1] <= 7.3)
+	if (visionFlag == 1 && HeightSensorVisionX[1] >= -7.2 && HeightSensorVisionX[1] <= 7.3)
 	{
 		visionFlag = 4;
 	}
@@ -461,11 +556,11 @@ void Enemy::SensorVision() {
 		visionTimer--;
 		if (visionTimer < 0)
 		{
-			sensorVisionX[0] = 50;
-			sensorVisionZ[0] = 160;
+			HeightSensorVisionX[0] = 50;
+			HeightSensorVisionX[0] = 160;
 
-			sensorVisionX[1] = -50;
-			sensorVisionZ[1] = 160;
+			HeightSensorVisionX[1] = -50;
+			HeightSensorVisionX[1] = 160;
 			visionFlag = rand() % 2;
 			visionTimer = 15.0f;
 		}
@@ -475,238 +570,15 @@ void Enemy::SensorVision() {
 	//移動させる
 	for (int i = 0; i < 2; i++)
 	{
-		sensorVisionX[i] = visionMemoryX[i];
-		sensorVisionZ[i] = visionMemoryZ[i];
+		HeightSensorVisionX[i] = visionMemoryX[i];
+		HeightSensorVisionX[i] = visionMemoryZ[i];
 	}
 }
-
-void Enemy::UpSensorVector(float playerZ, float playerX, float playerRadius) {
-	//それぞれのベクトル
-	Vector3 vec[3];	//線
-	Vector3 vecPlayer[4];	//Playerまでのベクトル
-
-#pragma region 視界のベクトル
-	//左右ラインベクトル
-	for (int i = 0; i < 2; i++)
-	{
-		vec[i].x = (sensorVisionX[i] + sensorX) - sensorX;
-		vec[i].y = 0;
-		vec[i].z = (sensorVisionZ[i] + sensorZ) - sensorZ;
-		vec[i] = Normalize(vec[i]);
-	}
-	//最終点から最終点までのベクトル
-	vec[2].x = (sensorVisionX[1] + sensorX) - (sensorVisionX[0] + sensorX);
-	vec[2].y = 0;
-	vec[2].z = (sensorVisionZ[1] + sensorZ) - (sensorVisionZ[0] + sensorZ);
-	vec[2] = Normalize(vec[2]);
-#pragma endregion
-#pragma region 各視界の始まりからPlayerまでのベクトル
-	//右ラインからPlayerのベクトル
-	vecPlayer[0].x = (playerX - playerRadius) - sensorX;
-	vecPlayer[0].y = 0;
-	vecPlayer[0].z = playerZ - sensorZ;
-	vecPlayer[0] = Normalize(vecPlayer[0]);
-	//左ラインからPlayerのベクトル
-	vecPlayer[1].x = (playerX + playerRadius) - sensorX;
-	vecPlayer[1].y = 0;
-	vecPlayer[1].z = playerZ - sensorZ;
-	vecPlayer[1] = Normalize(vecPlayer[1]);
-	//限界点[0]からPlayerのベクトル
-	vecPlayer[2].x = playerX - (sensorVisionX[0] + sensorX);
-	vecPlayer[2].y = 0;
-	vecPlayer[2].z = (playerZ - playerRadius) - (sensorVisionZ[0] + sensorZ);
-	vecPlayer[2] = Normalize(vecPlayer[2]);
-	//限界点[1]からPlayerのベクトル
-	vecPlayer[3].x = playerX - (sensorVisionX[1] + sensorX);
-	vecPlayer[3].y = 0;
-	vecPlayer[3].z = (playerZ - playerRadius) - (sensorVisionZ[1] + sensorZ);
-	vecPlayer[3] = Normalize(vecPlayer[3]);
-
-
-#pragma endregion
-#pragma region	当たり判定
-	//右ラインベクトルの判定
-	if (vec[0].x * vecPlayer[0].z - vec[0].z * vecPlayer[0].x > 0)
-	{
-		visionHitFlag[0] = 1;
-	}
-	else
-	{
-		visionHitFlag[0] = 0;
-	}
-	//左ラインベクトルの判定
-	if (vec[1].x * vecPlayer[1].z - vec[1].z * vecPlayer[1].x < 0)
-	{
-		visionHitFlag[1] = 1;
-	}
-	else
-	{
-		visionHitFlag[1] = 0;
-	}
-	//視界限界点の判定
-	if (vec[2].x * vecPlayer[2].z - vec[2].z * vecPlayer[2].x > 0)
-	{
-		visionHitFlag[2] = 1;
-	}
-	else
-	{
-		visionHitFlag[2] = 0;
-
-	}
-#pragma endregion
-#pragma region 視界に入った時の処理
-	if (visionHitFlag[0] == 1 && visionHitFlag[1] == 1 && visionHitFlag[2] == 1)
-	{
-		visionFlag = 5;
-		if (visionFlag == 5 && vecPlayer[2].x != vecPlayer[3].x)
-		{
-			if (vecPlayer[3].x - 0.001 >= -vecPlayer[2].x)
-			{
-				//座標を回転させる
-				for (int i = 0; i < 2; i++)
-				{
-					visionMemoryX[i] = sensorVisionX[i] * cos(PI / 180 * 1) - sensorVisionZ[i] * -sin(PI / 180 * 1);
-					visionMemoryZ[i] = sensorVisionX[i] * -sin(PI / 180 * 1) + sensorVisionZ[i] * cos(PI / 180 * 1);
-				}
-			}
-			else if (-vecPlayer[2].x - 0.001 >= vecPlayer[3].x)
-			{
-				//座標を回転させる
-				for (int i = 0; i < 2; i++)
-				{
-					visionMemoryX[i] = sensorVisionX[i] * cos(PI / 180 * 1) - sensorVisionZ[i] * sin(PI / 180 * 1);
-					visionMemoryZ[i] = sensorVisionX[i] * sin(PI / 180 * 1) + sensorVisionZ[i] * cos(PI / 180 * 1);
-				}
-			}
-		}
-
-	}
-
-
-
-#pragma endregion
-
-}
-
-void Enemy::DownSensorVector(float playerZ, float playerX, float playerRadius) {
-	//それぞれのベクトル
-	Vector3 vec[3];	//線
-	Vector3 vecPlayer[4];	//Playerまでのベクトル
-
-#pragma region 視界のベクトル
-	//左右ラインベクトル
-	for (int i = 0; i < 2; i++)
-	{
-		vec[i].x = (sensorVisionX[i] + sensorX) - sensorX;
-		vec[i].y = 0;
-		vec[i].z = (sensorVisionZ[i] + sensorZ) - sensorZ;
-		vec[i] = Normalize(vec[i]);
-	}
-	//最終点から最終点までのベクトル
-	vec[2].x = (sensorVisionX[1] + sensorX) - (sensorVisionX[0] + sensorX);
-	vec[2].y = 0;
-	vec[2].z = (sensorVisionZ[1] + sensorZ) - (sensorVisionZ[0] + sensorZ);
-	vec[2] = Normalize(vec[2]);
-#pragma endregion
-#pragma region 各視界の始まりからPlayerまでのベクトル
-	//右ラインからPlayerのベクトル
-	vecPlayer[0].x = (playerX - playerRadius) - sensorX;
-	vecPlayer[0].y = 0;
-	vecPlayer[0].z = playerZ - sensorZ;
-	vecPlayer[0] = Normalize(vecPlayer[0]);
-	//左ラインからPlayerのベクトル
-	vecPlayer[1].x = (playerX + playerRadius) - sensorX;
-	vecPlayer[1].y = 0;
-	vecPlayer[1].z = playerZ - sensorZ;
-	vecPlayer[1] = Normalize(vecPlayer[1]);
-	//限界点[0]からPlayerのベクトル
-	vecPlayer[2].x = playerX - (sensorVisionX[0] + sensorX);
-	vecPlayer[2].y = 0;
-	vecPlayer[2].z = (playerZ - playerRadius) - (sensorVisionZ[0] + sensorZ);
-	vecPlayer[2] = Normalize(vecPlayer[2]);
-	//限界点[1]からPlayerのベクトル
-	vecPlayer[3].x = playerX - (sensorVisionX[1] + sensorX);
-	vecPlayer[3].y = 0;
-	vecPlayer[3].z = (playerZ - playerRadius) - (sensorVisionZ[1] + sensorZ);
-	vecPlayer[3] = Normalize(vecPlayer[3]);
-
-
-#pragma endregion
-#pragma region	当たり判定
-	//右ラインベクトルの判定
-	if (vec[0].x * vecPlayer[0].z - vec[0].z * vecPlayer[0].x > 0)
-	{
-		visionHitFlag[0] = 1;
-	}
-	else
-	{
-		visionHitFlag[0] = 0;
-	}
-	//左ラインベクトルの判定
-	if (vec[1].x * vecPlayer[1].z - vec[1].z * vecPlayer[1].x < 0)
-	{
-		visionHitFlag[1] = 1;
-	}
-	else
-	{
-		visionHitFlag[1] = 0;
-	}
-	//視界限界点の判定
-	if (vec[2].x * vecPlayer[2].z - vec[2].z * vecPlayer[2].x > 0)
-	{
-		visionHitFlag[2] = 1;
-	}
-	else
-	{
-		visionHitFlag[2] = 0;
-
-	}
-#pragma endregion
-#pragma region 視界に入った時の処理
-	if (visionHitFlag[0] == 1 && visionHitFlag[1] == 1 && visionHitFlag[2] == 1)
-	{
-		visionFlag = 5;
-		if (visionFlag == 5 && vecPlayer[2].x != vecPlayer[3].x)
-		{
-			if (vecPlayer[3].x - 0.001 >= -vecPlayer[2].x)
-			{
-				//座標を回転させる
-				for (int i = 0; i < 2; i++)
-				{
-					visionMemoryX[i] = sensorVisionX[i] * cos(PI / 180 * 1) - sensorVisionZ[i] * -sin(PI / 180 * 1);
-					visionMemoryZ[i] = sensorVisionX[i] * -sin(PI / 180 * 1) + sensorVisionZ[i] * cos(PI / 180 * 1);
-				}
-			}
-			else if (-vecPlayer[2].x - 0.001 >= vecPlayer[3].x)
-			{
-				//座標を回転させる
-				for (int i = 0; i < 2; i++)
-				{
-					visionMemoryX[i] = sensorVisionX[i] * cos(PI / 180 * 1) - sensorVisionZ[i] * sin(PI / 180 * 1);
-					visionMemoryZ[i] = sensorVisionX[i] * sin(PI / 180 * 1) + sensorVisionZ[i] * cos(PI / 180 * 1);
-				}
-			}
-		}
-
-	}
-
-
-
-#pragma endregion
-}
-
-void Enemy::RightSensorVector(float playerZ, float playerX, float playerRadius)
-{
-}
-
-void Enemy::LeftSensorVector(float playerZ, float playerX, float playerRadius)
-{
-}
-
-
 
 void Enemy::EnemyMove(float moveDis, bool WidthHeightFlag) {
 
+	bool moveFlag = WidthHeightFlag;
+	
 	//センサーで検知したとき
 	if (visionHitFlag[0] == 1 && visionHitFlag[1] == 1 && visionHitFlag[2] == 1) {
 		// 上移動
@@ -731,40 +603,42 @@ void Enemy::EnemyMove(float moveDis, bool WidthHeightFlag) {
 		if (WidthHeightFlag == false) {
 			//敵の移動処理(横)
 			if (sensorMovedDis <= -moveDis) {
-				RightFlag = true;
-				LeftFlag = false;
+				LeftMoveFlag = false;
+				RightMoveFlag = true;
 			}
 			if (sensorMovedDis >= moveDis) {
-				LeftFlag = true;
-				RightFlag = false;
+				RightMoveFlag = false;
+				LeftMoveFlag = true;
 			}
 
 
-			if (RightFlag == true) {
+			if (RightMoveFlag == true) {
 				worldTransform_.translation_.x += 0.1;
 				sensorMovedDis += 0.1;
+				worldTransform_.rotation_.y = RadianConversion(90);
 			}
-			if (LeftFlag == true) {
+			if (LeftMoveFlag == true) {
 				worldTransform_.translation_.x -= 0.1;
 				sensorMovedDis -= 0.1;
+				worldTransform_.rotation_.y = RadianConversion(270);
 			}
 		}
 		if (WidthHeightFlag == true) {
 			//敵の移動処理(縦)
 			if (sensorMovedDis >= moveDis) {
-				UpFlag = false;
-				DownFlag = true;
+				UpMoveFlag = false;
+				DownMoveFlag = true;
 			}
 			if (sensorMovedDis <= -moveDis) {
-				DownFlag = false;
-				UpFlag = true;
+				DownMoveFlag = false;
+				UpMoveFlag = true;
 			}
 
-			if (UpFlag == true) {
+			if (UpMoveFlag == true) {
 				worldTransform_.translation_.z += 0.1;
 				sensorMovedDis += 0.1;
 			}
-			if (DownFlag == true) {
+			if (DownMoveFlag == true) {
 				worldTransform_.translation_.z -= 0.1;
 				sensorMovedDis -= 0.1;
 			}
@@ -786,7 +660,7 @@ void Enemy::EnemyMoveCheck(float playerX, float playerZ, float playerR) {
 		if (isSearch == TRUE) {
 			EnemyMoveSearch(playerX, playerZ, playerR);
 			// カウントを戻す
-			count = 20;
+			count = 1;
 		}
 	}
 }
