@@ -68,7 +68,7 @@ void GameScene::Update() {
 	newEnemy->Update(keyFlag, newPlayer.get(), 2.0f, false);
 	newMap->EnemyBlockCheck(newEnemy.get());
 
-	newEnemy_1->Update(keyFlag, newPlayer.get(),2.0f, true);
+	//newEnemy_1->Update(keyFlag, newPlayer.get(),2.0f, true);
 	newMap->EnemyBlockCheck(newEnemy_1.get());
 	//プレイヤー
 	if (input_->TriggerKey(DIK_A)) {
@@ -173,7 +173,7 @@ void GameScene::Draw() {
 	newMap->Draw(viewProjection_);
 
 	//床の描画
-	//newMap->FloorDraw(viewProjection_);
+	newMap->FloorDraw(viewProjection_);
 
 	//プレイヤーの描画
 	if (newMap->GeteffectOffFlag() == false)
@@ -184,10 +184,10 @@ void GameScene::Draw() {
 
 	//敵の描画
 	newEnemy->Draw(viewProjection_);
-	newEnemy_1->Draw(viewProjection_);
+	//newEnemy_1->Draw(viewProjection_);
 
 	newEnemy->SensorDraw(viewProjection_);
-	newEnemy_1->SensorDraw(viewProjection_);
+	//newEnemy_1->SensorDraw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
@@ -243,11 +243,11 @@ void GameScene::CheckAllCollisions(Enemy* enemy_) {
 
 	radius = newPlayer->GetRadius() + enemy_->GetRadius();
 	distance = (posA.x - posB.x) * (posA.x - posB.x) + (posA.y - posB.y) * (posA.y - posB.y) + (posA.z - posB.z) * (posA.z - posB.z);
-	//自キャラとマップの当たり判定
+	//自キャラと敵の当たり判定
 	if (distance <= radius * radius) {
 		//自キャラの衝突時コールバックを呼び出す
 		newPlayer->OnCollision();
-		//マップの衝突時コールバックを呼び出す
+		//敵の衝突時コールバックを呼び出す
 		enemy_->OnCollision();
 	}
 
@@ -271,7 +271,7 @@ void GameScene::CheckAllCollisions(Enemy* enemy_) {
 
 	Rad = newPlayer->GetRadius() + enemy_->GetSensorRadius();
 	Dis = (posA.x - posC.x) * (posA.x - posC.x) + (posA.y - posC.y) * (posA.y - posC.y) + (posA.z - posC.z) * (posA.z - posC.z);
-	//自キャラとマップの当たり判定
+	//センサーとプレイヤーの当たり判定
 	if (Dis <= Rad * Rad) {
 		//マップの衝突時コールバックを呼び出す
 		enemy_->SensorCollision();

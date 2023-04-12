@@ -94,7 +94,7 @@ public:
 
 private:
 	//半径
-	const float radius = 1.0f;
+	const float radius = 0.8f;
 
 private:	//メンバ変数
 
@@ -136,8 +136,8 @@ private:	//メンバ変数
 	int leftBottomZ = 0;
 
 	//プレイヤーの速度
-	float playerSpeedX_ = 0.2f;
-	float playerSpeedZ_ = 0.2f;
+	float playerSpeedX_ = 0.3f;
+	float playerSpeedZ_ = 0.3f;
 	Vector3 move = { 0,0,0 };
 
 	Vector3 Trans = { 0,0,0 };

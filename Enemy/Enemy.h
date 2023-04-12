@@ -18,7 +18,9 @@
 class Enemy
 {
 public:
-	enum Move {
+
+	//敵の向き
+	enum Direction {
 		UP,		// 0
 		DOWN,	// 1
 		RIGHT,	// 2
@@ -99,6 +101,15 @@ public:		//メンバ関数
 	/// </summary>
 	void FlagReset();
 
+	//衝突を検出したら呼び出されるコールバック関数
+	void OnCollision();
+
+	/// <summary>
+	/// ベクトルと線の当たり判定
+	/// </summary>
+	/// <returns></returns>
+	bool VectorLineCollision(Vector3 player, float playerRadius, Vector3 start, Vector3 end,Vector3 pt3);
+
 	//ワールド座標を取得
 	Vector3 GetWorldPosition();
 
@@ -128,7 +139,7 @@ public:		//メンバ関数
 	const std::list<std::unique_ptr<Enemy>>& GetEnemy() { return enemys; }
 private:
 	//半径
-	const float radius = 1.0f;
+	const float radius = 0.8f;
 	//半径
 	const float sensorRadius = 2.0f;
 
@@ -160,10 +171,10 @@ private:	//メンバ変数
 	std::list<std::unique_ptr<Enemy>>enemys;
 
 	//切り替えフラグ
-	bool RightFlag = true;
-	bool LeftFlag =  false;
-	bool UpFlag = true;
-	bool DownFlag = false;
+	bool RightMoveFlag = false;
+	bool LeftMoveFlag =  false;
+	bool UpMoveFlag = false;
+	bool DownMoveFlag = false;
 
 	//透明フラグ
 	bool invisibleFlag = false;
@@ -182,8 +193,11 @@ private:	//メンバ変数
 	float sensorZ;
 	float sensorR;
 
-	float sensorVisionX[2];	//カメラの視界
-	float sensorVisionZ[2];
+	float HeightSensorVisionX[2];	//カメラの視界
+	float HeightSensorVisionZ[2];
+	
+	float WidthSensorVisionX[2];	//カメラの視界
+	float WidthSensorVisionZ[2];
 
 	float visionMemoryX[2];	//視界移動の記憶変数
 	float visionMemoryZ[2];
@@ -204,5 +218,26 @@ private:	//メンバ変数
 	bool crisisFlag = false;
 
 	XMFLOAT4 sensorColor = { 1.0f,1.0f,1.0f,0.2f };
+
+	int direction = UP;
+
+	bool upFlag = false;
+	bool downFlag = false;
+	bool rightFlag = false;
+	bool leftFlag = false;
+
+	//センサーの頂点
+	Vector3 UpStart = { 0,0,0 };
+	Vector3 UpEnd = { 0,0,0 };
+	Vector3 UpEnd1 = { 0,0,0 };
+	Vector3 DownStart = { 0,0,0 };
+	Vector3 DownEnd = { 0,0,0 };
+	Vector3 DownEnd1 = { 0,0,0 };
+	Vector3 RightStart = { 0,0,0 };
+	Vector3 RightEnd = { 0,0,0 };
+	Vector3 RightEnd1 = { 0,0,0 };
+	Vector3 LeftStart = { 0,0,0 };
+	Vector3 LeftEnd = { 0,0,0 };
+	Vector3 LeftEnd1 = { 0,0,0 };
 };
 

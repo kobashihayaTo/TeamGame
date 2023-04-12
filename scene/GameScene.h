@@ -135,6 +135,7 @@ class GameScene {
 	bool playerkeyFlag = false;
 
 	Vector3 enemyPos = { -10.0f, 0.9f, 12.7f };
+	//Vector3 enemyPos_1 = { 0.0f, 0.9f, -4.0f };
 	Vector3 enemyPos_1 = { 25.0f, 0.9f, -9.0f };
 
 
