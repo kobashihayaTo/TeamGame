@@ -54,6 +54,7 @@ void Player::Update(bool PlayerKeyFlag) {
 	prePosition_ = worldTransform_.translation_;
 
 
+
 	//ƒvƒŒƒCƒ„[ˆÚ“®ˆ—
 	//ã‰º
 	if (input_->PushKey(DIK_UP)) {
