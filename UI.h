@@ -15,6 +15,8 @@
 #include "WorldTransform.h"
 #include "Function/Function.h"
 
+#include "Enemy/Enemy.h"
+
 
 
 class UI
@@ -44,7 +46,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw();
+	void Draw(Enemy* enemy_);
 
 private:
 
@@ -59,8 +61,14 @@ private:
 
 	Model* model_ = nullptr;
 
+	
+
 	uint32_t textureHandle_ = 0;
+	uint32_t operationHandle_ = 0;
 	//スプライト
 	Sprite* sprite_ = nullptr;
+	Sprite* operationSprite_ = nullptr;
+
+	int crisisTimer = 0;
 };
 

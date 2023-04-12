@@ -355,6 +355,13 @@ void Enemy::OnCollision() {
 	//何もしない
 }
 
+void Enemy::OffCollision()
+{
+	visionHitFlag[0] = 0;
+	visionHitFlag[1] = 0;
+	visionHitFlag[2] = 0;
+}
+
 void Enemy::SensorCollision()
 {
 	visionHitFlag[0] = 1;
@@ -708,24 +715,29 @@ void Enemy::EnemyMove(float moveDis, bool WidthHeightFlag) {
 	//センサーで検知したとき
 	if (visionHitFlag[0] == 1 && visionHitFlag[1] == 1 && visionHitFlag[2] == 1) {
 		// 上移動
+		
 		if (isMove == UP) {
-			worldTransform_.translation_.z -= speed;
+			//worldTransform_.translation_.z -= speed;
+			crisisFlag = true;
 		}
 		// 下移動
 		if (isMove == DOWN) {
 			worldTransform_.translation_.z += speed;
+			crisisFlag = true;
 		}
 		// 右移動
 		if (isMove == RIGHT) {
 			worldTransform_.translation_.x += speed;
+			crisisFlag = true;
 		}
 		// 左移動
 		if (isMove == LEFT) {
 			worldTransform_.translation_.x -= speed;
+			crisisFlag = true;
 		}
 	}
 	else {
-
+		crisisFlag = false;
 		if (WidthHeightFlag == false) {
 			//敵の移動処理(横)
 			if (sensorMovedDis <= -moveDis) {
@@ -790,7 +802,6 @@ void Enemy::EnemyMoveCheck(float playerX, float playerZ, float playerR) {
 }
 
 void Enemy::EnemyMoveSearch(float playerX, float playerZ, float playerR) {
-
 	// プレイヤーが敵の右に居る時
 	if (playerX > worldTransform_.translation_.x + radius) {
 		isMove = RIGHT;

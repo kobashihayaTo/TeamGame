@@ -16,10 +16,10 @@ void UI::Initialize()
 
 	//ファイル名指定してテクスチャを読み込む
 	textureHandle_ = TextureManager::Load("clearscreen.png");
-
+	operationHandle_ = TextureManager::Load("operation.png");
 	//スプライトの生成
 	sprite_ = Sprite::Create(textureHandle_, { 0,0 });
-
+	operationSprite_ = Sprite::Create(operationHandle_, { 1680,840 });
 
 }
 
@@ -28,7 +28,7 @@ void UI::Update()
 
 }
 
-void UI::Draw()
+void UI::Draw(Enemy* enemy_)
 {
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandList();
@@ -67,7 +67,18 @@ void UI::Draw()
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
-	sprite_->Draw();
+	
+	//操作矢印
+	operationSprite_->Draw();
+
+	if (enemy_->GetCrisisFlag() == true) {
+		crisisTimer++;
+		if (crisisTimer > 10) {
+			sprite_->Draw();
+			crisisTimer = 0;
+		}
+	}
+	//sprite_->Draw();
 	// デバッグテキストの描画
 	debugText_->DrawAll(commandList);
 	//

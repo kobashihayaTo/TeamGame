@@ -171,7 +171,11 @@ void GameScene::Draw() {
 	//newMap->FloorDraw(viewProjection_);
 
 	//プレイヤーの描画
-	newPlayer->Draw(viewProjection_);
+	if (newMap->GeteffectOffFlag() == false)
+	{
+		newPlayer->Draw(viewProjection_);
+	}
+
 
 	//敵の描画
 	newEnemy->Draw(viewProjection_);
@@ -192,7 +196,8 @@ void GameScene::Draw() {
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
 
-	//newUI->Draw();
+	newUI->Draw(newEnemy.get());
+	newUI->Draw(newEnemy_1.get());
 
 	// デバッグテキストの描画
 
@@ -266,6 +271,9 @@ void GameScene::CheckAllCollisions(Enemy* enemy_) {
 		//マップの衝突時コールバックを呼び出す
 		enemy_->SensorCollision();
 	}
+	else {
+		enemy_->OffCollision();
+	}
 
 #pragma endregion
 }
@@ -301,4 +309,6 @@ void GameScene::PosReset()
 	newEnemy->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos);
 
 	newEnemy_1->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_1);
+
+
 }

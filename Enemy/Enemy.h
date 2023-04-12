@@ -107,6 +107,8 @@ public:		//メンバ関数
 	//衝突を検出したら呼び出されるコールバック関数
 	void OnCollision();
 
+	void OffCollision();
+
 	void SetWorldPosition(Vector3 worldPosition) { worldTransform_.translation_ = worldPosition; }
 
 	void SensorCollision();
@@ -120,6 +122,8 @@ public:		//メンバ関数
 	Vector3 GetprePosition() { return prePosition_; }
 
 	bool GetOKFlag() { return OKFlag; }
+
+	bool GetCrisisFlag() { return crisisFlag; }
 
 	const std::list<std::unique_ptr<Enemy>>& GetEnemy() { return enemys; }
 private:
@@ -196,5 +200,7 @@ private:	//メンバ変数
 	int isMove = UP;
 	int isMove_1 = RIGHT;
 	float sensorMovedDis = 0.0f;
+
+	bool crisisFlag = false;
 };
 

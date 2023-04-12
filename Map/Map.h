@@ -71,6 +71,7 @@ public:		//ƒƒ“ƒoŠÖ”
 
 	void FlagReset();
 
+	bool GeteffectOffFlag() { return effectOffFlag; }
 
 public:
 	//”¼Œa
@@ -181,6 +182,7 @@ private:	//ƒƒ“ƒo•Ï”
 	int Map_X = 25;
 
 	bool OKFlag = false;
+	bool effectOffFlag = false;
 
 	int playerTimer = 0;
 };
