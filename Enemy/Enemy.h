@@ -115,8 +115,6 @@ public:		//メンバ関数
 
 	Vector3 GetSensorPosition();
 
-	//衝突を検出したら呼び出されるコールバック関数
-	void OnCollision();
 
 	void OffCollision();
 

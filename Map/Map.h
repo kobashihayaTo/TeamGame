@@ -73,6 +73,8 @@ public:		//ƒƒ“ƒoŠÖ”
 
 	bool GeteffectOffFlag() { return effectOffFlag; }
 
+	bool GetFlag() { return goalReadyFlag; }
+
 public:
 	//”¼Œa
 	const float radius = 0.9f;
