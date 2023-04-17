@@ -15,7 +15,7 @@ void UI::Initialize()
 	debugText_ = DebugText::GetInstance();
 
 	//ファイル名指定してテクスチャを読み込む
-	textureHandle_ = TextureManager::Load("clearscreen.png");
+	textureHandle_ = TextureManager::Load("Alert.png");
 	operationHandle_ = TextureManager::Load("operation.png");
 	//スプライトの生成
 	sprite_ = Sprite::Create(textureHandle_, { 0,0 });
@@ -73,8 +73,12 @@ void UI::Draw(Enemy* enemy_)
 
 	if (enemy_->GetCrisisFlag() == true) {
 		crisisTimer++;
-		if (crisisTimer > 10) {
+		if (crisisTimer < 15) {
 			sprite_->Draw();
+			//crisisTimer = 0;
+		}
+		if (crisisTimer > 25)
+		{
 			crisisTimer = 0;
 		}
 	}

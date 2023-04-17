@@ -360,7 +360,7 @@ void Map::PlayerBlockCheck(Player* player) {
 							goalReadyFlag = true;
 						}
 						if (goalReadyFlag == true) {
-							effectworldTrans.translation_.y += 0.05f;
+							effectworldTrans.translation_.y += 0.5f;
 							if (effectworldTrans.translation_.y >= 0.0f) {
 								effectworldTrans.translation_.y = 0.0f;
 								effectOffFlag = true;
@@ -369,7 +369,7 @@ void Map::PlayerBlockCheck(Player* player) {
 							}
 						}
 						if (effectOffFlag == true) {
-							effectworldTrans.translation_.y -= 0.1f;
+							effectworldTrans.translation_.y -= 1.0f;
 							/*debugText_->SetPos(50, 710);
 							debugText_->Printf("FFFFFFFFFFFFFFFFF");*/
 							if (effectworldTrans.translation_.y <= -10.0f) {
@@ -601,6 +601,7 @@ void Map::Reset()
 	effectworldTrans.translation_.y -= 10.0f;
 
 	effectOffFlag = false;
+	goalReadyFlag = false;
 }
 
 void Map::FlagReset()
@@ -612,4 +613,7 @@ void Map::FlagReset()
 
 	effectworldTrans.translation_ = { -11.0f, 0.0f, -18.0f };
 	effectworldTrans.translation_.y -= 10.0f;
+
+	effectOffFlag = false;
+	goalReadyFlag = false;
 }
