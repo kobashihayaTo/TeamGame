@@ -29,7 +29,7 @@ public:		//メンバ関数
 	~Map();
 
 	//初期化
-	void Initialize(Model* model, Model* floorModel, Model* effectmodel_);
+	void Initialize(Model* model, Model* floorModel, Model* effectmodel_, Model* afterModel);
 
 	//更新
 	void Update(Player* player, bool MapkeyFlag);
@@ -156,6 +156,8 @@ private:	//メンバ変数
 
 	//床のモデル
 	Model* floorModel_ = nullptr;
+
+	Model* afterModel_ = nullptr;
 
 	//デバッグテキスト
 	DebugText* debugText_ = nullptr;

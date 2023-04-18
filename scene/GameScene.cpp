@@ -22,6 +22,7 @@ void GameScene::Initialize() {
 
 	//3Dモデルを生成
 	mapModel_ = Model::CreateFromOBJ("cube", true);
+	mapAfterModel_ = Model::CreateFromOBJ("momomo", true);
 	playerModel_ = Model::CreateFromOBJ("charactor_Head", true);
 	floorModel_ = Model::CreateFromOBJ("floor", true);
 	enemyModel_ = Model::CreateFromOBJ("enemy", true);
@@ -32,7 +33,7 @@ void GameScene::Initialize() {
 	newUI->Initialize();
 #pragma  region 初期化
 	//マップの初期化
-	newMap->Initialize(mapModel_, floorModel_, effectModel);
+	newMap->Initialize(mapModel_, floorModel_, effectModel,mapAfterModel_);
 	//カメラの初期位置を設定
 	cameraPos = { 10,10,10 };
 	cameraRot = { 0,0,0 };
