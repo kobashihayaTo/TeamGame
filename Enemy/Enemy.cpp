@@ -2,7 +2,7 @@
 #include <cassert>
 
 //初期化
-void Enemy::Initialize(Model* model, Model* sensormodel, RailCamera* camera, Vector3 enemyPos) {
+void Enemy::Initialize(Model* model, Model* sensormodel, RailCamera* camera, Vector3 enemyPos, bool WidthHeightFlag) {
 	//NULLポイントチェック
 	assert(model);
 	assert(sensormodel);
@@ -61,10 +61,18 @@ void Enemy::Initialize(Model* model, Model* sensormodel, RailCamera* camera, Vec
 	visionTimer = 15.0f;
 	sensorMovedDis = 0.0f;
 
+	WidthHeightFlag_ = WidthHeightFlag;
+
+	if (WidthHeightFlag_ == false) {
+		RightMoveFlag = true;
+	}
+	else if (WidthHeightFlag_ == true) {
+		UpMoveFlag = true;
+	}
 }
 
 //更新
-void Enemy::Update(bool keyFlag, Player* player, float moveDis, bool WidthHeightFlag) {
+void Enemy::Update(bool keyFlag, Player* player, float moveDis) {
 
 
 	//センサーを敵に追従
@@ -83,7 +91,7 @@ void Enemy::Update(bool keyFlag, Player* player, float moveDis, bool WidthHeight
 
 	sensorTransform_.ColorSetter(sensorColor);
 
-	if (WidthHeightFlag == false) {
+	if (WidthHeightFlag_ == false) {
 		if (RightMoveFlag == true) {
 			rightFlag = VectorLineCollision(player->GetWorldPosition(), player->GetRadius(), RightStart, RightEnd, RightEnd1);
 		}
@@ -92,7 +100,7 @@ void Enemy::Update(bool keyFlag, Player* player, float moveDis, bool WidthHeight
 		}
 	}
 
-	if (WidthHeightFlag == true) {
+	if (WidthHeightFlag_ == true) {
 		if (UpMoveFlag == true) {
 			upFlag = VectorLineCollision(player->GetWorldPosition(), player->GetRadius(), UpStart, UpEnd, UpEnd1);
 		}
@@ -135,7 +143,7 @@ void Enemy::Update(bool keyFlag, Player* player, float moveDis, bool WidthHeight
 
 	if (stopFlag == false || stopIntervalFlag == true) {
 
-		EnemyMove(moveDis, WidthHeightFlag);
+		EnemyMove(moveDis, WidthHeightFlag_);
 
 		EnemyMoveCheck(player->GetWorldPosition().x, player->GetWorldPosition().z, player->GetRadius());
 	}
@@ -301,11 +309,7 @@ void Enemy::SensorDraw(ViewProjection& viewProjection) {
 
 }
 
-void Enemy::FlagReset()
-{
-	RightMoveFlag = true;
-	LeftMoveFlag = false;
-
+void Enemy::FlagReset(){
 
 	//透明フラグ
 	invisibleFlag = false;
@@ -319,10 +323,6 @@ void Enemy::FlagReset()
 }
 
 void Enemy::Reset() {
-
-	RightMoveFlag = true;
-	LeftMoveFlag = false;
-
 
 	//透明フラグ
 	invisibleFlag = false;

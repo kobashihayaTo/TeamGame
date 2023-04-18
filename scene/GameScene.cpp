@@ -24,7 +24,7 @@ void GameScene::Initialize() {
 	mapModel_ = Model::CreateFromOBJ("cube", true);
 	playerModel_ = Model::CreateFromOBJ("charactor_Head", true);
 	floorModel_ = Model::CreateFromOBJ("floor", true);
-	enemyModel_ = Model::CreateFromOBJ("enemy", true);
+	enemyModel_ = Model::CreateFromOBJ("enemy3D", true);
 	enemySensorModel_ = Model::CreateFromOBJ("sensor", true);
 	effectModel = Model::CreateFromOBJ("effect", true);
 
@@ -41,9 +41,9 @@ void GameScene::Initialize() {
 	//プレイヤーの初期化
 	newPlayer->Initialize(playerModel_);
 	//敵の初期化
-	newEnemy->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos);
+	newEnemy->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos, false);
 
-	newEnemy_1->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_1);
+	newEnemy_1->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_1, true);
 
 #pragma endregion
 	//ビュープロジェクションの初期化
@@ -55,8 +55,8 @@ void GameScene::Initialize() {
 void GameScene::Update() {
 
 	if (newMap->GetFlag() == false) {
-	//プレイヤーの更新
-	newPlayer->Update(playerkeyFlag);
+		//プレイヤーの更新
+		newPlayer->Update(playerkeyFlag);
 	}
 
 
@@ -65,10 +65,10 @@ void GameScene::Update() {
 
 
 
-	newEnemy->Update(keyFlag, newPlayer.get(), 2.0f, false);
+	newEnemy->Update(keyFlag, newPlayer.get(), 2.0f);
 	newMap->EnemyBlockCheck(newEnemy.get());
 
-	//newEnemy_1->Update(keyFlag, newPlayer.get(),2.0f, true);
+	newEnemy_1->Update(keyFlag, newPlayer.get(), 2.0f);
 	newMap->EnemyBlockCheck(newEnemy_1.get());
 	//プレイヤー
 	if (input_->TriggerKey(DIK_A)) {
@@ -184,10 +184,10 @@ void GameScene::Draw() {
 
 	//敵の描画
 	newEnemy->Draw(viewProjection_);
-	//newEnemy_1->Draw(viewProjection_);
+	newEnemy_1->Draw(viewProjection_);
 
 	newEnemy->SensorDraw(viewProjection_);
-	//newEnemy_1->SensorDraw(viewProjection_);
+	newEnemy_1->SensorDraw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
@@ -311,9 +311,9 @@ void GameScene::Reset()
 void GameScene::PosReset()
 {
 	//敵の初期化
-	newEnemy->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos);
+	newEnemy->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos, false);
 
-	newEnemy_1->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_1);
+	newEnemy_1->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_1, true);
 
 
 }

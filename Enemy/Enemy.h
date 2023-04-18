@@ -34,12 +34,12 @@ public:		//メンバ関数
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <param name="texturehandle">テクスチャハンドル</param>
-	void Initialize(Model* model, Model* sensormodel, RailCamera* camera,Vector3 enemyPos);
+	void Initialize(Model* model, Model* sensormodel, RailCamera* camera,Vector3 enemyPos, bool WidthHeightFlag);
 
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update(bool keyFlag, Player* player,float moveDis, bool WidthHeightFlag);
+	void Update(bool keyFlag, Player* player,float moveDis);
 
 	/// <summary>
 	/// 描画
@@ -218,6 +218,8 @@ private:	//メンバ変数
 	XMFLOAT4 sensorColor = { 1.0f,1.0f,1.0f,0.2f };
 
 	int direction = UP;
+
+	bool WidthHeightFlag_ = false;
 
 	bool upFlag = false;
 	bool downFlag = false;
