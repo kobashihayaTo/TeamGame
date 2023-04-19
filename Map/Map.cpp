@@ -7,11 +7,12 @@ Map::Map()
 
 Map::~Map() {}
 
-void Map::Initialize(Model* model, Model* floorModel, Model* effectmodel_) {
+void Map::Initialize(Model* model, Model* floorModel, Model* effectmodel_,Model* afterModel) {
 	//引数として受け取ったデータをメンバ変数に記録する
 	BlockSize = 32;
 	input_ = Input::GetInstance();
 	model_ = model;
+	afterModel_ = afterModel;
 
 	assert(effectmodel_);
 	effectmodel = effectmodel_;
@@ -135,7 +136,7 @@ void Map::Draw(ViewProjection& viewProjection) {
 		for (int z = 0; z < Map_Z; z++) {
 			for (int x = 0; x < Map_X; x++) {
 				if (FirstMap[z][x] == BLOCK) {
-					model_->Draw(worldTransform_[z][x], viewProjection);
+					afterModel_->Draw(worldTransform_[z][x], viewProjection);
 				}
 				if (FirstMap[z][x] == WALL) {
 					model_->Draw(worldTransform_[z][x], viewProjection);
@@ -360,7 +361,7 @@ void Map::PlayerBlockCheck(Player* player) {
 							goalReadyFlag = true;
 						}
 						if (goalReadyFlag == true) {
-							effectworldTrans.translation_.y += 0.05f;
+							effectworldTrans.translation_.y += 0.5f;
 							if (effectworldTrans.translation_.y >= 0.0f) {
 								effectworldTrans.translation_.y = 0.0f;
 								effectOffFlag = true;
@@ -369,9 +370,7 @@ void Map::PlayerBlockCheck(Player* player) {
 							}
 						}
 						if (effectOffFlag == true) {
-							effectworldTrans.translation_.y -= 0.1f;
-							/*debugText_->SetPos(50, 710);
-							debugText_->Printf("FFFFFFFFFFFFFFFFF");*/
+							effectworldTrans.translation_.y -= 1.0f;
 							if (effectworldTrans.translation_.y <= -10.0f) {
 								effectworldTrans.translation_.y = -10.0f;
 								goalcount++;
@@ -601,6 +600,7 @@ void Map::Reset()
 	effectworldTrans.translation_.y -= 10.0f;
 
 	effectOffFlag = false;
+	goalReadyFlag = false;
 }
 
 void Map::FlagReset()
@@ -612,4 +612,7 @@ void Map::FlagReset()
 
 	effectworldTrans.translation_ = { -11.0f, 0.0f, -18.0f };
 	effectworldTrans.translation_.y -= 10.0f;
+
+	effectOffFlag = false;
+	goalReadyFlag = false;
 }

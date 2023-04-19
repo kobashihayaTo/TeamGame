@@ -16,6 +16,7 @@
 #include "Function/Function.h"
 
 #include "Enemy/Enemy.h"
+#include "Map/Map.h"
 
 
 
@@ -61,13 +62,15 @@ private:
 
 	Model* model_ = nullptr;
 
-	
+	Map* map_ = nullptr;
 
 	uint32_t textureHandle_ = 0;
 	uint32_t operationHandle_ = 0;
+	uint32_t hpHandle_ = 0;
 	//スプライト
 	Sprite* sprite_ = nullptr;
 	Sprite* operationSprite_ = nullptr;
+	Sprite* hpSprite_ = nullptr;
 
 	int crisisTimer = 0;
 };

@@ -92,6 +92,8 @@ class GameScene {
 	std::unique_ptr<Map> newMap = std::make_unique<Map>();
 	//マップモデル
 	Model* mapModel_ = nullptr;
+	Model* mapAfterModel_ = nullptr;
+
 	//マップテクスチャ
 	uint32_t mapTH_ = 0u;
 
