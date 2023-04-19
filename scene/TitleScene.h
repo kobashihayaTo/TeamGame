@@ -9,6 +9,7 @@
 #include "DebugCamera.h"
 #include "Audio.h"
 
+#include "Easeing.h"
 #include "Enum.h"
 #include "GameScene.h"
 /// <summary>
@@ -38,6 +39,8 @@ public://メンバ関数
 	/// 毎フレーム処理
 	/// </summary>
 	void Update();
+
+	void TitleEase();
 
 	/// <summary>
 	/// 描画
@@ -75,13 +78,25 @@ private:
 
 	//テクスチャバンドル
 	uint32_t textureHandle_ = 0;
+	uint32_t nameHandle_ = 0;
+
 	//スプライト
 	Sprite* sprite_ = nullptr;
+	Sprite* sprite_2 = nullptr;
 	//サウンド
 	uint32_t soundDataHandle_ = 0;
 	//音声再生ハンドル
 	uint32_t playHandle = -1;
 
 	int selectFlag = 0;
+
+	int Time = 0;
+	float posY = -1080.0f;
+	//float posY = 0.0f;
+	
+	double frame = 0.0f;
+	double endFrame = 120.0f;
+	double start = -1080.0f;
+	double end = 0.0f;
 };
 

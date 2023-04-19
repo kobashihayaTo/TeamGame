@@ -17,10 +17,11 @@ void BadScene::Initialize()
 	nextScene_ = Scene::BADEND;
 
 	//ファイル名指定してテクスチャを読み込む
-	textureHandle_ = TextureManager::Load("endscreen.png");
-
+	textureHandle_ = TextureManager::Load("gameover.png");
+	nameHandle_ = TextureManager::Load("overName.png");
 	//スプライトの生成
 	sprite_ = Sprite::Create(textureHandle_, { 0,0 });
+	sprite_2 = Sprite::Create(nameHandle_, { 0,posY });
 
 	//サウンド
 	soundDataHandle_ = audio_->LoadWave("Sound/gameover.wav");
@@ -28,15 +29,36 @@ void BadScene::Initialize()
 
 void BadScene::Update()
 {
+	sprite_2->SetPosition({ 0,posY });
+	
 	if (audio_->IsPlaying(playHandle) == false || playHandle == -1)
 	{
 		playHandle = audio_->PlayWave(soundDataHandle_, false, 1);
 	}
+	TitleEase();
 	endFlag_ = false;
 	if (input_->TriggerKey(DIK_SPACE)) {
  		endFlag_ = true;
 		nextScene_ = Scene::TITLE;
 	}
+}
+
+void BadScene::TitleEase()
+{
+
+	if (frame != endFrame)
+	{
+		frame++;
+	}
+
+	posY = start + (end - start) * easeInOutBounce(frame / endFrame);
+
+
+	debugText_->SetPos(50, 350);
+	debugText_->Printf("posY:%f", posY);
+	debugText_->SetPos(50, 370);
+	debugText_->Printf("frame:%lf", frame);
+
 }
 
 void BadScene::Draw()
@@ -79,6 +101,7 @@ void BadScene::Draw()
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
 	sprite_->Draw();
+	sprite_2->Draw();
 	// デバッグテキストの描画
 	debugText_->DrawAll(commandList);
 	//

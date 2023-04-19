@@ -107,6 +107,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		case Scene::TITLE:
 
 			titleScene->Update();
+			
 			if (titleScene->GetChangeFlag()) {
 				gameScene->Reset();
 				scene = titleScene->GetNextScene();

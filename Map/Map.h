@@ -75,6 +75,8 @@ public:		//ƒƒ“ƒoŠÖ”
 
 	bool GetFlag() { return goalReadyFlag; }
 
+	int GetGoalCount() { return GoalCount; }
+
 public:
 	//”¼Œa
 	const float radius = 0.9f;

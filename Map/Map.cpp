@@ -371,8 +371,6 @@ void Map::PlayerBlockCheck(Player* player) {
 						}
 						if (effectOffFlag == true) {
 							effectworldTrans.translation_.y -= 1.0f;
-							/*debugText_->SetPos(50, 710);
-							debugText_->Printf("FFFFFFFFFFFFFFFFF");*/
 							if (effectworldTrans.translation_.y <= -10.0f) {
 								effectworldTrans.translation_.y = -10.0f;
 								goalcount++;
