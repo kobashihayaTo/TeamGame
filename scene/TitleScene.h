@@ -52,6 +52,8 @@ public://ƒƒ“ƒoŠÖ”
 	/// </summary>
 	void ChangeSelect();
 
+	void Reset();
+
 	Scene GetNextScene() { return nextScene_; }
 
 	int GetChangeFlag() { return changeFlag_; }

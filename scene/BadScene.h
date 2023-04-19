@@ -53,6 +53,8 @@ public://ƒƒ“ƒoŠÖ”
 	/// </summary>
 	void SoundStop();
 
+	void Reset();
+
 	Scene GetNextScene() { return nextScene_; }
 
 	int GetEndFlag() { return endFlag_; }

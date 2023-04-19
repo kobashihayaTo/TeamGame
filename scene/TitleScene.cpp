@@ -25,6 +25,8 @@ void TitleScene::Initialize()
 	sprite_2 = Sprite::Create(nameHandle_, { 0,posY });
 
 	selectFlag = 0;
+
+
 }
 
 void TitleScene::Update()
@@ -130,4 +132,16 @@ void TitleScene::ChangeSelect()
 	if (selectFlag > 1) {
 		selectFlag = 0;
 	}
+}
+
+void TitleScene::Reset()
+{
+	Time = 0;
+	posY = -1080.0f;
+	//float posY = 0.0f;
+
+	frame = 0.0f;
+	endFrame = 120.0f;
+	start = -1080.0f;
+	end = 0.0f;
 }
