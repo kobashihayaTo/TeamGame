@@ -591,7 +591,7 @@ void Enemy::EnemyMove(float moveDis, bool WidthHeightFlag) {
 		// è„à⁄ìÆ
 		
 		if (isMove == UP) {
-			//worldTransform_.translation_.z -= speed;
+			worldTransform_.translation_.z -= speed;
 			crisisFlag = true;
 		}
 		// â∫à⁄ìÆ
@@ -649,10 +649,12 @@ void Enemy::EnemyMove(float moveDis, bool WidthHeightFlag) {
 			if (UpMoveFlag == true) {
 				worldTransform_.translation_.z += 0.1;
 				sensorMovedDis += 0.1;
+				worldTransform_.rotation_.y = RadianConversion(0);
 			}
 			if (DownMoveFlag == true) {
 				worldTransform_.translation_.z -= 0.1;
 				sensorMovedDis -= 0.1;
+				worldTransform_.rotation_.y = RadianConversion(180);
 			}
 		}
 	}

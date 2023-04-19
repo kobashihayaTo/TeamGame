@@ -8,9 +8,13 @@ GameScene::GameScene() {}
 
 GameScene::~GameScene() {
 	delete mapModel_;
+	delete mapAfterModel_;
 	delete playerModel_;
 	delete floorModel_;
 	delete enemyModel_;
+	delete enemySensorModel_;
+	delete effectModel;
+	delete model_;
 }
 
 void GameScene::Initialize() {
@@ -60,12 +64,10 @@ void GameScene::Update() {
 		newPlayer->Update(playerkeyFlag);
 	}
 
-
 	//マップの更新
 	newMap->Update(newPlayer.get(), MapkeyFlag);
 
-
-
+	//敵の更新
 	newEnemy->Update(keyFlag, newPlayer.get(), 2.0f);
 	newMap->EnemyBlockCheck(newEnemy.get());
 
