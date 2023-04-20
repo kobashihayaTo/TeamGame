@@ -20,7 +20,7 @@ void Player::Initialize(Model* model) {
 
 
 	//プレイヤーの大きさ(倍率)
-	worldTransform_.scale_ = { 2.0f,2.0f,2.0f };
+	worldTransform_.scale_ = { 0.5f,0.5f,0.5f };
 
 	//プレイヤーの初期位置の設定
 	Trans = { -11.0f, 0.0f, -18.0f };
