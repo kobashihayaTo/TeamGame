@@ -37,7 +37,7 @@ void GameScene::Initialize() {
 	newUI->Initialize();
 #pragma  region 初期化
 	//マップの初期化
-	newMap->Initialize(mapModel_, floorModel_, effectModel,mapAfterModel_);
+	newMap->Initialize(mapModel_, floorModel_, effectModel, mapAfterModel_);
 	//カメラの初期位置を設定
 	cameraPos = { 10,10,10 };
 	cameraRot = { 0,0,0 };
@@ -55,6 +55,10 @@ void GameScene::Initialize() {
 	viewProjection_.Initialize();
 
 	model_ = Model::Create();
+
+	//音声
+	playBGMHandle = audio_->LoadWave("Sound/stageBGM1.wav");
+
 }
 
 void GameScene::Update() {
@@ -64,6 +68,10 @@ void GameScene::Update() {
 		newPlayer->Update(playerkeyFlag);
 	}
 
+	if (audio_->IsPlaying(playBGMHandle) == false || playBGMHandle == -1)
+	{
+		playBGMHandle = audio_->PlayWave(playBGMHandle, true, 1);
+	}
 	//マップの更新
 	newMap->Update(newPlayer.get(), MapkeyFlag);
 
@@ -312,7 +320,15 @@ void GameScene::Reset()
 void GameScene::PosReset()
 {
 	//敵の初期化
- 	newEnemy->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos, false);
+	newEnemy->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos, false);
 
 	newEnemy_1->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_1, true);
+}
+
+void GameScene::SoundStop()
+{
+	if (audio_->IsPlaying(playBGMHandle) == true)
+	{
+		audio_->StopWave(playBGMHandle);
+	}
 }

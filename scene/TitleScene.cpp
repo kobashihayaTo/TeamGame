@@ -29,12 +29,19 @@ void TitleScene::Initialize()
 	selectFlag = 0;
 
 	posY = -1080.0f;
+
+	//ƒTƒEƒ“ƒh
+	soundDataHandle_ = audio_->LoadWave("Sound/titleBGM.wav");
+
 }
 
 void TitleScene::Update()
 {
 	sprite_2->SetPosition({ 0,posY });
-
+	if (audio_->IsPlaying(playHandle) == false || playHandle == -1)
+	{
+		playHandle = audio_->PlayWave(soundDataHandle_, true, 1);
+	}
 
 	changeFlag_ = false;
 	if (input_->TriggerKey(DIK_SPACE)) {
