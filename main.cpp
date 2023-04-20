@@ -104,13 +104,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		input->Update();
 		switch (scene)
 		{
-			
+
 		case Scene::TITLE:
-			
 			titleScene->Update();
-			
 			if (titleScene->GetChangeFlag()) {
-				gameScene->Reset();
 				scene = titleScene->GetNextScene();
 			}
 
@@ -133,6 +130,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			if (endScene->GetEndFlag()) {
 				endScene->SoundStop();
 				scene = endScene->GetNextScene();
+				titleScene->Reset();
+				manualScene->Reset();
+				gameScene->Reset();
 			}
 			break;
 		case Scene::BADEND:
@@ -141,6 +141,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				badScene->SoundStop();
 				scene = badScene->GetNextScene();
 				titleScene->Reset();
+				manualScene->Reset();
+				gameScene->Reset();
 			}
 			break;
 		}

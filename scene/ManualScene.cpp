@@ -18,27 +18,38 @@ void ManualScene::Initialize()
 	nextScene_ = Scene::MANUAL;
 
 	//ファイル名指定してテクスチャを読み込む
-	textureHandle_ = TextureManager::Load("menuscreen.png");
+	textureHandle_ = TextureManager::Load("manual.png");
+	nameHandle_ = TextureManager::Load("manual_2.png");
 
 	//スプライトの生成
 	sprite_ = Sprite::Create(textureHandle_, { 0,0 });
+	sprite_2 = Sprite::Create(nameHandle_, { 0,0 });
 
-	selectFlag = 0;
 }
 
 void ManualScene::Update()
 {
-	manualFlag_ = false;
-	if (selectFlag == 0) {
-		if (input_->TriggerKey(DIK_SPACE)) {
-			manualFlag_ = true;
-			nextScene_ = Scene::GAME;
-		}
+
+
+	if (input_->TriggerKey(DIK_SPACE)) {
+		selectFlag += 1;
+	}
+
+	if (selectFlag == 2) {
+		manualFlag_ = true;
+		nextScene_ = Scene::GAME;
 	}
 	ChangeSelect();
 	debugText_->SetPos(50, 100);
 	debugText_->Printf("selectFlag:%d", selectFlag);
 
+}
+
+void ManualScene::Reset()
+{
+
+	selectFlag = 0;
+	manualFlag_ = false;
 }
 
 void ManualScene::Draw()
@@ -80,10 +91,18 @@ void ManualScene::Draw()
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
-	sprite_->Draw();
+	if (selectFlag == 0)
+	{
+		sprite_->Draw();
+	}
+	if (selectFlag == 1)
+	{
+		sprite_2->Draw();
+	}
+
 
 	// デバッグテキストの描画
-	//debugText_->DrawAll(commandList);
+	debugText_->DrawAll(commandList);
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
@@ -94,17 +113,5 @@ void ManualScene::Draw()
 
 void ManualScene::ChangeSelect()
 {
-	if (input_->TriggerKey(DIK_LEFT)) {
-		selectFlag -= 1;
-	}
-	if (input_->TriggerKey(DIK_RIGHT)) {
-		selectFlag += 1;
-	}
 
-	if (selectFlag < 0) {
-		selectFlag = 1;
-	}
-	if (selectFlag > 1) {
-		selectFlag = 0;
-	}
 }
