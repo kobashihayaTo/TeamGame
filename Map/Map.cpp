@@ -25,7 +25,7 @@ void Map::Initialize(Model* model, Model* floorModel, Model* effectmodel_, Model
 	for (int z = 0; z < Map_Z; z++) {
 		for (int x = 0; x < Map_X; x++) {
 			worldTransform_[z][x].Initialize();
-			worldTransform_[z][x].translation_.x = 2.0f * z - 30.0f;
+			worldTransform_[z][x].translation_.x = 2.0f * z - 40.0f;
 			worldTransform_[z][x].translation_.y = 0.0f;
 			worldTransform_[z][x].translation_.z = 2.0f * x - 22.0f;
 			myFunc_.UpdateWorldTransform(worldTransform_[z][x]);
