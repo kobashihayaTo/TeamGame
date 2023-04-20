@@ -6,6 +6,8 @@ TitleScene::TitleScene()
 
 TitleScene::~TitleScene()
 {
+	delete sprite_;
+	delete sprite_2;
 }
 
 void TitleScene::Initialize()
@@ -26,7 +28,7 @@ void TitleScene::Initialize()
 
 	selectFlag = 0;
 
-
+	posY = -1080.0f;
 }
 
 void TitleScene::Update()
@@ -56,7 +58,6 @@ void TitleScene::TitleEase()
 
 
 	posY = start + (end - start) * easeOutBounce(frame / endFrame);
-	//posY = start + (end - start) * easeOutSine(frame / endFrame);
 
 
 	debugText_->SetPos(50, 350);
@@ -138,7 +139,6 @@ void TitleScene::Reset()
 {
 	Time = 0;
 	posY = -1080.0f;
-	//float posY = 0.0f;
 
 	frame = 0.0f;
 	endFrame = 120.0f;

@@ -6,7 +6,11 @@
 
 BadScene::BadScene(){}
 
-BadScene::~BadScene(){}
+BadScene::~BadScene(){
+
+	delete sprite_;
+	delete sprite_2;
+}
 
 void BadScene::Initialize()
 {

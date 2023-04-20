@@ -233,8 +233,6 @@ void GameScene::CheckAllCollisions(Enemy* enemy_) {
 
 	//自キャラとマップチップの当たり判定
 #pragma region
-	//const std::list<std::unique_ptr<Enemy>>& enemy = enemy_->GetEnemy();
-
 	//自キャラの座標
 	posA = newPlayer->GetWorldPosition();
 
@@ -314,9 +312,7 @@ void GameScene::Reset()
 void GameScene::PosReset()
 {
 	//敵の初期化
-	newEnemy->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos, false);
+ 	newEnemy->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos, false);
 
 	newEnemy_1->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_1, true);
-
-
 }

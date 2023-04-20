@@ -6,6 +6,8 @@ UI::UI()
 
 UI::~UI()
 {
+	delete sprite_;
+	delete operationSprite_;
 }
 
 void UI::Initialize()

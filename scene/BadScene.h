@@ -91,7 +91,6 @@ private:
 
 	int Time = 0;
 	float posY = -1080.0f;
-	//float posY = 0.0f;
 
 	double frame = 0.0f;
 	double endFrame = 120.0f;

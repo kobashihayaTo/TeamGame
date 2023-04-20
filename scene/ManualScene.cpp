@@ -81,9 +81,10 @@ void ManualScene::Draw()
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
 	sprite_->Draw();
+
 	// デバッグテキストの描画
-	debugText_->DrawAll(commandList);
-	//
+	//debugText_->DrawAll(commandList);
+
 	// スプライト描画後処理
 	Sprite::PostDraw();
 

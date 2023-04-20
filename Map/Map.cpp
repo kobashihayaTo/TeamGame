@@ -7,7 +7,7 @@ Map::Map()
 
 Map::~Map() {}
 
-void Map::Initialize(Model* model, Model* floorModel, Model* effectmodel_,Model* afterModel) {
+void Map::Initialize(Model* model, Model* floorModel, Model* effectmodel_, Model* afterModel) {
 	//引数として受け取ったデータをメンバ変数に記録する
 	BlockSize = 32;
 	input_ = Input::GetInstance();
@@ -58,12 +58,6 @@ void Map::Update(Player* player, bool MapkeyFlag) {
 	//マップチップとプレイヤーが当たっているか確認する
 	PlayerBlockCheck(player);
 
-	//マップフラグの切り替え
-	if (input_->TriggerKey(DIK_L)) {
-		if (MapFlag == 1) {
-			MapFlag = 0;
-		}
-	}
 
 	//透明フラグの切り替え
 
@@ -95,7 +89,7 @@ void Map::Update(Player* player, bool MapkeyFlag) {
 
 	effectworldTrans.TransferColorMatrix();
 	myFunc_.UpdateWorldTransform(effectworldTrans);
-	
+
 
 	//デバッグ用表示
 
@@ -150,17 +144,6 @@ void Map::Draw(ViewProjection& viewProjection) {
 		}
 	}
 	effectmodel->Draw(effectworldTrans, viewProjection);
-	//if (MapFlag == 1)
-	//{
-	//	//3Dモデルを描画
-	//	for (int z = 0; z < 20; z++) {
-	//		for (int x = 0; x < 25; x++) {
-	//			if (SecondMap[z][x] == BLOCK) {
-	//				model_->Draw(worldTransform_[z][x], viewProjection);
-	//			}
-	//		}
-	//	}
-	//}
 }
 
 void Map::FloorDraw(ViewProjection& viewProjection) {
@@ -177,7 +160,7 @@ void Map::OnCollision(Vector3 playerPos, float radius) {
 
 
 void Map::PlayerBlockCheck(Player* player) {
-	
+
 	if (MapFlag == 0) {
 		for (int z = 0; z < Map_Z; z++) {
 			for (int x = 0; x < Map_X; x++) {
@@ -366,7 +349,7 @@ void Map::PlayerBlockCheck(Player* player) {
 								effectworldTrans.translation_.y = 0.0f;
 								effectOffFlag = true;
 								goalReadyFlag = false;
-								
+
 							}
 						}
 						if (effectOffFlag == true) {
@@ -382,38 +365,18 @@ void Map::PlayerBlockCheck(Player* player) {
 						debugText_->SetPos(50, 710);
 						debugText_->Printf("effectworldTrans.translation_.y:%f", effectworldTrans.translation_.y);
 
-						//if (GoalCount >= 120) {
 
-						//	/*
-						//		ブロックかプレイヤーの四角の左端、右端、上端、下端、中心点を比較してぶつかった方向判別する
 
-						//		例　下から
-						//		プレイヤーの中心点とブロックの中心点比べてプレイヤーが下にいるはず
-						//		まだこれだと左、右からぶつかってきた場合がある
+						/*
+							ブロックかプレイヤーの四角の左端、右端、上端、下端、中心点を比較してぶつかった方向判別する
 
-						//		移動する前のプレイヤー(oldPlayerPos)に右端とブロックの左端を比べてプレイヤーの右端が大きかったら左からぶつかるのはありえない
-						//		逆のこと言える、右からぶつかるのもありえないことが分かるのでその三つの条件が達成されている場合下からぶつかっている
-						//	*/
+							例　下から
+							プレイヤーの中心点とブロックの中心点比べてプレイヤーが下にいるはず
+							まだこれだと左、右からぶつかってきた場合がある
 
-						//	// 上下
-						//	if (playerRightX > blockLeftX && playerLeftX < blockRightX) {
-						//		if (player->GetWorldPosition().z < worldTransform_[z][x].translation_.z) {
-						//			goalFlag = true;
-						//		}
-						//		else if (player->GetWorldPosition().z > worldTransform_[z][x].translation_.z) {
-						//			goalFlag = true;
-						//		}
-						//	}
-						//	// 左右
-						//	else if (playerUpZ > blockDownZ && playerDownZ < blockUpZ) {
-						//		if (player->GetWorldPosition().x < worldTransform_[z][x].translation_.x) {
-						//			goalFlag = true;
-						//		}
-						//		else if (player->GetWorldPosition().x > worldTransform_[z][x].translation_.x) {
-						//			goalFlag = true;
-						//		}
-						//	}
-						//}
+							移動する前のプレイヤー(oldPlayerPos)に右端とブロックの左端を比べてプレイヤーの右端が大きかったら左からぶつかるのはありえない
+							逆のこと言える、右からぶつかるのもありえないことが分かるのでその三つの条件が達成されている場合下からぶつかっている
+						*/
 
 					}
 				}
@@ -566,7 +529,7 @@ void Map::EnemyBlockCheck(Enemy* enemy) {
 						}
 
 					}
-				
+
 				}
 
 			}

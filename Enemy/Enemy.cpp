@@ -48,6 +48,11 @@ void Enemy::Initialize(Model* model, Model* sensormodel, RailCamera* camera, Vec
 
 	speed = 0.2f;
 
+	RightMoveFlag = false;
+	LeftMoveFlag = false;
+	UpMoveFlag = false;
+	DownMoveFlag = false;
+
 	//‹ŠEˆÚ“®‚Ì‹L˜^—p
 	for (int i = 0; i < 2; i++) {
 		visionMemoryX[i] = 0;
@@ -83,8 +88,6 @@ void Enemy::Update(bool keyFlag, Player* player, float moveDis) {
 	sensorTransform_.translation_.z = worldTransform_.translation_.z;
 
 	SensorVision();
-
-
 
 	//UpSensorVector(player->GetWorldPosition().z, player->GetWorldPosition().x, player->GetRadius());
 	//DownSensorVector(player->GetWorldPosition().z, player->GetWorldPosition().x, player->GetRadius());
@@ -336,14 +339,6 @@ void Enemy::Reset() {
 
 }
 
-//void Enemy::FlagReset()
-//{
-//	stopFlag = false;
-//	stopIntervalFlag = false;
-//	stopTimer = 100;
-//	stopIntervalTimer = 100;
-//}
-
 bool Enemy::VectorLineCollision(Vector3 player, float playerRadius, Vector3 pt1, Vector3 pt2, Vector3 pt3) {
 	//‚»‚ê‚¼‚ê‚ÌƒxƒNƒgƒ‹
 	Vector3 vec[3];	//ü
@@ -470,43 +465,6 @@ void Enemy::SensorCollision()
 
 void Enemy::SensorVision() {
 #pragma region ‰ñ“]ˆ—
-	//if (visionFlag == 0)
-	//{
-	//	//À•W‚ğ‰ñ“]‚³‚¹‚é
-	//	for (int i = 0; i < 2; i++)
-	//	{
-	//		visionMemoryX[i] = sensorVisionX[i] * cos(PI / 180 * 1) - sensorVisionZ[i] * sin(PI / 90 * 1);
-	//		visionMemoryZ[i] = sensorVisionX[i] * sin(PI / 90 * 1) + sensorVisionZ[i] * cos(PI / 180 * 1);
-	//	}
-	//}
-	//else if (visionFlag == 1)
-	//{
-	//	//À•W‚ğ‰ñ“]‚³‚¹‚é
-	//	for (int i = 0; i < 2; i++)
-	//	{
-	//		visionMemoryX[i] = sensorVisionX[i] * cos(PI / 180 * 1) - sensorVisionZ[i] * -sin(PI / 90 * 1);
-	//		visionMemoryZ[i] = sensorVisionX[i] * -sin(PI / 90 * 1) + sensorVisionZ[i] * cos(PI / 180 * 1);
-	//	}
-	//}
-
-	//if (visionFlag == 0)
-	//{
-	//	//À•W‚ğ‰ñ“]‚³‚¹‚é
-	//	for (int i = 0; i < 2; i++)
-	//	{
-	//		visionMemoryX[i] = sensorVisionX[i] * cos(PI / 180 * 1);
-	//		visionMemoryZ[i] = sensorVisionZ[i] * cos(PI / 180 * 1);
-	//	}
-	//}
-	//else if (visionFlag == 1)
-	//{
-	//	//À•W‚ğ‰ñ“]‚³‚¹‚é
-	//	for (int i = 0; i < 2; i++)
-	//	{
-	//		visionMemoryX[i] = sensorVisionX[i] * cos(PI / 180 * 1);
-	//		visionMemoryZ[i] = sensorVisionZ[i] * cos(PI / 180 * 1);
-	//	}
-	//}
 
 	if (visionFlag == 0)
 	{
