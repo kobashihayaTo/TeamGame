@@ -27,7 +27,7 @@ void GameScene::Initialize() {
 	//3Dモデルを生成
 	mapModel_ = Model::CreateFromOBJ("cube", true);
 	mapAfterModel_ = Model::CreateFromOBJ("momomo", true);
-	playerModel_ = Model::CreateFromOBJ("charactor_Head", true);
+	playerModel_ = Model::CreateFromOBJ("charactor", true);
 	floorModel_ = Model::CreateFromOBJ("floor", true);
 	enemyModel_ = Model::CreateFromOBJ("enemy3D", true);
 	enemySensorModel_ = Model::CreateFromOBJ("sensor", true);
