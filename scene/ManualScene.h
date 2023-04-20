@@ -35,6 +35,11 @@ public:
 	void Update();
 
 	/// <summary>
+	/// 初期化
+	/// </summary>
+	void Reset();
+
+	/// <summary>
 	/// 描画
 	/// </summary>
 	void Draw();
@@ -67,8 +72,10 @@ private:
 
 	//テクスチャバンドル
 	uint32_t textureHandle_ = 0;
+	uint32_t nameHandle_ = 0;
 	//スプライト
 	Sprite* sprite_ = nullptr;
+	Sprite* sprite_2 = nullptr;
 
 	int selectFlag = 0;
 
