@@ -54,6 +54,11 @@ public://メンバ関数
 
 	void Reset();
 
+	/// <summary>
+	/// サウンド
+	/// </summary>
+	void SoundStop();
+
 	Scene GetNextScene() { return nextScene_; }
 
 	int GetChangeFlag() { return changeFlag_; }

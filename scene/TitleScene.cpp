@@ -19,7 +19,7 @@ void TitleScene::Initialize()
 	nextScene_ = Scene::TITLE;
 
 	//ファイル名指定してテクスチャを読み込む
-	textureHandle_ = TextureManager::Load("title.jpg");
+	textureHandle_ = TextureManager::Load("titleBackground.png");
 	nameHandle_ = TextureManager::Load("titlename.png");
 
 	//スプライトの生成
@@ -151,4 +151,12 @@ void TitleScene::Reset()
 	endFrame = 120.0f;
 	start = -1080.0f;
 	end = 0.0f;
+}
+
+void TitleScene::SoundStop()
+{
+	if (audio_->IsPlaying(soundDataHandle_) == true)
+	{
+		audio_->StopWave(soundDataHandle_);
+	}
 }

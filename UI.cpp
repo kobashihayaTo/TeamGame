@@ -19,18 +19,20 @@ void UI::Initialize()
 	//ファイル名指定してテクスチャを読み込む
 	textureHandle_ = TextureManager::Load("Alert.png");
 	operationHandle_ = TextureManager::Load("operation.png");
+	LoadGaugeHandle_= TextureManager::Load("EnemyHp.png");
 	//スプライトの生成
 	sprite_ = Sprite::Create(textureHandle_, { 0,0 });
 	operationSprite_ = Sprite::Create(operationHandle_, { 1680,840 });
-
+	LoadGaugeSprite_= Sprite::Create(LoadGaugeHandle_, { 0,0 });
+	LoadGaugeSprite_->SetPosition({ 0,0 });
 }
 
 void UI::Update()
 {
-
+	LoadGaugeCount();
 }
 
-void UI::Draw(Enemy* enemy_)
+void UI::Draw(Enemy* enemy_, Map* map_)
 {
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandList();
@@ -73,11 +75,16 @@ void UI::Draw(Enemy* enemy_)
 	//操作矢印
 	operationSprite_->Draw();
 
+	if (map_->GetUIFlag() == true) {
+		LoadGaugeSprite_->Draw();
+		LoadGaugeCounter--;
+		LoadGaugeCount();
+	}
+
 	if (enemy_->GetCrisisFlag() == true) {
 		crisisTimer++;
 		if (crisisTimer < 15) {
 			sprite_->Draw();
-			//crisisTimer = 0;
 		}
 		if (crisisTimer > 25)
 		{
@@ -93,4 +100,9 @@ void UI::Draw(Enemy* enemy_)
 
 #pragma endregion
 
+}
+
+void UI::LoadGaugeCount()
+{
+	LoadGaugeSprite_->SetSize({ LoadGaugeCounter,32 });
 }

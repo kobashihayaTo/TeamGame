@@ -77,6 +77,8 @@ public:		//ƒƒ“ƒoŠÖ”
 
 	int GetGoalCount() { return GoalCount; }
 
+	bool GetUIFlag() { return UIFlag; }
+
 public:
 	//”¼Œa
 	const float radius = 0.9f;
@@ -191,4 +193,6 @@ private:	//ƒƒ“ƒo•Ï”
 	bool effectOffFlag = false;
 
 	int playerTimer = 0;
+
+	bool UIFlag = false;
 };
