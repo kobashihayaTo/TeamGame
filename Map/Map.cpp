@@ -339,9 +339,12 @@ void Map::PlayerBlockCheck(Player* player) {
 
 					// プレイヤーとブロック衝突判定
 					if (CheckCollision(worldTransform_[z][x].translation_, player->GetWorldPosition(), radius, player->GetRadius())) {
+						UIFlag = true;
 						GoalCount++;
 						if (GoalCount > 200) {
 							goalReadyFlag = true;
+							//UIのフラグ
+							UIFlag = false;
 						}
 						if (goalReadyFlag == true) {
 							effectworldTrans.translation_.y += 0.5f;

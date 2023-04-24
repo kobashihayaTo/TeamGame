@@ -27,7 +27,7 @@
 /// </summary>
 class GameScene {
 
-  public: // メンバ関数
+public: // メンバ関数
 	/// <summary>
 	/// コンストクラタ
 	/// </summary>
@@ -70,11 +70,16 @@ class GameScene {
 	/// </summary>
 	void PosReset();
 
+	/// <summary>
+	/// サウンド
+	/// </summary>
+	void SoundStop();
+
 	Scene GetNextScene() { return nextScene_; }
 
 	int GetIsEnd() { return isEnd_; }
 
-  private: // メンバ変数
+private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
@@ -85,7 +90,7 @@ class GameScene {
 
 	//レールカメラ
 	std::unique_ptr<RailCamera> newCamera = std::make_unique<RailCamera>();
-	
+
 	Model* model_ = nullptr;
 
 	//マップ生成
@@ -101,7 +106,7 @@ class GameScene {
 	std::unique_ptr<Player> newPlayer = std::make_unique<Player>();
 	//プレイヤーモデル
 	Model* playerModel_ = nullptr;
-	
+
 	//テクスチャハンドル
 	uint32_t floorTH_ = 0u;
 	//床モデル
@@ -128,7 +133,7 @@ class GameScene {
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
-	
+
 	Scene nextScene_ = Scene::GAME;
 	int isEnd_ = false;
 
@@ -140,5 +145,7 @@ class GameScene {
 	//Vector3 enemyPos_1 = { 0.0f, 0.9f, -4.0f };
 	Vector3 enemyPos_1 = { 25.0f, 0.9f, -9.0f };
 
-
+	//サウンド
+	uint32_t playBGMHandle;
+	uint32_t playHandle_ = -1;
 };

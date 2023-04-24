@@ -17,6 +17,7 @@
 
 #include "Enemy/Enemy.h"
 #include "Map/Map.h"
+#include "Player/Player.h"
 
 
 
@@ -47,7 +48,12 @@ public: // メンバ関数
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw(Enemy* enemy_);
+	void Draw(Enemy* enemy_, Map* map_);
+
+	/// <summary>
+	/// ゲージカウンター
+	/// </summary>
+	void LoadGaugeCount();
 
 private:
 
@@ -67,11 +73,15 @@ private:
 	uint32_t textureHandle_ = 0;
 	uint32_t operationHandle_ = 0;
 	uint32_t hpHandle_ = 0;
+	uint32_t LoadGaugeHandle_ = 0;
 	//スプライト
 	Sprite* sprite_ = nullptr;
 	Sprite* operationSprite_ = nullptr;
 	Sprite* hpSprite_ = nullptr;
+	Sprite* LoadGaugeSprite_ = nullptr;
 
 	int crisisTimer = 0;
+
+	float LoadGaugeCounter = 100.0f;
 };
 
