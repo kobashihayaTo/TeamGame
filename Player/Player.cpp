@@ -23,7 +23,7 @@ void Player::Initialize(Model* model) {
 	worldTransform_.scale_ = { 0.5f,0.5f,0.5f };
 
 	//プレイヤーの初期位置の設定
-	Trans = { -11.0f, 0.0f, -18.0f };
+	Trans = { -20.0f, 0.0f, -18.0f };
 	worldTransform_.translation_ = Trans;
 
 
@@ -154,7 +154,7 @@ void Player::Reset()
 	playerDeathFlag = false;
 	playerSecretFlag = false;
 	//プレイヤーの初期位置の設定
-	worldTransform_.translation_ = { -11.0f,0.0f ,-18.0f };
+	worldTransform_.translation_ = { -20.0f, 0.0f, -18.0f };
 	SecretIntervalFlag = false;
 	SecretTimer = 100;
 	SecretIntervalTimer = 100.0f;
