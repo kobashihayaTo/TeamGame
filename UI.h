@@ -51,6 +51,13 @@ public: // メンバ関数
 	void Draw(Enemy* enemy_, Map* map_);
 
 	/// <summary>
+	/// キー描画
+	/// </summary>
+	void KeyDraw();
+
+	void KeyDraw_unusable();
+
+	/// <summary>
 	/// ゲージカウンター
 	/// </summary>
 	void LoadGaugeCount();
@@ -73,15 +80,19 @@ private:
 	uint32_t textureHandle_ = 0;
 	uint32_t operationHandle_ = 0;
 	uint32_t hpHandle_ = 0;
-	uint32_t LoadGaugeHandle_ = 0;
+	uint32_t loadGaugeHandle_ = 0;
+	uint32_t moveKeyHandle_ = 0;
+	uint32_t moveKey_unusableHandle_ = 0;
 	//スプライト
 	Sprite* sprite_ = nullptr;
 	Sprite* operationSprite_ = nullptr;
 	Sprite* hpSprite_ = nullptr;
 	Sprite* LoadGaugeSprite_ = nullptr;
+	Sprite* MoveKeySprite_ = nullptr;
+	Sprite* MoveKey_unusableSprite_ = nullptr;
 
 	int crisisTimer = 0;
 
-	float LoadGaugeCounter = 100.0f;
+	float LoadGaugeCounter = 200.0f;
 };
 

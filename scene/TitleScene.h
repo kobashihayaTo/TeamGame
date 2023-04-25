@@ -91,7 +91,7 @@ private:
 	Sprite* sprite_ = nullptr;
 	Sprite* sprite_2 = nullptr;
 	//サウンド
-	uint32_t soundDataHandle_ = 0;
+	uint32_t soundDataHandle_ = 0u;
 	//音声再生ハンドル
 	uint32_t playHandle = -1;
 

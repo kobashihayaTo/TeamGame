@@ -39,6 +39,7 @@ void BadScene::Update()
 	{
 		playHandle = audio_->PlayWave(soundDataHandle_, false, 1);
 	}
+
 	TitleEase();
 	endFlag_ = false;
 	if (input_->TriggerKey(DIK_SPACE)) {

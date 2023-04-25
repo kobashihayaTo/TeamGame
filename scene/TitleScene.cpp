@@ -38,9 +38,10 @@ void TitleScene::Initialize()
 void TitleScene::Update()
 {
 	sprite_2->SetPosition({ 0,posY });
+
 	if (audio_->IsPlaying(playHandle) == false || playHandle == -1)
 	{
-		playHandle = audio_->PlayWave(soundDataHandle_, true, 1);
+		playHandle = audio_->PlayWave(soundDataHandle_, false, 1);
 	}
 
 	changeFlag_ = false;
@@ -155,8 +156,8 @@ void TitleScene::Reset()
 
 void TitleScene::SoundStop()
 {
-	if (audio_->IsPlaying(soundDataHandle_) == true)
+	if (audio_->IsPlaying(playHandle) == true)
 	{
-		audio_->StopWave(soundDataHandle_);
+		audio_->StopWave(playHandle);
 	}
 }

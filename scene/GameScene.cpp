@@ -70,7 +70,7 @@ void GameScene::Update() {
 
 	if (audio_->IsPlaying(playBGMHandle) == false || playBGMHandle == -1)
 	{
-		playBGMHandle = audio_->PlayWave(playBGMHandle, true, 1);
+		playBGMHandle = audio_->PlayWave(playBGMHandle, false, 1);
 	}
 	//マップの更新
 	newMap->Update(newPlayer.get(), MapkeyFlag);
@@ -215,6 +215,14 @@ void GameScene::Draw() {
 	newUI->Draw(newEnemy.get(),newMap.get());
 	newUI->Draw(newEnemy_1.get(),newMap.get());
 
+	if (keyFlag == true||MapkeyFlag == true||playerkeyFlag == true) {
+		newUI->KeyDraw_unusable();
+	}
+	else
+	{
+
+		newUI->KeyDraw();
+	}
 	// デバッグテキストの描画
 
 #ifdef _DEBUG

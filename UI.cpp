@@ -19,12 +19,17 @@ void UI::Initialize()
 	//ファイル名指定してテクスチャを読み込む
 	textureHandle_ = TextureManager::Load("Alert.png");
 	operationHandle_ = TextureManager::Load("operation.png");
-	LoadGaugeHandle_= TextureManager::Load("EnemyHp.png");
+	loadGaugeHandle_= TextureManager::Load("EnemyHp.png");
+	moveKeyHandle_ = TextureManager::Load("MoveKey.png");
+	moveKey_unusableHandle_ = TextureManager::Load("MoveKey-unusable.png");
 	//スプライトの生成
 	sprite_ = Sprite::Create(textureHandle_, { 0,0 });
 	operationSprite_ = Sprite::Create(operationHandle_, { 1680,840 });
-	LoadGaugeSprite_= Sprite::Create(LoadGaugeHandle_, { 0,0 });
-	LoadGaugeSprite_->SetPosition({ 0,0 });
+	LoadGaugeSprite_= Sprite::Create(loadGaugeHandle_, { 0,0 });
+	LoadGaugeSprite_->SetPosition({ 1000,0 });
+
+	MoveKeySprite_ = Sprite::Create(moveKeyHandle_, { 0,840 });
+	MoveKey_unusableSprite_ = Sprite::Create(moveKey_unusableHandle_, { 0,840 });
 }
 
 void UI::Update()
@@ -100,6 +105,60 @@ void UI::Draw(Enemy* enemy_, Map* map_)
 
 #pragma endregion
 
+}
+
+void UI::KeyDraw()
+{
+	// コマンドリストの取得
+	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandList();
+
+#pragma region 前景スプライト描画
+	// 前景スプライト描画前処理
+	Sprite::PreDraw(commandList);
+
+	/// <summary>
+	/// ここに前景スプライトの描画処理を追加できる
+	/// </summary>
+
+	//能力キーの描画
+	MoveKeySprite_->Draw();
+
+	//sprite_->Draw();
+	// デバッグテキストの描画
+	debugText_->DrawAll(commandList);
+	//
+	// スプライト描画後処理
+	Sprite::PostDraw();
+
+#pragma endregion
+
+}
+
+void UI::KeyDraw_unusable()
+{
+	// コマンドリストの取得
+	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandList();
+
+#pragma region 前景スプライト描画
+	// 前景スプライト描画前処理
+	Sprite::PreDraw(commandList);
+
+	/// <summary>
+	/// ここに前景スプライトの描画処理を追加できる
+	/// </summary>
+
+	//能力キーの描画
+
+	MoveKey_unusableSprite_->Draw();
+
+	//sprite_->Draw();
+	// デバッグテキストの描画
+	debugText_->DrawAll(commandList);
+	//
+	// スプライト描画後処理
+	Sprite::PostDraw();
+
+#pragma endregion
 }
 
 void UI::LoadGaugeCount()

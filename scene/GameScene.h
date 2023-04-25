@@ -146,6 +146,6 @@ private: // メンバ変数
 	Vector3 enemyPos_1 = { 25.0f, 0.9f, -9.0f };
 
 	//サウンド
-	uint32_t playBGMHandle;
+	uint32_t playBGMHandle = 0u;
 	uint32_t playHandle_ = -1;
 };
