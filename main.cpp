@@ -115,6 +115,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			break;
 		case Scene::MANUAL:
 			manualScene->Update();
+			
 			if (manualScene->GetManualFlag()) {
 				scene = manualScene->GetNextScene();
 			}
