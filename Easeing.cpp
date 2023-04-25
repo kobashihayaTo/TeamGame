@@ -1,26 +1,24 @@
 
 #include <math.h>
 
+double PI = 3.141592;
 
 //-------------------easeioSine------------------//
 //easeIn‚Ìˆ—
 double easeInSine(double time)
 {
-	double PI = 3.141592;
 	return 1 - cos((time * PI) / 2);
 }
 
 //easeOut‚Ìˆ—
 double easeOutSine(double time)
 {
-	double PI = 3.141592;
 	return sin((time * PI) / 2);
 }
 
 //easeInOut‚Ìˆ—
 double easeInOutSine(double time)
 {
-	double PI = 3.141592;
 	return -(cos(PI * time) - 1) / 2;
 }
 
@@ -30,21 +28,18 @@ double easeInOutSine(double time)
 //easeInCubic‚Ìˆ—
 double easeInCubic(double time)
 {
-	double PI = 3.141592;
 	return time * time * time;
 }
 
 //easeOutCubic‚Ìˆ—
 double easeOutCubic(double time)
 {
-	double PI = 3.141592;
 	return 1 - pow(1 - time, 3);
 }
 
 //easeInOut‚Ìˆ—
 double easeInOutCubic(double time)
 {
-	double PI = 3.141592;
 	return time < 0.5 ? 4 * time * time * time : 1 - pow(-2 * time + 2, 3) / 2;
 }
 
@@ -54,21 +49,18 @@ double easeInOutCubic(double time)
 //easeInQuint‚Ìˆ—
 double easeInQuint(double time)
 {
-	double PI = 3.141592;
 	return time * time * time * time * time;
 }
 
 //easeOutQuint‚Ìˆ—
 double easeOutQuint(double time)
 {
-	double PI = 3.141592;
 	return 1 - pow(1 - time, 5);
 }
 
 //easeInOutQuint‚Ìˆ—
 double easeInOutQuint(double time)
 {
-	double PI = 3.141592;
 	return time < 0.5 ? 16 * time * time * time * time * time : 1 - pow(-2 * time + 2, 5) / 2;
 }
 
@@ -78,21 +70,18 @@ double easeInOutQuint(double time)
 //easeInCirc‚Ìˆ—
 double easeInCirc(double time)
 {
-	double PI = 3.141592;
 	return 1 - sqrt(1 - pow(time, 2));
 }
 
 //easeOutCirc‚Ìˆ—
 double easeOutCirc(double time)
 {
-	double PI = 3.141592;
 	return sqrt(1 - pow(time - 1, 2));
 }
 
 //easeInOutCirc‚Ìˆ—
 double easeInOutCirc(double time)
 {
-	double PI = 3.141592;
 	return time < 0.5
 		? (1 - sqrt(1 - pow(2 * time, 2))) / 2
 		: (sqrt(1 - pow(-2 * time + 2, 2)) + 1) / 2;
@@ -104,7 +93,6 @@ double easeInOutCirc(double time)
 //easeInElastic
 double easeInElastic(double time)
 {
-	double PI = 3.141592;
 	const double c4 = (2 * PI) / 3;
 
 	return time == 0
@@ -117,7 +105,6 @@ double easeInElastic(double time)
 //easeOutElastic
 double easeOutElastic(double time)
 {
-	double PI = 3.141592;
 	const  double c4 = (2 * PI) / 3;
 
 	return time == 0
@@ -130,7 +117,6 @@ double easeOutElastic(double time)
 //easeInOutElastic
 double easeInOutElastic(double time)
 {
-	double PI = 3.141592;
 	const double c5 = (2 * PI) / 4.5;
 
 	return time == 0
