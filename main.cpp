@@ -11,6 +11,11 @@
 #include "EndScene.h"
 #include "scene/BadScene.h"
 #include "UI.h"
+#include "FPSControll.h"
+
+LARGE_INTEGER timeStart;
+LARGE_INTEGER timeEnd;
+LARGE_INTEGER timeFreq;
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
@@ -29,6 +34,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	EndScene* endScene = nullptr;
 	BadScene* badScene = nullptr;
 	UI* ui_ = nullptr;
+	FPSControll* fps = nullptr;
 
 	Scene scene = Scene::TITLE;
 
@@ -96,12 +102,25 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	ui_ = new UI();
 	ui_->Initialize();
 
+	fps = new FPSControll();
+	fps->Initialize();
+
+	//メインループ前に精度を確認しておく
+	if (QueryPerformanceFrequency(&timeFreq) == false) {
+		return(E_FAIL);
+	}
+
+	//1度取得しておく(初回計算用)
+	QueryPerformanceCounter(&timeStart);
+
 	// メインループ
 	while (true) {
 		// メッセージ処理
 		if (win->ProcessMessage()) {
 			break;
 		}
+
+		fps->Update(timeStart, timeEnd, timeFreq);
 
 		// 入力関連の毎フレーム処理
 		input->Update();

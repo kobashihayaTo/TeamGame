@@ -104,6 +104,7 @@
     <ClCompile Include="camera\RailCamera.cpp" />
     <ClCompile Include="Easeing.cpp" />
     <ClCompile Include="Enemy\Enemy.cpp" />
+    <ClCompile Include="FPSControll.cpp" />
     <ClCompile Include="Function\Function.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map\Map.cpp" />
@@ -144,6 +145,7 @@
     <ClInclude Include="Easeing.h" />
     <ClInclude Include="Enemy\Enemy.h" />
     <ClInclude Include="Enum.h" />
+    <ClInclude Include="FPSControll.h" />
     <ClInclude Include="Function\Function.h" />
     <ClInclude Include="input\Input.h" />
     <ClInclude Include="Map\Map.h" />
