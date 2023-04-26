@@ -136,8 +136,23 @@ void Map::Draw(ViewProjection& viewProjection) {
 					model_->Draw(worldTransform_[z][x], viewProjection);
 				}
 				if (AnswerFlag == true && AnswerIntervalFlag == false) {
-					if (FirstMap[z][x] == GOAL) {
-						model_->Draw(worldTransform_[z][x], viewProjection);
+
+					if (goal_ == 0) {
+						if (FirstMap[z][x] == RELAY) {
+							model_->Draw(worldTransform_[z][x], viewProjection);
+						}
+					}
+
+					if (goal_ == 1) {
+						if (FirstMap[z][x] == ECHIGO) {
+							model_->Draw(worldTransform_[z][x], viewProjection);
+						}
+					}
+
+					if (goal_ == 2) {
+						if (FirstMap[z][x] == GOAL) {
+							model_->Draw(worldTransform_[z][x], viewProjection);
+						}
 					}
 				}
 			}
@@ -332,53 +347,95 @@ void Map::PlayerBlockCheck(Player* player) {
 							playerDownZ < blockUpZ) {
 							debugText_->SetPos(50, 310);
 							debugText_->Printf("right:hit");
+				
 						}
 					}
 				}
-				//進んだ先がGOALだったらクリア画面に移行する
-				if (FirstMap[z][x] == GOAL) {
-					testFlag = CheckCollision(worldTransform_[z][x].translation_, player->GetWorldPosition(), radius, player->GetRadius());
-					// プレイヤーとブロック衝突判定
-					if (testFlag == true) {
-						GoalCount -= 1;
-						UIFlag = true;
-						if (GoalCount <= 0) {
-							//UIのフラグ
-							UIFlag = false;
-							goalReadyFlag = true;
-							GoalCount = 0;
-						}
-						if (goalReadyFlag == true) {
-							effectworldTrans.translation_.y += 0.5f;
-							if (effectworldTrans.translation_.y >= 0.0f) {
-								effectworldTrans.translation_.y = 0.0f;
-								effectOffFlag = true;
-								goalReadyFlag = false;
 
+				if (goal_ == 0) {
+					//進んだ先がGOALだったらクリア画面に移行する
+					if (FirstMap[z][x] == RELAY) {
+						testFlag = CheckCollision(worldTransform_[z][x].translation_, player->GetWorldPosition(), radius, player->GetRadius());
+						// プレイヤーとブロック衝突判定
+						if (testFlag == true) {
+							GoalRELAYCount -= 1;
+							UIFlag = true;
+							if (GoalRELAYCount <= 0) {
+								//UIのフラグ
+								UIFlag = false;
+								GoalRELAYCount = 100;
+								goal_ = 1;
+								testFlag = false;
 							}
 						}
-						if (effectOffFlag == true) {
-							effectworldTrans.translation_.y -= 1.0f;
-							if (effectworldTrans.translation_.y <= -10.0f) {
-								effectworldTrans.translation_.y = -10.0f;
-								goalcount++;
-								if (goalcount > 50) {
-									goalFlag = true;
+					}
+				}
+
+				if (goal_ == 1) {
+					//進んだ先がGOALだったらクリア画面に移行する
+					if (FirstMap[z][x] == ECHIGO) {
+						testFlag = CheckCollision(worldTransform_[z][x].translation_, player->GetWorldPosition(), radius, player->GetRadius());
+						// プレイヤーとブロック衝突判定
+						if (testFlag == true) {
+							GoalECHIGOCount -= 1;
+							UIFlag = true;
+							if (GoalECHIGOCount <= 0) {
+								//UIのフラグ
+								UIFlag = false;
+								GoalECHIGOCount = 100;
+								goal_ = 2;
+								testFlag = false;
+							}
+						}
+					}
+				}
+
+				if (goal_ == 2) {
+					//進んだ先がGOALだったらクリア画面に移行する
+					if (FirstMap[z][x] == GOAL) {
+						testFlag = CheckCollision(worldTransform_[z][x].translation_, player->GetWorldPosition(), radius, player->GetRadius());
+						// プレイヤーとブロック衝突判定
+						if (testFlag == true) {
+							GoalCount -= 1;
+							UIFlag = true;
+							if (GoalCount <= 0) {
+								//UIのフラグ
+								UIFlag = false;
+								goalReadyFlag = true;
+								GoalCount = 0;
+							}
+							if (goalReadyFlag == true) {
+								effectworldTrans.translation_.y += 0.5f;
+								if (effectworldTrans.translation_.y >= 0.0f) {
+									effectworldTrans.translation_.y = 0.0f;
+									effectOffFlag = true;
+									goalReadyFlag = false;
+
 								}
 							}
+							if (effectOffFlag == true) {
+								effectworldTrans.translation_.y -= 1.0f;
+								if (effectworldTrans.translation_.y <= -10.0f) {
+									effectworldTrans.translation_.y = -10.0f;
+									goalcount++;
+									if (goalcount > 50) {
+										goalFlag = true;
+									}
+								}
+							}
+							debugText_->SetPos(50, 710);
+							debugText_->Printf("effectworldTrans.translation_.y:%f", effectworldTrans.translation_.y);
+							/*
+								ブロックかプレイヤーの四角の左端、右端、上端、下端、中心点を比較してぶつかった方向判別する
+
+								例　下から
+								プレイヤーの中心点とブロックの中心点比べてプレイヤーが下にいるはず
+								まだこれだと左、右からぶつかってきた場合がある
+
+								移動する前のプレイヤー(oldPlayerPos)に右端とブロックの左端を比べてプレイヤーの右端が大きかったら左からぶつかるのはありえない
+								逆のこと言える、右からぶつかるのもありえないことが分かるのでその三つの条件が達成されている場合下からぶつかっている
+							*/
 						}
-						debugText_->SetPos(50, 710);
-						debugText_->Printf("effectworldTrans.translation_.y:%f", effectworldTrans.translation_.y);
-						/*
-							ブロックかプレイヤーの四角の左端、右端、上端、下端、中心点を比較してぶつかった方向判別する
-
-							例　下から
-							プレイヤーの中心点とブロックの中心点比べてプレイヤーが下にいるはず
-							まだこれだと左、右からぶつかってきた場合がある
-
-							移動する前のプレイヤー(oldPlayerPos)に右端とブロックの左端を比べてプレイヤーの右端が大きかったら左からぶつかるのはありえない
-							逆のこと言える、右からぶつかるのもありえないことが分かるのでその三つの条件が達成されている場合下からぶつかっている
-						*/
 					}
 				}
 			}
@@ -552,6 +609,8 @@ void Map::Reset()
 {
 	goalFlag = false;
 	GoalCount = 100;
+	GoalRELAYCount = 100;
+	GoalECHIGOCount = 100;
 	goalcount = 0;
 
 	OKFlag = false;
@@ -565,4 +624,6 @@ void Map::Reset()
 
 	effectOffFlag = false;
 	goalReadyFlag = false;
+
+	goal_ = 0;
 }

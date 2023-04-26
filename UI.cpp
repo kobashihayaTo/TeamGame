@@ -84,6 +84,10 @@ void UI::Draw(Enemy* enemy_, Map* map_)
 		LoadGaugeCount();
 	}
 
+	if (map_->GetTestFlag() == false) {
+		Reset();
+	}
+
 	if (enemy_->GetCrisisFlag() == true) {
 		crisisTimer++;
 		if (crisisTimer < 15) {
@@ -172,6 +176,4 @@ void UI::Reset()
 	crisisTimer = 0;
 
 	LoadGaugeCounter = 200;
-
-	Initialize();
 }

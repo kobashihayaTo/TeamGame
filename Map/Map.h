@@ -19,7 +19,9 @@ public:		//Enum
 		NONE, //0
 		WALL, //1
 		BLOCK,//2
-		GOAL  //3	
+		GOAL,  //3	
+		RELAY, //4
+		ECHIGO //5
 	};
 
 public:		//メンバ関数
@@ -76,6 +78,7 @@ public:		//メンバ関数
 	int GetGoalCount() { return GoalCount; }
 
 	bool GetUIFlag() { return UIFlag; }
+	bool GetTestFlag() { return testFlag; }
 
 public:
 	//半径
@@ -115,7 +118,7 @@ public:		//マップ
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,0,0,0,0,0,1},
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1},
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,5,0,0,1},
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -190,7 +193,10 @@ private:	//メンバ変数
 
 	bool goalFlag = false;
 	bool goalReadyFlag = false;
+	//
 	int GoalCount = 100;
+	int GoalRELAYCount = 100;
+	int GoalECHIGOCount = 100;
 
 	int goalcount = 0;
 
@@ -205,4 +211,6 @@ private:	//メンバ変数
 	bool UIFlag = false;
 
 	bool testFlag = false;
+
+	int goal_ = 0;
 };
