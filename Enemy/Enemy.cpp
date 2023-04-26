@@ -312,19 +312,6 @@ void Enemy::SensorDraw(ViewProjection& viewProjection) {
 
 }
 
-void Enemy::FlagReset(){
-
-	//透明フラグ
-	invisibleFlag = false;
-
-	stopFlag = false;
-	stopIntervalFlag = false;
-
-	stopTimer = 100;
-	stopIntervalTimer = 100;
-
-}
-
 void Enemy::Reset() {
 
 	//透明フラグ

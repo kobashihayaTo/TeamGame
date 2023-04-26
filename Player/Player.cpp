@@ -160,13 +160,6 @@ void Player::Reset()
 	SecretIntervalTimer = 100.0f;
 	worldTransform_.rotation_.y = RadianConversion(0);
 }
-void Player::FlagReset()
-{
-	playerSecretFlag = false;
-	SecretIntervalFlag = false;
-	SecretTimer = 100;
-	SecretIntervalTimer = 100.0f;
-}
 	//‰½‚à‚µ‚È‚¢
 
 /*

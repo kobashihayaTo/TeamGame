@@ -72,8 +72,6 @@ public:	//メンバ関数
 
 	void Reset();
 
-	void FlagReset();
-
 public:
 	// speedZのセッター
 	void SetPlayerSpeedZ(float playerSpeedZ) { playerSpeedZ_ = playerSpeedZ; }

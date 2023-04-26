@@ -68,10 +68,11 @@ void GameScene::Update() {
 		newPlayer->Update(playerkeyFlag);
 	}
 
-	if (audio_->IsPlaying(playBGMHandle) == false || playBGMHandle == -1)
+	/*if (audio_->IsPlaying(playBGMHandle) == false || playBGMHandle == -1)
 	{
 		playBGMHandle = audio_->PlayWave(playBGMHandle, false, 1);
-	}
+	}*/
+
 	//マップの更新
 	newMap->Update(newPlayer.get(), MapkeyFlag);
 
@@ -322,6 +323,7 @@ void GameScene::Reset()
 	newPlayer->Reset();
 	newEnemy->Reset();
 	newMap->Reset();
+	newUI->Reset();
 	PosReset();
 }
 

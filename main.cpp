@@ -28,7 +28,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	ManualScene* manualScene = nullptr;
 	EndScene* endScene = nullptr;
 	BadScene* badScene = nullptr;
-
+	UI* ui_ = nullptr;
 
 	Scene scene = Scene::TITLE;
 
@@ -93,6 +93,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	badScene = new BadScene();
 	badScene->Initialize();
 
+	ui_ = new UI();
+	ui_->Initialize();
+
 	// メインループ
 	while (true) {
 		// メッセージ処理
@@ -110,22 +113,24 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			if (titleScene->GetChangeFlag()) {
 				titleScene->SoundStop();
 				scene = titleScene->GetNextScene();
+				titleScene->Reset();
 			}
 
 			break;
 		case Scene::MANUAL:
 			manualScene->Update();
-			
 			if (manualScene->GetManualFlag()) {
 				scene = manualScene->GetNextScene();
+				manualScene->Reset();
 			}
 			break;
 		case Scene::GAME:
 			gameScene->Update();
 			if (gameScene->GetIsEnd()) {
 				gameScene->SoundStop();
-				badScene->Reset();
+				ui_->Reset();
 				scene = gameScene->GetNextScene();
+				gameScene->Reset();
 			}
 			break;
 		case Scene::END:
@@ -133,9 +138,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			if (endScene->GetEndFlag()) {
 				endScene->SoundStop();
 				scene = endScene->GetNextScene();
-				titleScene->Reset();
-				manualScene->Reset();
-				gameScene->Reset();
+				
 			}
 			break;
 		case Scene::BADEND:
@@ -143,9 +146,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			if (badScene->GetEndFlag()) {
 				badScene->SoundStop();
 				scene = badScene->GetNextScene();
-				titleScene->Reset();
-				manualScene->Reset();
-				gameScene->Reset();
+				badScene->Reset();
 			}
 			break;
 		}
@@ -177,7 +178,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		//エスケープが押されたらループから抜ける
 		if (titleScene->GetSelectFlag() == 1)
 		{
-			if (input->TriggerKey(DIK_ESCAPE))
+			if (input->TriggerKey(DIK_SPACE))
 			{
 				break;
 			}
@@ -191,7 +192,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	}
 
 	// 各種解放
+	SafeDelete(titleScene);
+	SafeDelete(manualScene);
 	SafeDelete(gameScene);
+	SafeDelete(endScene);
+	SafeDelete(badScene);
+
 	audio->Finalize();
 
 	// ゲームウィンドウの破棄
