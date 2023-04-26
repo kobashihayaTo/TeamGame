@@ -171,5 +171,5 @@ void UI::Reset()
 {
 	crisisTimer = 0;
 
-	LoadGaugeCounter = 200.0f;
+	LoadGaugeCounter = 150.0f;
 }

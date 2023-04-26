@@ -342,11 +342,11 @@ void Map::PlayerBlockCheck(Player* player) {
 					if (testFlag == true) {
 						GoalCount += 1;
 						UIFlag = true;
-						if (GoalCount > 100) {
+						if (GoalCount > 150) {
 							//UI‚Ìƒtƒ‰ƒO
 							UIFlag = false;
 							goalReadyFlag = true;
-							GoalCount = 100;
+							GoalCount = 150;
 						}
 						if (goalReadyFlag == true) {
 							effectworldTrans.translation_.y += 0.5f;
