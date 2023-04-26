@@ -76,10 +76,14 @@ public:		//ƒƒ“ƒoŠÖ”
 	bool GetFlag() { return goalReadyFlag; }
 
 	int GetGoalCount() { return GoalCount; }
+	int GetGoalRELAYCount() { return GoalRELAYCount; }
+	int GetGoalECHIGOCount() { return GoalECHIGOCount; }
+
 
 	bool GetUIFlag() { return UIFlag; }
 	bool GetTestFlag() { return testFlag; }
 
+	
 public:
 	//”¼Œa
 	const float radius = 0.9f;

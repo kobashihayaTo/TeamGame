@@ -82,15 +82,20 @@ void UI::Draw(Enemy* enemy_, Map* map_)
 	operationSprite_->Draw();
 	
 	if (map_->GetUIFlag() == true) {
-		if (LoadGaugeCounter >= 0) {
+		if (LoadGaugeCounter >= 0&&map_->GetFlag()==false&& map_->GeteffectOffFlag() == false) {
 			LoadGaugeSprite_->Draw();
 			LoadGaugeCount();
+			
+		}
+		else
+		{
+			Reset();
 		}
 	}
 
-	if (map_->GetTestFlag() == false) {
+	/*if (map_->GetTestFlag() == false) {
 		Reset();
-	}
+	}*/
 
 	if (enemy_->GetCrisisFlag() == true) {
 		crisisTimer++;
@@ -102,10 +107,11 @@ void UI::Draw(Enemy* enemy_, Map* map_)
 			crisisTimer = 0;
 		}
 	}
-	//sprite_->Draw();
+#ifdef _DEBUG
+
 	// デバッグテキストの描画
 	debugText_->DrawAll(commandList);
-	//
+#endif  
 	// スプライト描画後処理
 	Sprite::PostDraw();
 
@@ -129,10 +135,11 @@ void UI::KeyDraw()
 	//能力キーの描画
 	MoveKeySprite_->Draw();
 
-	//sprite_->Draw();
+#ifdef _DEBUG
+
 	// デバッグテキストの描画
 	debugText_->DrawAll(commandList);
-	//
+#endif  
 	// スプライト描画後処理
 	Sprite::PostDraw();
 
@@ -157,10 +164,11 @@ void UI::KeyDraw_unusable()
 
 	MoveKey_unusableSprite_->Draw();
 
-	//sprite_->Draw();
+#ifdef _DEBUG
+
 	// デバッグテキストの描画
 	debugText_->DrawAll(commandList);
-	//
+#endif  
 	// スプライト描画後処理
 	Sprite::PostDraw();
 

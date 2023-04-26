@@ -138,9 +138,11 @@ void TitleScene::Draw()
 	else{
 		exit_sprite_->Draw();
 	}
+#ifdef _DEBUG
+
 	// デバッグテキストの描画
 	debugText_->DrawAll(commandList);
-	//
+#endif  
 	// スプライト描画後処理
 	Sprite::PostDraw();
 
