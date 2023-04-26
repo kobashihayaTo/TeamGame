@@ -78,7 +78,7 @@ void UI::Draw(Enemy* enemy_, Map* map_)
 	
 	//‘€ì–îˆó
 	operationSprite_->Draw();
-
+	
 	if (map_->GetUIFlag() == true) {
 		LoadGaugeSprite_->Draw();
 		LoadGaugeCount();
@@ -171,5 +171,7 @@ void UI::Reset()
 {
 	crisisTimer = 0;
 
-	LoadGaugeCounter = 150.0f;
+	LoadGaugeCounter = 200;
+
+	Initialize();
 }

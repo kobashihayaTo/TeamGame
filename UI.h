@@ -95,6 +95,6 @@ private:
 
 	int crisisTimer = 0;
 
-	float LoadGaugeCounter = 150.0f;
+	float LoadGaugeCounter = 200;
 };
 

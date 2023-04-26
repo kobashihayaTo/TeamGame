@@ -190,7 +190,7 @@ private:	//ƒƒ“ƒo•Ï”
 
 	bool goalFlag = false;
 	bool goalReadyFlag = false;
-	int GoalCount = 0;
+	int GoalCount = 100;
 
 	int goalcount = 0;
 

@@ -340,13 +340,13 @@ void Map::PlayerBlockCheck(Player* player) {
 					testFlag = CheckCollision(worldTransform_[z][x].translation_, player->GetWorldPosition(), radius, player->GetRadius());
 					// プレイヤーとブロック衝突判定
 					if (testFlag == true) {
-						GoalCount += 1;
+						GoalCount -= 1;
 						UIFlag = true;
-						if (GoalCount > 150) {
+						if (GoalCount <= 0) {
 							//UIのフラグ
 							UIFlag = false;
 							goalReadyFlag = true;
-							GoalCount = 150;
+							GoalCount = 0;
 						}
 						if (goalReadyFlag == true) {
 							effectworldTrans.translation_.y += 0.5f;
@@ -362,7 +362,7 @@ void Map::PlayerBlockCheck(Player* player) {
 							if (effectworldTrans.translation_.y <= -10.0f) {
 								effectworldTrans.translation_.y = -10.0f;
 								goalcount++;
-								if (goalcount > 100) {
+								if (goalcount > 50) {
 									goalFlag = true;
 								}
 							}
@@ -551,7 +551,7 @@ bool Map::CheckCollision(Vector3 pos1, Vector3 pos2, float radius1, float radius
 void Map::Reset()
 {
 	goalFlag = false;
-	GoalCount = 0;
+	GoalCount = 100;
 	goalcount = 0;
 
 	OKFlag = false;
