@@ -119,7 +119,7 @@ void Map::Update(Player* player, bool MapkeyFlag) {
 	debugText_->Printf("AnswerIntervalTimer:%d", AnswerIntervalTimer);
 
 	debugText_->SetPos(50, 610);
-	debugText_->Printf("playerTimer:%d", playerTimer);
+	debugText_->Printf("GoalCount:%d", GoalCount);
 }
 
 void Map::Draw(ViewProjection& viewProjection) {
@@ -162,6 +162,7 @@ void Map::OnCollision(Vector3 playerPos, float radius) {
 void Map::PlayerBlockCheck(Player* player) {
 
 	if (MapFlag == 0) {
+		UIFlag = false;
 		for (int z = 0; z < Map_Z; z++) {
 			for (int x = 0; x < Map_X; x++) {
 				// ブロックの座標
@@ -336,15 +337,16 @@ void Map::PlayerBlockCheck(Player* player) {
 				}
 				//進んだ先がGOALだったらクリア画面に移行する
 				if (FirstMap[z][x] == GOAL) {
-
+					testFlag = CheckCollision(worldTransform_[z][x].translation_, player->GetWorldPosition(), radius, player->GetRadius());
 					// プレイヤーとブロック衝突判定
-					if (CheckCollision(worldTransform_[z][x].translation_, player->GetWorldPosition(), radius, player->GetRadius())) {
+					if (testFlag == true) {
+						GoalCount += 1;
 						UIFlag = true;
-						GoalCount++;
-						if (GoalCount > 200) {
+						if (GoalCount > 100) {
 							//UIのフラグ
 							UIFlag = false;
 							goalReadyFlag = true;
+							GoalCount = 100;
 						}
 						if (goalReadyFlag == true) {
 							effectworldTrans.translation_.y += 0.5f;
@@ -367,9 +369,6 @@ void Map::PlayerBlockCheck(Player* player) {
 						}
 						debugText_->SetPos(50, 710);
 						debugText_->Printf("effectworldTrans.translation_.y:%f", effectworldTrans.translation_.y);
-
-
-
 						/*
 							ブロックかプレイヤーの四角の左端、右端、上端、下端、中心点を比較してぶつかった方向判別する
 
@@ -380,13 +379,10 @@ void Map::PlayerBlockCheck(Player* player) {
 							移動する前のプレイヤー(oldPlayerPos)に右端とブロックの左端を比べてプレイヤーの右端が大きかったら左からぶつかるのはありえない
 							逆のこと言える、右からぶつかるのもありえないことが分かるのでその三つの条件が達成されている場合下からぶつかっている
 						*/
-
 					}
 				}
-
 			}
 		}
-
 	}
 }
 
@@ -549,6 +545,7 @@ bool Map::CheckCollision(Vector3 pos1, Vector3 pos2, float radius1, float radius
 		}
 	}
 	return 0;
+
 }
 
 void Map::Reset()
@@ -558,20 +555,6 @@ void Map::Reset()
 	goalcount = 0;
 
 	OKFlag = false;
-	AnswerFlag = false;
-	AnswerIntervalFlag = false;
-	AnswerTimer = 100;
-	AnswerIntervalTimer = 100;
-
-	effectworldTrans.translation_ = { -11.0f, 0.0f, -18.0f };
-	effectworldTrans.translation_.y -= 10.0f;
-
-	effectOffFlag = false;
-	goalReadyFlag = false;
-}
-
-void Map::FlagReset()
-{
 	AnswerFlag = false;
 	AnswerIntervalFlag = false;
 	AnswerTimer = 100;

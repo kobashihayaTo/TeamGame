@@ -96,11 +96,6 @@ public:		//メンバ関数
 	/// </summary>
 	void EnemyMoveCheck(float playerX, float playerZ, float playerR);
 
-	/// <summary>
-	/// 変数の初期化
-	/// </summary>
-	void FlagReset();
-
 	//衝突を検出したら呼び出されるコールバック関数
 	void OnCollision();
 

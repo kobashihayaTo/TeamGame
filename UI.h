@@ -62,6 +62,8 @@ public: // ƒƒ“ƒoŠÖ”
 	/// </summary>
 	void LoadGaugeCount();
 
+	void Reset();
+
 private:
 
 	DirectXCommon* dxCommon_ = nullptr;

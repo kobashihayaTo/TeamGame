@@ -69,8 +69,6 @@ public:		//ƒƒ“ƒoŠÖ”
 
 	void Reset();
 
-	void FlagReset();
-
 	bool GeteffectOffFlag() { return effectOffFlag; }
 
 	bool GetFlag() { return goalReadyFlag; }
@@ -205,4 +203,6 @@ private:	//ƒƒ“ƒo•Ï”
 	int playerTimer = 0;
 
 	bool UIFlag = false;
+
+	bool testFlag = false;
 };

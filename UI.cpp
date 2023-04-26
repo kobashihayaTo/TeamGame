@@ -34,7 +34,6 @@ void UI::Initialize()
 
 void UI::Update()
 {
-	LoadGaugeCount();
 }
 
 void UI::Draw(Enemy* enemy_, Map* map_)
@@ -82,7 +81,6 @@ void UI::Draw(Enemy* enemy_, Map* map_)
 
 	if (map_->GetUIFlag() == true) {
 		LoadGaugeSprite_->Draw();
-		LoadGaugeCounter--;
 		LoadGaugeCount();
 	}
 
@@ -164,4 +162,14 @@ void UI::KeyDraw_unusable()
 void UI::LoadGaugeCount()
 {
 	LoadGaugeSprite_->SetSize({ LoadGaugeCounter,32 });
+	LoadGaugeCounter -= 1;
+	debugText_->SetPos(50, 630);
+	debugText_->Printf("LoadGaugeCounter:%f", LoadGaugeCounter);
+}
+
+void UI::Reset()
+{
+	crisisTimer = 0;
+
+	LoadGaugeCounter = 200.0f;
 }
