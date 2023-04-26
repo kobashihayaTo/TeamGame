@@ -119,7 +119,7 @@ void Map::Update(Player* player, bool MapkeyFlag) {
 	debugText_->Printf("AnswerIntervalTimer:%d", AnswerIntervalTimer);
 
 	debugText_->SetPos(50, 610);
-	debugText_->Printf("GoalCount:%d", GoalCount);
+	debugText_->Printf("GoalRELAYCount:%d", GoalRELAYCount);
 }
 
 void Map::Draw(ViewProjection& viewProjection) {
@@ -166,7 +166,6 @@ void Map::FloorDraw(ViewProjection& viewProjection) {
 	floorModel_->Draw(floorWorldTransform_, viewProjection);
 
 }
-
 
 void Map::OnCollision(Vector3 playerPos, float radius) {
 	//右上のマップチップ上での座標を取得
@@ -361,11 +360,12 @@ void Map::PlayerBlockCheck(Player* player) {
 							GoalRELAYCount -= 1;
 							UIFlag = true;
 							if (GoalRELAYCount <= 0) {
+								testFlag = false;
 								//UIのフラグ
 								UIFlag = false;
-								GoalRELAYCount = 100;
 								goal_ = 1;
-								testFlag = false;
+								GoalRELAYCount = 50;
+								
 							}
 						}
 					}
@@ -382,7 +382,7 @@ void Map::PlayerBlockCheck(Player* player) {
 							if (GoalECHIGOCount <= 0) {
 								//UIのフラグ
 								UIFlag = false;
-								GoalECHIGOCount = 100;
+								GoalECHIGOCount = 50;
 								goal_ = 2;
 								testFlag = false;
 							}
@@ -402,7 +402,7 @@ void Map::PlayerBlockCheck(Player* player) {
 								//UIのフラグ
 								UIFlag = false;
 								goalReadyFlag = true;
-								GoalCount = 0;
+								GoalCount = 50;
 							}
 							if (goalReadyFlag == true) {
 								effectworldTrans.translation_.y += 0.5f;
@@ -608,9 +608,9 @@ bool Map::CheckCollision(Vector3 pos1, Vector3 pos2, float radius1, float radius
 void Map::Reset()
 {
 	goalFlag = false;
-	GoalCount = 100;
-	GoalRELAYCount = 100;
-	GoalECHIGOCount = 100;
+	GoalCount = 50;
+	GoalRELAYCount = 50;
+	GoalECHIGOCount = 50;
 	goalcount = 0;
 
 	OKFlag = false;

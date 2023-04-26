@@ -171,9 +171,9 @@ private:	//ƒƒ“ƒo•Ï”
 	bool goalFlag = false;
 	bool goalReadyFlag = false;
 	//
-	int GoalCount = 100;
-	int GoalRELAYCount = 100;
-	int GoalECHIGOCount = 100;
+	int GoalCount = 50;
+	int GoalRELAYCount = 50;
+	int GoalECHIGOCount = 50;
 
 	int goalcount = 0;
 

@@ -47,8 +47,9 @@ void GameScene::Initialize() {
 	newPlayer->Initialize(playerModel_);
 	//敵の初期化
 	newEnemy->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos, false);
-
 	newEnemy_1->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_1, true);
+	newEnemy_2->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_2, true);
+	newEnemy_3->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_3, false);
 
 #pragma endregion
 	//ビュープロジェクションの初期化
@@ -82,6 +83,13 @@ void GameScene::Update() {
 
 	newEnemy_1->Update(keyFlag, newPlayer.get(), 2.0f);
 	newMap->EnemyBlockCheck(newEnemy_1.get());
+
+	newEnemy_2->Update(keyFlag, newPlayer.get(), 2.0f);
+	newMap->EnemyBlockCheck(newEnemy_2.get());
+
+	newEnemy_3->Update(keyFlag, newPlayer.get(), 2.0f);
+	newMap->EnemyBlockCheck(newEnemy_3.get());
+
 	//プレイヤー
 	if (input_->TriggerKey(DIK_A)) {
 		if (MapkeyFlag == false && keyFlag == false) {
@@ -136,6 +144,8 @@ void GameScene::Update() {
 	if (newPlayer->GetSecretFlag() == false || newPlayer->GetSecretIntervalFlag() == true) {
 		CheckAllCollisions(newEnemy.get());
 		CheckAllCollisions(newEnemy_1.get());
+		CheckAllCollisions(newEnemy_2.get());
+		CheckAllCollisions(newEnemy_3.get());
 	}
 
 	//リセット処理
@@ -197,9 +207,13 @@ void GameScene::Draw() {
 	//敵の描画
 	newEnemy->Draw(viewProjection_);
 	newEnemy_1->Draw(viewProjection_);
+	newEnemy_2->Draw(viewProjection_);
+	newEnemy_3->Draw(viewProjection_);
 
 	newEnemy->SensorDraw(viewProjection_);
 	newEnemy_1->SensorDraw(viewProjection_);
+	newEnemy_2->SensorDraw(viewProjection_);
+	newEnemy_3->SensorDraw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
@@ -215,6 +229,8 @@ void GameScene::Draw() {
 
 	newUI->Draw(newEnemy.get(),newMap.get());
 	newUI->Draw(newEnemy_1.get(),newMap.get());
+	newUI->Draw(newEnemy_2.get(), newMap.get());
+	newUI->Draw(newEnemy_3.get(), newMap.get());
 
 	if (keyFlag == true||MapkeyFlag == true||playerkeyFlag == true) {
 		newUI->KeyDraw_unusable();
@@ -330,9 +346,14 @@ void GameScene::Reset()
 void GameScene::PosReset()
 {
 	//敵の初期化
+	//falseが縦　trueが横
 	newEnemy->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos, false);
 
 	newEnemy_1->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_1, true);
+
+	newEnemy_2->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_2, true);
+
+	newEnemy_3->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_3, false);
 }
 
 void GameScene::SoundStop()

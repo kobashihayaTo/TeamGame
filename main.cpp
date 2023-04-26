@@ -129,6 +129,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			if (gameScene->GetIsEnd()) {
 				gameScene->SoundStop();
 				ui_->Reset();
+				ui_->Initialize();
 				scene = gameScene->GetNextScene();
 				gameScene->Reset();
 			}

@@ -117,7 +117,10 @@ private: // メンバ変数
 	//敵生成
 	std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
 	std::unique_ptr<Enemy> newEnemy_1 = std::make_unique<Enemy>();
+	std::unique_ptr<Enemy> newEnemy_2 = std::make_unique<Enemy>();
+	std::unique_ptr<Enemy> newEnemy_3 = std::make_unique<Enemy>();
 	//敵モデル
+
 	Model* enemyModel_ = nullptr;
 	Model* enemySensorModel_ = nullptr;
 
@@ -142,8 +145,9 @@ private: // メンバ変数
 	bool playerkeyFlag = false;
 
 	Vector3 enemyPos = { -10.0f, 0.9f, 12.7f };
-	//Vector3 enemyPos_1 = { 0.0f, 0.9f, -4.0f };
-	Vector3 enemyPos_1 = { 25.0f, 0.9f, -9.0f };
+	Vector3 enemyPos_1 = { 20.0f, 0.9f, -9.0f };
+	Vector3 enemyPos_2 = { 34.0f, 0.9f, -11.0f };
+	Vector3 enemyPos_3 = { 30.0f, 0.9f, -2.0f };
 
 	//サウンド
 	uint32_t playBGMHandle = 0u;

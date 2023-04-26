@@ -30,6 +30,8 @@ void UI::Initialize()
 
 	MoveKeySprite_ = Sprite::Create(moveKeyHandle_, { 0,840 });
 	MoveKey_unusableSprite_ = Sprite::Create(moveKey_unusableHandle_, { 0,840 });
+
+	crisisTimer = 0;
 }
 
 void UI::Update()
@@ -80,8 +82,10 @@ void UI::Draw(Enemy* enemy_, Map* map_)
 	operationSprite_->Draw();
 	
 	if (map_->GetUIFlag() == true) {
-		LoadGaugeSprite_->Draw();
-		LoadGaugeCount();
+		if (LoadGaugeCounter >= 0) {
+			LoadGaugeSprite_->Draw();
+			LoadGaugeCount();
+		}
 	}
 
 	if (map_->GetTestFlag() == false) {
@@ -173,7 +177,6 @@ void UI::LoadGaugeCount()
 
 void UI::Reset()
 {
-	crisisTimer = 0;
 
 	LoadGaugeCounter = 200;
 }
