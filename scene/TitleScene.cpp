@@ -21,10 +21,17 @@ void TitleScene::Initialize()
 	//ファイル名指定してテクスチャを読み込む
 	textureHandle_ = TextureManager::Load("titleBackground.png");
 	nameHandle_ = TextureManager::Load("titlename.png");
-
+	spaceHandle_ = TextureManager::Load("SPACE.png");
+	space_Selection_= TextureManager::Load("SPACE_selection.png");
+	exitHandle_= TextureManager::Load("EXIT.png");
+	exit_Selection_ = TextureManager::Load("EXIT_selection.png");
 	//スプライトの生成
 	sprite_ = Sprite::Create(textureHandle_, { 0,0 });
 	sprite_2 = Sprite::Create(nameHandle_, { 0,posY });
+	space_sprite_ = Sprite::Create(spaceHandle_, { 1100,700 });
+	space_Selection_sprite = Sprite::Create(space_Selection_, { 1100,700 });
+	exit_sprite_ = Sprite::Create(exitHandle_, { 300,700 });
+	exit_Selection_sprite = Sprite::Create(exit_Selection_, { 300,700 });
 
 	selectFlag = 0;
 
@@ -117,6 +124,20 @@ void TitleScene::Draw()
 	/// </summary>
 	sprite_->Draw();
 	sprite_2->Draw();
+
+	if (selectFlag == 0) {
+	space_Selection_sprite->Draw();
+	}
+	else {
+		space_sprite_->Draw();
+	}
+
+	if (selectFlag == 1) {
+		exit_Selection_sprite->Draw();		
+	}
+	else{
+		exit_sprite_->Draw();
+	}
 	// デバッグテキストの描画
 	debugText_->DrawAll(commandList);
 	//

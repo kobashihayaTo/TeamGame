@@ -86,10 +86,17 @@ private:
 	//テクスチャバンドル
 	uint32_t textureHandle_ = 0;
 	uint32_t nameHandle_ = 0;
-
+	uint32_t spaceHandle_ = 0;
+	uint32_t space_Selection_ = 0;
+	uint32_t exitHandle_ = 0;
+	uint32_t exit_Selection_ = 0;
 	//スプライト
 	Sprite* sprite_ = nullptr;
 	Sprite* sprite_2 = nullptr;
+	Sprite* space_sprite_ = nullptr;
+	Sprite* space_Selection_sprite = nullptr;
+	Sprite* exit_sprite_ = nullptr;
+	Sprite* exit_Selection_sprite = nullptr;
 	//サウンド
 	uint32_t soundDataHandle_ = 0u;
 	//音声再生ハンドル
