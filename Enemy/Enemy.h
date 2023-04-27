@@ -34,12 +34,12 @@ public:		//メンバ関数
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <param name="texturehandle">テクスチャハンドル</param>
-	void Initialize(Model* model, Model* sensormodel, RailCamera* camera,Vector3 enemyPos, bool WidthHeightFlag);
+	void Initialize(Model* model, Model* sensormodel, RailCamera* camera, Vector3 enemyPos, bool WidthHeightFlag);
 
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update(bool keyFlag, Player* player,float moveDis);
+	void Update(bool keyFlag, Player* player, float moveDis);
 
 	/// <summary>
 	/// 描画
@@ -103,7 +103,7 @@ public:		//メンバ関数
 	/// ベクトルと線の当たり判定
 	/// </summary>
 	/// <returns></returns>
-	bool VectorLineCollision(Vector3 player, float playerRadius, Vector3 start, Vector3 end,Vector3 pt3);
+	bool VectorLineCollision(Vector3 player, float playerRadius, Vector3 start, Vector3 end, Vector3 pt3, Player* player_);
 
 	//ワールド座標を取得
 	Vector3 GetWorldPosition();
@@ -147,6 +147,8 @@ private:	//メンバ変数
 	Model* model_ = nullptr;
 	Model* sensormodel_ = nullptr;
 
+
+
 	//入力処理するため
 	Input* input_ = nullptr;
 
@@ -165,7 +167,7 @@ private:	//メンバ変数
 
 	//切り替えフラグ
 	bool RightMoveFlag = false;
-	bool LeftMoveFlag =  false;
+	bool LeftMoveFlag = false;
 	bool UpMoveFlag = false;
 	bool DownMoveFlag = false;
 
@@ -188,7 +190,7 @@ private:	//メンバ変数
 
 	float HeightSensorVisionX[2];	//カメラの視界
 	float HeightSensorVisionZ[2];
-	
+
 	float WidthSensorVisionX[2];	//カメラの視界
 	float WidthSensorVisionZ[2];
 
