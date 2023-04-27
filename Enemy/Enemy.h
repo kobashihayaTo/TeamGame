@@ -103,7 +103,7 @@ public:		//メンバ関数
 	/// ベクトルと線の当たり判定
 	/// </summary>
 	/// <returns></returns>
-	bool VectorLineCollision(Vector3 player, float playerRadius, Vector3 start, Vector3 end,Vector3 pt3);
+	bool VectorLineCollision(Vector3 player, float playerRadius, Vector3 start, Vector3 end,Vector3 pt3, Player* player_);
 
 	//ワールド座標を取得
 	Vector3 GetWorldPosition();
@@ -146,6 +146,8 @@ private:	//メンバ変数
 	//モデル
 	Model* model_ = nullptr;
 	Model* sensormodel_ = nullptr;
+
+
 
 	//入力処理するため
 	Input* input_ = nullptr;
