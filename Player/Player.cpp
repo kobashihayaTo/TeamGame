@@ -85,7 +85,6 @@ void Player::Update(bool PlayerKeyFlag) {
 		SecretTimer--;
 		if (SecretTimer < 0){
 			SecretIntervalFlag = true;
-			playerSecretFlag = false;
 		}
 	}
 
@@ -97,7 +96,7 @@ void Player::Update(bool PlayerKeyFlag) {
 		if (SecretIntervalTimer < 0) {
 			PlayerKeyFlag = false;
 			OKFlag = false;
-
+			playerSecretFlag = false;
 			SecretIntervalFlag = false;
 			SecretTimer = 100;
 			SecretIntervalTimer = 100;

@@ -94,23 +94,21 @@ void Enemy::Update(bool keyFlag, Player* player, float moveDis) {
 
 	sensorTransform_.ColorSetter(sensorColor);
 
-	if (player->GetSecretFlag() == false ) {
-		if (WidthHeightFlag_ == false) {
-			if (RightMoveFlag == true) {
-				rightFlag = VectorLineCollision(player->GetWorldPosition(), player->GetRadius(), RightStart, RightEnd, RightEnd1,player);
-			}
-			if (LeftMoveFlag == true) {
-				leftFlag = VectorLineCollision(player->GetWorldPosition(), player->GetRadius(), LeftStart, LeftEnd, LeftEnd1,player);
-			}
+	if (WidthHeightFlag_ == false) {
+		if (RightMoveFlag == true) {
+			rightFlag = VectorLineCollision(player->GetWorldPosition(), player->GetRadius(), RightStart, RightEnd, RightEnd1);
 		}
+		if (LeftMoveFlag == true) {
+			leftFlag = VectorLineCollision(player->GetWorldPosition(), player->GetRadius(), LeftStart, LeftEnd, LeftEnd1);
+		}
+	}
 
-		if (WidthHeightFlag_ == true) {
-			if (UpMoveFlag == true) {
-				upFlag = VectorLineCollision(player->GetWorldPosition(), player->GetRadius(), UpStart, UpEnd, UpEnd1,player);
-			}
-			if (DownMoveFlag == true) {
-				downFlag = VectorLineCollision(player->GetWorldPosition(), player->GetRadius(), DownStart, DownEnd, DownEnd1,player);
-			}
+	if (WidthHeightFlag_ == true) {
+		if (UpMoveFlag == true) {
+			upFlag = VectorLineCollision(player->GetWorldPosition(), player->GetRadius(), UpStart, UpEnd, UpEnd1);
+		}
+		if (DownMoveFlag == true) {
+			downFlag = VectorLineCollision(player->GetWorldPosition(), player->GetRadius(), DownStart, DownEnd, DownEnd1);
 		}
 	}
 
@@ -152,6 +150,8 @@ void Enemy::Update(bool keyFlag, Player* player, float moveDis) {
 
 		EnemyMoveCheck(player->GetWorldPosition().x, player->GetWorldPosition().z, player->GetRadius());
 	}
+
+
 
 	//行列の更新
 	myFunc_.UpdateWorldTransform(worldTransform_);
@@ -326,7 +326,7 @@ void Enemy::Reset() {
 
 }
 
-bool Enemy::VectorLineCollision(Vector3 player, float playerRadius, Vector3 pt1, Vector3 pt2, Vector3 pt3, Player* player_) {
+bool Enemy::VectorLineCollision(Vector3 player, float playerRadius, Vector3 pt1, Vector3 pt2, Vector3 pt3) {
 	//それぞれのベクトル
 	Vector3 vec[3];	//線
 	Vector3 vecPlayer[4];	//Playerまでのベクトル
@@ -355,11 +355,7 @@ bool Enemy::VectorLineCollision(Vector3 player, float playerRadius, Vector3 pt1,
 	vecPlayer[0] = Normalize(vecPlayer[0]);
 
 	//プレイヤーがラインの左側にいたら
-	
 	if (vec[0].x * vecPlayer[0].z - vec[0].z * vecPlayer[0].x > 0) {
-		if (player_->GetSecretFlag() == true) {
-			visionHitFlag[0] = false;
-		}
 		visionHitFlag[0] = true;
 	}
 	else {
@@ -374,9 +370,6 @@ bool Enemy::VectorLineCollision(Vector3 player, float playerRadius, Vector3 pt1,
 
 	//プレイヤーがラインの左側にいたら
 	if (vec[1].x * vecPlayer[1].z - vec[1].z * vecPlayer[1].x > 0) {
-		if (player_->GetSecretFlag() == true) {
-			visionHitFlag[1] = false;
-		}
 		visionHitFlag[1] = true;
 	}
 	else {
@@ -391,9 +384,6 @@ bool Enemy::VectorLineCollision(Vector3 player, float playerRadius, Vector3 pt1,
 
 	//プレイヤーがラインの左側にいたら
 	if (vec[2].x * vecPlayer[2].z - vec[2].z * vecPlayer[2].x > 0) {
-		if (player_->GetSecretFlag() == true) {
-			visionHitFlag[2] = false;
-		}
 		visionHitFlag[2] = true;
 	}
 	else {
@@ -401,15 +391,8 @@ bool Enemy::VectorLineCollision(Vector3 player, float playerRadius, Vector3 pt1,
 	}
 
 	//行けたら行く(行かない)
-
 	if (visionHitFlag[0] == true && visionHitFlag[1] == true && visionHitFlag[2] == true) {
-		if (player_->GetSecretFlag() == true || player_->GetSecretIntervalFlag() == true) {
-			return false;
-		}
-		else
-		{
-			return true;
-		}
+		return true;
 	}
 	else {
 		return false;
