@@ -607,23 +607,28 @@ bool Map::CheckCollision(Vector3 pos1, Vector3 pos2, float radius1, float radius
 
 void Map::Reset()
 {
-	goalFlag = false;
-	GoalCount = 50;
-	GoalRELAYCount = 50;
-	GoalECHIGOCount = 50;
-	goalcount = 0;
-
-	OKFlag = false;
 	AnswerFlag = false;
 	AnswerIntervalFlag = false;
 	AnswerTimer = 100;
 	AnswerIntervalTimer = 100;
 
-	effectworldTrans.translation_ = { -11.0f, 0.0f, -18.0f };
-	effectworldTrans.translation_.y -= 10.0f;
-
-	effectOffFlag = false;
+	goalFlag = false;
 	goalReadyFlag = false;
+	//
+	GoalCount = 50;
+	GoalRELAYCount = 50;
+	GoalECHIGOCount = 50;
+
+	goalcount = 0;
+
+	OKFlag = false;
+	effectOffFlag = false;
+
+	playerTimer = 0;
+
+	UIFlag = false;
+
+	testFlag = false;
 
 	goal_ = 0;
 }
