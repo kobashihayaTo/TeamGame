@@ -369,6 +369,9 @@ void GameScene::SceneChange() {
 
 void GameScene::Reset()
 {
+	keyFlag = false;
+	MapkeyFlag = false; 
+	playerkeyFlag = false;
 	newPlayer->Reset();
 	newEnemy->Reset();
 	newMap->Reset();

@@ -80,7 +80,6 @@ void Player::Update(bool PlayerKeyFlag) {
 	if (PlayerKeyFlag == true) {
 		playerSecretFlag = true;
 	}
-
 	if (playerSecretFlag == true){
 		SecretTimer--;
 		if (SecretTimer < 0){
@@ -88,7 +87,6 @@ void Player::Update(bool PlayerKeyFlag) {
 			playerSecretFlag = false;
 		}
 	}
-
 	if (SecretIntervalFlag == true) {
 		SecretIntervalTimer--;
 		if (SecretIntervalTimer <= 0.01f) {
@@ -100,7 +98,7 @@ void Player::Update(bool PlayerKeyFlag) {
 			SecretIntervalFlag = false;
 			SecretTimer = 100;
 			SecretIntervalTimer = 100;
-
+			playerSecretFlag = false;
 		}
 	}
 	move = worldTransform_.translation_;
@@ -151,6 +149,12 @@ void Player::OnCollision() {
 
 void Player::Reset()
 {
+	OKFlag = false;
+	SecretIntervalFlag = false;
+	SecretTimer = 100;
+	SecretIntervalTimer = 100;
+	playerSecretFlag = false;
+
 	playerDeathFlag = false;
 	playerSecretFlag = false;
 	//プレイヤーの初期位置の設定

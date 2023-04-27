@@ -324,6 +324,9 @@ void Enemy::Reset() {
 	stopIntervalTimer = 100;
 	sensorMovedDis = 0.0f;
 
+
+	OKFlag = false;
+	crisisFlag = false;
 }
 
 bool Enemy::VectorLineCollision(Vector3 player, float playerRadius, Vector3 pt1, Vector3 pt2, Vector3 pt3, Player* player_) {
