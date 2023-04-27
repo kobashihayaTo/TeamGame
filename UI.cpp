@@ -87,10 +87,10 @@ void UI::Draw(Enemy* enemy_, Map* map_)
 			LoadGaugeCount();
 			
 		}
-		else
-		{
-			Reset();
-		}
+	}
+	else
+	{
+		Reset();
 	}
 
 	/*if (map_->GetTestFlag() == false) {

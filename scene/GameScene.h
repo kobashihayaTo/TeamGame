@@ -119,6 +119,10 @@ private: // メンバ変数
 	std::unique_ptr<Enemy> newEnemy_1 = std::make_unique<Enemy>();
 	std::unique_ptr<Enemy> newEnemy_2 = std::make_unique<Enemy>();
 	std::unique_ptr<Enemy> newEnemy_3 = std::make_unique<Enemy>();
+	std::unique_ptr<Enemy> newEnemy_4 = std::make_unique<Enemy>();
+	std::unique_ptr<Enemy> newEnemy_5 = std::make_unique<Enemy>();
+	std::unique_ptr<Enemy> newEnemy_6 = std::make_unique<Enemy>();
+	std::unique_ptr<Enemy> newEnemy_7 = std::make_unique<Enemy>();
 	//敵モデル
 
 	Model* enemyModel_ = nullptr;
@@ -144,10 +148,14 @@ private: // メンバ変数
 	bool MapkeyFlag = false;
 	bool playerkeyFlag = false;
 
-	Vector3 enemyPos = { -10.0f, 0.9f, 12.7f };
-	Vector3 enemyPos_1 = { 20.0f, 0.9f, -9.0f };
-	Vector3 enemyPos_2 = { 34.0f, 0.9f, -11.0f };
-	Vector3 enemyPos_3 = { 30.0f, 0.9f, -2.0f };
+	Vector3 enemyPos = { -14.0f, 0.9f, 22.7f };
+	Vector3 enemyPos_1 = { 16.0f, 0.9f, 22.7f };
+	Vector3 enemyPos_2 = { -36.0f, 0.9f, 8.0f };
+	Vector3 enemyPos_3 = { -9.7f, 0.9f, 0.0f };
+	Vector3 enemyPos_4 = { 12.0f, 0.9f, 0.0f };
+	Vector3 enemyPos_5 = { 30.0f, 0.9f, 2.0f };
+	Vector3 enemyPos_6 = { 34.0f, 0.9f, 4.0f };
+	Vector3 enemyPos_7 = { 0.0f, 0.9f, -19.0f };
 
 	//サウンド
 	uint32_t playBGMHandle = 0u;

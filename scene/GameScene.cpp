@@ -47,9 +47,13 @@ void GameScene::Initialize() {
 	newPlayer->Initialize(playerModel_);
 	//敵の初期化
 	newEnemy->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos, false);
-	newEnemy_1->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_1, true);
+	newEnemy_1->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_1, false);
 	newEnemy_2->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_2, true);
-	newEnemy_3->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_3, false);
+	newEnemy_3->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_3, true);
+	newEnemy_4->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_4, true);
+	newEnemy_5->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_5, false);
+	newEnemy_6->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_6, true);
+	newEnemy_7->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_7, false);
 
 #pragma endregion
 	//ビュープロジェクションの初期化
@@ -78,17 +82,29 @@ void GameScene::Update() {
 	newMap->Update(newPlayer.get(), MapkeyFlag);
 
 	//敵の更新
-	newEnemy->Update(keyFlag, newPlayer.get(), 2.0f);
+	newEnemy->Update(keyFlag, newPlayer.get(), 10.0f);
 	newMap->EnemyBlockCheck(newEnemy.get());
 
-	newEnemy_1->Update(keyFlag, newPlayer.get(), 2.0f);
+	newEnemy_1->Update(keyFlag, newPlayer.get(), 6.0f);
 	newMap->EnemyBlockCheck(newEnemy_1.get());
 
-	newEnemy_2->Update(keyFlag, newPlayer.get(), 2.0f);
+	newEnemy_2->Update(keyFlag, newPlayer.get(), 12.0f);
 	newMap->EnemyBlockCheck(newEnemy_2.get());
 
-	newEnemy_3->Update(keyFlag, newPlayer.get(), 2.0f);
+	newEnemy_3->Update(keyFlag, newPlayer.get(), 4.0f);
 	newMap->EnemyBlockCheck(newEnemy_3.get());
+
+	newEnemy_4->Update(keyFlag, newPlayer.get(), 4.0f);
+	newMap->EnemyBlockCheck(newEnemy_4.get());
+
+	newEnemy_5->Update(keyFlag, newPlayer.get(), 4.0f);
+	newMap->EnemyBlockCheck(newEnemy_5.get());
+	
+	newEnemy_6->Update(keyFlag, newPlayer.get(), 12.0f);
+	newMap->EnemyBlockCheck(newEnemy_6.get());
+
+	newEnemy_7->Update(keyFlag, newPlayer.get(), 6.0f);
+	newMap->EnemyBlockCheck(newEnemy_7.get());
 
 	//プレイヤー
 	if (input_->TriggerKey(DIK_A)) {
@@ -146,6 +162,10 @@ void GameScene::Update() {
 		CheckAllCollisions(newEnemy_1.get());
 		CheckAllCollisions(newEnemy_2.get());
 		CheckAllCollisions(newEnemy_3.get());
+		CheckAllCollisions(newEnemy_4.get());
+		CheckAllCollisions(newEnemy_5.get());
+		CheckAllCollisions(newEnemy_6.get());
+		CheckAllCollisions(newEnemy_7.get());
 	}
 
 	//リセット処理
@@ -209,11 +229,19 @@ void GameScene::Draw() {
 	newEnemy_1->Draw(viewProjection_);
 	newEnemy_2->Draw(viewProjection_);
 	newEnemy_3->Draw(viewProjection_);
+	newEnemy_4->Draw(viewProjection_);
+	newEnemy_5->Draw(viewProjection_);
+	newEnemy_6->Draw(viewProjection_);
+	newEnemy_7->Draw(viewProjection_);
 
 	newEnemy->SensorDraw(viewProjection_);
 	newEnemy_1->SensorDraw(viewProjection_);
 	newEnemy_2->SensorDraw(viewProjection_);
 	newEnemy_3->SensorDraw(viewProjection_);
+	newEnemy_4->SensorDraw(viewProjection_);
+	newEnemy_5->SensorDraw(viewProjection_);
+	newEnemy_6->SensorDraw(viewProjection_);
+	newEnemy_7->SensorDraw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
@@ -231,13 +259,16 @@ void GameScene::Draw() {
 	newUI->Draw(newEnemy_1.get(),newMap.get());
 	newUI->Draw(newEnemy_2.get(), newMap.get());
 	newUI->Draw(newEnemy_3.get(), newMap.get());
+	newUI->Draw(newEnemy_4.get(), newMap.get());
+	newUI->Draw(newEnemy_5.get(), newMap.get());
+	newUI->Draw(newEnemy_6.get(), newMap.get());
+	newUI->Draw(newEnemy_7.get(), newMap.get());
 
 	if (keyFlag == true||MapkeyFlag == true||playerkeyFlag == true) {
 		newUI->KeyDraw_unusable();
 	}
 	else
 	{
-
 		newUI->KeyDraw();
 	}
 	// デバッグテキストの描画
@@ -348,12 +379,13 @@ void GameScene::PosReset()
 	//敵の初期化
 	//falseが縦　trueが横
 	newEnemy->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos, false);
-
-	newEnemy_1->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_1, true);
-
+	newEnemy_1->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_1, false);
 	newEnemy_2->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_2, true);
-
-	newEnemy_3->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_3, false);
+	newEnemy_3->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_3, true);
+	newEnemy_4->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_4, true);
+	newEnemy_5->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_5, false);
+	newEnemy_6->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_6, true);
+	newEnemy_7->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_7, false);
 }
 
 void GameScene::SoundStop()
