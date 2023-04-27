@@ -31,7 +31,7 @@ public:		//メンバ関数
 	~Map();
 
 	//初期化
-	void Initialize(Model* model, Model* floorModel, Model* effectmodel_, Model* afterModel);
+	void Initialize(Model* model, Model* floorModel, Model* effectmodel_, Model* afterModel, Model* goalModel);
 
 	//更新
 	void Update(Player* player, bool MapkeyFlag);
@@ -43,7 +43,7 @@ public:		//メンバ関数
 	void FloorDraw(ViewProjection& viewProjection);
 
 	//ブロックサイズを取得
-	int GetBlockSize() {return BlockSize; }
+	int GetBlockSize() { return BlockSize; }
 
 	//衝突を検出したら呼び出されるコールバック関数
 	void OnCollision(Vector3 playerPos, float radius);
@@ -56,7 +56,7 @@ public:		//メンバ関数
 	/// <param name="culumn"></param>
 	/// <returns></returns>
 	void EnemyBlockCheck(Enemy* enemy);
-	
+
 	void PlayerBlockCheck(Player* player);
 
 	bool CheckCollision(Vector3 pos1, Vector3 pos2, float radius1, float radius2);
@@ -83,7 +83,7 @@ public:		//メンバ関数
 	bool GetUIFlag() { return UIFlag; }
 	bool GetTestFlag() { return testFlag; }
 
-	
+
 public:
 	//半径
 	const float radius = 0.9f;
@@ -133,8 +133,8 @@ public:		//マップ
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 	};
-	
-	
+
+
 
 
 private:	//メンバ変数
@@ -155,12 +155,15 @@ private:	//メンバ変数
 
 	Model* afterModel_ = nullptr;
 
+	//ゴールのモデル
+	Model* goalModel_ = nullptr;
+
 	//デバッグテキスト
 	DebugText* debugText_ = nullptr;
 
 	//ファンクション
 	MyFunc myFunc_;
-	
+
 	Player* player_ = nullptr;
 
 	//マップフラグ

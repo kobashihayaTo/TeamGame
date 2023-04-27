@@ -14,6 +14,7 @@ GameScene::~GameScene() {
 	delete enemyModel_;
 	delete enemySensorModel_;
 	delete effectModel;
+	delete goalModel;
 	delete model_;
 }
 
@@ -32,12 +33,13 @@ void GameScene::Initialize() {
 	enemyModel_ = Model::CreateFromOBJ("enemy3D", true);
 	enemySensorModel_ = Model::CreateFromOBJ("sensor", true);
 	effectModel = Model::CreateFromOBJ("effect", true);
+	goalModel = Model::CreateFromOBJ("goal", true);
 
 	//UIの初期化
 	newUI->Initialize();
 #pragma  region 初期化
 	//マップの初期化
-	newMap->Initialize(mapModel_, floorModel_, effectModel, mapAfterModel_);
+	newMap->Initialize(mapModel_, floorModel_, effectModel, mapAfterModel_, goalModel);
 	//カメラの初期位置を設定
 	cameraPos = { 10,10,10 };
 	cameraRot = { 0,0,0 };
@@ -99,7 +101,7 @@ void GameScene::Update() {
 
 	newEnemy_5->Update(keyFlag, newPlayer.get(), 4.0f);
 	newMap->EnemyBlockCheck(newEnemy_5.get());
-	
+
 	newEnemy_6->Update(keyFlag, newPlayer.get(), 12.0f);
 	newMap->EnemyBlockCheck(newEnemy_6.get());
 
@@ -255,8 +257,8 @@ void GameScene::Draw() {
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
 
-	newUI->Draw(newEnemy.get(),newMap.get());
-	newUI->Draw(newEnemy_1.get(),newMap.get());
+	newUI->Draw(newEnemy.get(), newMap.get());
+	newUI->Draw(newEnemy_1.get(), newMap.get());
 	newUI->Draw(newEnemy_2.get(), newMap.get());
 	newUI->Draw(newEnemy_3.get(), newMap.get());
 	newUI->Draw(newEnemy_4.get(), newMap.get());
@@ -264,7 +266,7 @@ void GameScene::Draw() {
 	newUI->Draw(newEnemy_6.get(), newMap.get());
 	newUI->Draw(newEnemy_7.get(), newMap.get());
 
-	if (keyFlag == true||MapkeyFlag == true||playerkeyFlag == true) {
+	if (keyFlag == true || MapkeyFlag == true || playerkeyFlag == true) {
 		newUI->KeyDraw_unusable();
 	}
 	else

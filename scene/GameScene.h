@@ -137,6 +137,9 @@ private: // メンバ変数
 	//エフェクト
 	Model* effectModel = nullptr;
 
+	//ゴール
+	Model* goalModel = nullptr;
+
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>

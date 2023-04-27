@@ -7,14 +7,17 @@ Map::Map()
 
 Map::~Map() {}
 
-void Map::Initialize(Model* model, Model* floorModel, Model* effectmodel_, Model* afterModel) {
+void Map::Initialize(Model* model, Model* floorModel, Model* effectmodel_, Model* afterModel, Model* goalModel) {
 	//引数として受け取ったデータをメンバ変数に記録する
 	BlockSize = 32;
 	input_ = Input::GetInstance();
+	
+
+	assert(effectmodel_);
 	model_ = model;
 	afterModel_ = afterModel;
 
-	assert(effectmodel_);
+	goalModel_ = goalModel;
 	effectmodel = effectmodel_;
 
 	floorModel_ = floorModel;
@@ -139,19 +142,19 @@ void Map::Draw(ViewProjection& viewProjection) {
 
 					if (goal_ == 0) {
 						if (FirstMap[z][x] == RELAY) {
-							model_->Draw(worldTransform_[z][x], viewProjection);
+							goalModel_->Draw(worldTransform_[z][x], viewProjection);
 						}
 					}
 
 					if (goal_ == 1) {
 						if (FirstMap[z][x] == ECHIGO) {
-							model_->Draw(worldTransform_[z][x], viewProjection);
+							goalModel_->Draw(worldTransform_[z][x], viewProjection);
 						}
 					}
 
 					if (goal_ == 2) {
 						if (FirstMap[z][x] == GOAL) {
-							model_->Draw(worldTransform_[z][x], viewProjection);
+							goalModel_->Draw(worldTransform_[z][x], viewProjection);
 						}
 					}
 				}
@@ -346,7 +349,7 @@ void Map::PlayerBlockCheck(Player* player) {
 							playerDownZ < blockUpZ) {
 							debugText_->SetPos(50, 310);
 							debugText_->Printf("right:hit");
-				
+
 						}
 					}
 				}
@@ -365,7 +368,7 @@ void Map::PlayerBlockCheck(Player* player) {
 								UIFlag = false;
 								goal_ = 1;
 								GoalRELAYCount = 50;
-								
+
 							}
 						}
 					}
