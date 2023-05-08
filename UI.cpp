@@ -82,18 +82,17 @@ void UI::Draw(Enemy* enemy_, Map* map_)
 	operationSprite_->Draw();
 	
 	if (map_->GetUIFlag() == true) {
-		if (LoadGaugeCounter >= 0&&map_->GetFlag()==false&& map_->GeteffectOffFlag() == false) {
+		if (LoadGaugeCounter >= 0 && map_->GetFlag() == false && map_->GeteffectOffFlag() == false) {
 			LoadGaugeSprite_->Draw();
 			LoadGaugeCount();
-			
 		}
 	}
-	else
-	{
+
+	if (map_->GetResetFlag() == false) {
 		Reset();
 	}
 
-	/*if (map_->GetTestFlag() == false) {
+	/*if (map_->Getgoal_() == 1 || map_->Getgoal_() == 2) {
 		Reset();
 	}*/
 
