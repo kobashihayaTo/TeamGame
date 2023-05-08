@@ -362,13 +362,14 @@ void Map::PlayerBlockCheck(Player* player) {
 						if (testFlag == true) {
 							GoalRELAYCount -= 1;
 							UIFlag = true;
+							ResetFlag = true;
 							if (GoalRELAYCount <= 0) {
 								testFlag = false;
 								//UIのフラグ
 								UIFlag = false;
 								goal_ = 1;
 								GoalRELAYCount = 50;
-
+								ResetFlag = false;
 							}
 						}
 					}
@@ -382,12 +383,14 @@ void Map::PlayerBlockCheck(Player* player) {
 						if (testFlag == true) {
 							GoalECHIGOCount -= 1;
 							UIFlag = true;
+							ResetFlag = true;
 							if (GoalECHIGOCount <= 0) {
 								//UIのフラグ
 								UIFlag = false;
 								GoalECHIGOCount = 50;
 								goal_ = 2;
 								testFlag = false;
+								ResetFlag = false;
 							}
 						}
 					}
@@ -401,11 +404,13 @@ void Map::PlayerBlockCheck(Player* player) {
 						if (testFlag == true) {
 							GoalCount -= 1;
 							UIFlag = true;
+							ResetFlag = true;
 							if (GoalCount <= 0) {
 								//UIのフラグ
 								UIFlag = false;
 								goalReadyFlag = true;
 								GoalCount = 50;
+								ResetFlag = false;
 							}
 							if (goalReadyFlag == true) {
 								effectworldTrans.translation_.y += 0.5f;
@@ -634,4 +639,6 @@ void Map::Reset()
 	testFlag = false;
 
 	goal_ = 0;
+
+	ResetFlag = false;
 }

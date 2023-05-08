@@ -76,6 +76,7 @@ public:		//ƒƒ“ƒoŠÖ”
 	bool GetFlag() { return goalReadyFlag; }
 
 	int GetGoalCount() { return GoalCount; }
+
 	int GetGoalRELAYCount() { return GoalRELAYCount; }
 	int GetGoalECHIGOCount() { return GoalECHIGOCount; }
 
@@ -83,6 +84,9 @@ public:		//ƒƒ“ƒoŠÖ”
 	bool GetUIFlag() { return UIFlag; }
 	bool GetTestFlag() { return testFlag; }
 
+	int Getgoal_() { return goal_; }
+
+	bool GetResetFlag() { return ResetFlag; }
 
 public:
 	//”¼Œa
@@ -197,4 +201,6 @@ private:	//ƒƒ“ƒo•Ï”
 	bool testFlag = false;
 
 	int goal_ = 0;
+
+	bool ResetFlag = false;
 };
