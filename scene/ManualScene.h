@@ -73,10 +73,15 @@ private:
 	//テクスチャバンドル
 	uint32_t textureHandle_ = 0;
 	uint32_t nameHandle_ = 0;
+	uint32_t manumalHandle_ = 0;
+	uint32_t manumalHandle_1 = 0;
+	uint32_t manumalHandle_2 = 0;
 	//スプライト
 	Sprite* sprite_ = nullptr;
 	Sprite* sprite_2 = nullptr;
-
+	Sprite* sprite_3 = nullptr;
+	Sprite* sprite_4 = nullptr;
+	Sprite* sprite_5 = nullptr;
 	int selectFlag = 0;
 
 };
