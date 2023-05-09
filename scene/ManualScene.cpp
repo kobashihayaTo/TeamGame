@@ -18,13 +18,16 @@ void ManualScene::Initialize()
 	nextScene_ = Scene::MANUAL;
 
 	//ファイル名指定してテクスチャを読み込む
-	textureHandle_ = TextureManager::Load("manual.png");
 	nameHandle_ = TextureManager::Load("manual_2.png");
+	textureHandle_ = TextureManager::Load("manual_04.png");
+	manumalHandle_ = TextureManager::Load("manual_05.png");
+	manumalHandle_1 = TextureManager::Load("manual_03.png");
 
 	//スプライトの生成
-	sprite_ = Sprite::Create(textureHandle_, { 0,0 });
-	sprite_2 = Sprite::Create(nameHandle_, { 0,0 });
-
+	sprite_ = Sprite::Create(nameHandle_, { 0,0 });
+	sprite_2 = Sprite::Create(textureHandle_, { 0,0 });
+	sprite_3= Sprite::Create(manumalHandle_, { 0,0 });
+	sprite_4 = Sprite::Create(manumalHandle_1, { 0,0 });
 }
 
 void ManualScene::Update()
@@ -35,7 +38,7 @@ void ManualScene::Update()
 		selectFlag += 1;
 	}
 
-	if (selectFlag == 2) {
+	if (selectFlag == 4) {
 		manualFlag_ = true;
 		nextScene_ = Scene::GAME;
 	}
@@ -99,7 +102,14 @@ void ManualScene::Draw()
 	{
 		sprite_2->Draw();
 	}
-
+	if (selectFlag == 2)
+	{
+		sprite_3->Draw();
+	}
+	if (selectFlag == 3)
+	{
+		sprite_4->Draw();
+	}
 
 #ifdef _DEBUG
 
