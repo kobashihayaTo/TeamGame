@@ -20,8 +20,8 @@ void UI::Initialize()
 	textureHandle_ = TextureManager::Load("Alert.png");
 	operationHandle_ = TextureManager::Load("operation.png");
 	loadGaugeHandle_= TextureManager::Load("EnemyHp.png");
-	moveKeyHandle_ = TextureManager::Load("MoveKey.png");
-	moveKey_unusableHandle_ = TextureManager::Load("MoveKey-unusable.png");
+	moveKeyHandle_ = TextureManager::Load("ASD.png");
+	moveKey_unusableHandle_ = TextureManager::Load("asd_unused.png");
 	//スプライトの生成
 	sprite_ = Sprite::Create(textureHandle_, { 0,0 });
 	operationSprite_ = Sprite::Create(operationHandle_, { 1680,840 });
