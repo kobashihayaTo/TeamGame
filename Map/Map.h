@@ -146,9 +146,6 @@ private:	//ƒƒ“ƒo•Ï”
 	WorldTransform worldTransform_[40][25] = {};
 	int BlockSize;
 	WorldTransform floorWorldTransform_;
-	WorldTransform floorWorldTransform2_;
-	WorldTransform floorWorldTransform3_;
-	WorldTransform floorWorldTransform4_;
 	WorldTransform effectworldTrans;
 
 	//‘€ì
