@@ -169,6 +169,8 @@ void DirectXCommon::ClearRenderTarget() {
 
 	// 全画面クリア        Red   Green Blue  Alpha
 	float clearColor[] = {0.1f, 0.25f, 0.5f, 0.0f}; // 青っぽい色
+	//// 全画面クリア        Red   Green Blue  Alpha
+	//float clearColor[] = { 0.0f, 0.0f, 0.0f, 0.0f }; // 黒っぽい色
 	commandList_->ClearRenderTargetView(rtvH, clearColor, 0, nullptr);
 }
 

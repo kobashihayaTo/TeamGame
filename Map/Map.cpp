@@ -38,9 +38,28 @@ void Map::Initialize(Model* model, Model* floorModel, Model* effectmodel_, Model
 	}
 
 	floorWorldTransform_.Initialize();
-	floorWorldTransform_.translation_ = { 0,-7,0 };
+	floorWorldTransform_.translation_ = { 0.0f, -5.0f, 3.0f };
+	floorWorldTransform_.scale_ = { 42.0f, 1.0f, 25.0f };
 	myFunc_.UpdateWorldTransform(floorWorldTransform_);
 	floorWorldTransform_.TransferColorMatrix();
+
+	floorWorldTransform2_.Initialize();
+	floorWorldTransform2_.translation_ = { 15.0f, -5.0f, 20.0f };
+	floorWorldTransform2_.scale_ = { 10.0f, 15.0f, 10.0f };
+	myFunc_.UpdateWorldTransform(floorWorldTransform2_);
+	floorWorldTransform2_.TransferColorMatrix();
+
+	floorWorldTransform3_.Initialize();
+	floorWorldTransform3_.translation_ = { -15.0f, -5.0f, -20.0f };
+	floorWorldTransform3_.scale_ = { 10.0f, 15.0f, 10.0f };
+	myFunc_.UpdateWorldTransform(floorWorldTransform3_);
+	floorWorldTransform3_.TransferColorMatrix();
+
+	floorWorldTransform4_.Initialize();
+	floorWorldTransform4_.translation_ = { 15.0f, -5.0f, -20.0f };
+	floorWorldTransform4_.scale_ = { 10.0f, 15.0f, 10.0f };
+	myFunc_.UpdateWorldTransform(floorWorldTransform4_);
+	floorWorldTransform4_.TransferColorMatrix();
 	//デバッグ用表示
 	debugText_->SetPos(50, 140);
 	debugText_->Printf(" pos:(%f, %f, %f)", worldTransform_[0][0].translation_.x, worldTransform_[0][0].translation_.y, worldTransform_[0][0].translation_.z);
@@ -167,6 +186,9 @@ void Map::Draw(ViewProjection& viewProjection) {
 void Map::FloorDraw(ViewProjection& viewProjection) {
 	//3Dモデルを描画
 	floorModel_->Draw(floorWorldTransform_, viewProjection);
+	//floorModel_->Draw(floorWorldTransform2_, viewProjection);
+	//floorModel_->Draw(floorWorldTransform3_, viewProjection);
+	//floorModel_->Draw(floorWorldTransform4_, viewProjection);
 
 }
 
