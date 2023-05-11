@@ -17,7 +17,7 @@ void EndScene::Initialize()
 	nextScene_ = Scene::END;
 
 	//ファイル名指定してテクスチャを読み込む
-	textureHandle_ = TextureManager::Load("clearscreen.png");
+	textureHandle_ = TextureManager::Load("clear.png");
 
 	//スプライトの生成
 	sprite_ = Sprite::Create(textureHandle_, { 0,0 });
