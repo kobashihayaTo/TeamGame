@@ -64,7 +64,7 @@ void GameScene::Initialize() {
 	model_ = Model::Create();
 
 	//音声
-	playBGMHandle = audio_->LoadWave("Sound/stageBGM1.wav");
+	playBGMHandle = audio_->LoadWave("NeonVerseBgm/NeonVerseGame.wav");
 
 }
 
@@ -75,10 +75,10 @@ void GameScene::Update() {
 		newPlayer->Update(playerkeyFlag);
 	}
 
-	/*if (audio_->IsPlaying(playBGMHandle) == false || playBGMHandle == -1)
+	if (audio_->IsPlaying(playBGMHandle) == false || playBGMHandle == -1)
 	{
 		playBGMHandle = audio_->PlayWave(playBGMHandle, false, 1);
-	}*/
+	}
 
 	//マップの更新
 	newMap->Update(newPlayer.get(), MapkeyFlag);

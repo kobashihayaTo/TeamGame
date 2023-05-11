@@ -38,7 +38,7 @@ void TitleScene::Initialize()
 	posY = -1080.0f;
 
 	//ƒTƒEƒ“ƒh
-	soundDataHandle_ = audio_->LoadWave("Sound/titleBGM.wav");
+	soundDataHandle_ = audio_->LoadWave("NeonVerseBgm/NeonVerseOP.wav");
 
 }
 
