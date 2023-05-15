@@ -28,8 +28,8 @@ void UI::Initialize()
 	LoadGaugeSprite_= Sprite::Create(loadGaugeHandle_, { 0,0 });
 	LoadGaugeSprite_->SetPosition({ 1000,0 });
 
-	MoveKeySprite_ = Sprite::Create(moveKeyHandle_, { 0,840 });
-	MoveKey_unusableSprite_ = Sprite::Create(moveKey_unusableHandle_, { 0,840 });
+	MoveKeySprite_ = Sprite::Create(moveKeyHandle_, { 0,880 });
+	MoveKey_unusableSprite_ = Sprite::Create(moveKey_unusableHandle_, { 0,880 });
 
 	crisisTimer = 0;
 }
