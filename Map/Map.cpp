@@ -38,9 +38,11 @@ void Map::Initialize(Model* model, Model* floorModel, Model* effectmodel_, Model
 	}
 
 	floorWorldTransform_.Initialize();
-	floorWorldTransform_.translation_ = { 0,-7,0 };
+	floorWorldTransform_.translation_ = { 0.0f, -5.0f, 3.0f };
+	floorWorldTransform_.scale_ = { 42.0f, 1.0f, 25.0f };
 	myFunc_.UpdateWorldTransform(floorWorldTransform_);
 	floorWorldTransform_.TransferColorMatrix();
+
 	//デバッグ用表示
 	debugText_->SetPos(50, 140);
 	debugText_->Printf(" pos:(%f, %f, %f)", worldTransform_[0][0].translation_.x, worldTransform_[0][0].translation_.y, worldTransform_[0][0].translation_.z);
