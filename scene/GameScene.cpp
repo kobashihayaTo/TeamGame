@@ -30,7 +30,7 @@ void GameScene::Initialize() {
 	mapAfterModel_ = Model::CreateFromOBJ("momomo", true);
 	playerModel_ = Model::CreateFromOBJ("charactor", true);
 	floorModel_ = Model::CreateFromOBJ("floor", true);
-	enemyModel_ = Model::CreateFromOBJ("enemy3D", true);
+	enemyModel_ = Model::CreateFromOBJ("enemy", true);
 	enemySensorModel_ = Model::CreateFromOBJ("sensor", true);
 	effectModel = Model::CreateFromOBJ("effect", true);
 	goalModel = Model::CreateFromOBJ("goal", true);
