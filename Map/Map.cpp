@@ -362,10 +362,10 @@ void Map::PlayerBlockCheck(Player* player) {
 						testFlag = CheckCollision(worldTransform_[z][x].translation_, player->GetWorldPosition(), radius, player->GetRadius());
 						// プレイヤーとブロック衝突判定
 						if (testFlag == true) {
-							GoalRELAYCount -= 1;
+							GoalRELAYCount -= 0.25f;
 							UIFlag = true;
 							ResetFlag = true;
-							if (GoalRELAYCount <= 0) {
+							if (GoalRELAYCount <= 0.0f) {
 								testFlag = false;
 								//UIのフラグ
 								UIFlag = false;
@@ -383,10 +383,10 @@ void Map::PlayerBlockCheck(Player* player) {
 						testFlag = CheckCollision(worldTransform_[z][x].translation_, player->GetWorldPosition(), radius, player->GetRadius());
 						// プレイヤーとブロック衝突判定
 						if (testFlag == true) {
-							GoalECHIGOCount -= 1;
+							GoalECHIGOCount -= 0.25f;
 							UIFlag = true;
 							ResetFlag = true;
-							if (GoalECHIGOCount <= 0) {
+							if (GoalECHIGOCount <= 0.0f) {
 								//UIのフラグ
 								UIFlag = false;
 								GoalECHIGOCount = 50;
@@ -404,10 +404,10 @@ void Map::PlayerBlockCheck(Player* player) {
 						testFlag = CheckCollision(worldTransform_[z][x].translation_, player->GetWorldPosition(), radius, player->GetRadius());
 						// プレイヤーとブロック衝突判定
 						if (testFlag == true) {
-							GoalCount -= 1;
+							GoalCount -= 0.05f;
 							UIFlag = true;
 							ResetFlag = true;
-							if (GoalCount <= 0) {
+							if (GoalCount <= 0.25f) {
 								//UIのフラグ
 								UIFlag = false;
 								goalReadyFlag = true;

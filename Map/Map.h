@@ -182,9 +182,9 @@ private:	//ƒƒ“ƒo•Ï”
 	bool goalFlag = false;
 	bool goalReadyFlag = false;
 	//
-	int GoalCount = 50;
-	int GoalRELAYCount = 50;
-	int GoalECHIGOCount = 50;
+	float GoalCount = 50;
+	float GoalRELAYCount = 50;
+	float GoalECHIGOCount = 50;
 
 	int goalcount = 0;
 

@@ -83,11 +83,11 @@ void UI::Draw(Enemy* enemy_, Map* map_)
 	
 	if (map_->GetUIFlag() == true) {
 		if (LoadGaugeCounter >= 0 && map_->GetFlag() == false && map_->GeteffectOffFlag() == false) {
-			LoadGaugeSprite_->Draw();
-			LoadGaugeCount();
+		LoadGaugeCount();
 		}
 	}
-
+	LoadGaugeSprite_->Draw();
+	
 	if (map_->GetResetFlag() == false) {
 		Reset();
 	}
@@ -177,7 +177,7 @@ void UI::KeyDraw_unusable()
 void UI::LoadGaugeCount()
 {
 	LoadGaugeSprite_->SetSize({ LoadGaugeCounter,32 });
-	LoadGaugeCounter -= 1;
+	LoadGaugeCounter -= 0.2f;
 	debugText_->SetPos(50, 630);
 	debugText_->Printf("LoadGaugeCounter:%f", LoadGaugeCounter);
 }
@@ -185,5 +185,5 @@ void UI::LoadGaugeCount()
 void UI::Reset()
 {
 
-	LoadGaugeCounter = 200;
+	LoadGaugeCounter = 300;
 }
