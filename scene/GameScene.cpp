@@ -216,6 +216,10 @@ void GameScene::Draw() {
 	//マップの描画
 	newMap->Draw(viewProjection_);
 
+	if (keyFlag == false) {
+		newMap->WallDraw(viewProjection_);
+	}
+
 	//床の描画
 	newMap->FloorDraw(viewProjection_);
 

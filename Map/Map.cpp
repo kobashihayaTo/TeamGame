@@ -11,7 +11,7 @@ void Map::Initialize(Model* model, Model* floorModel, Model* effectmodel_, Model
 	//引数として受け取ったデータをメンバ変数に記録する
 	BlockSize = 32;
 	input_ = Input::GetInstance();
-	
+
 
 	assert(effectmodel_);
 	model_ = model;
@@ -134,9 +134,9 @@ void Map::Draw(ViewProjection& viewProjection) {
 		//3Dモデルを描画
 		for (int z = 0; z < Map_Z; z++) {
 			for (int x = 0; x < Map_X; x++) {
-				if (FirstMap[z][x] == BLOCK) {
+				/*if (FirstMap[z][x] == BLOCK) {
 					afterModel_->Draw(worldTransform_[z][x], viewProjection);
-				}
+				}*/
 				if (FirstMap[z][x] == WALL) {
 					model_->Draw(worldTransform_[z][x], viewProjection);
 				}
@@ -164,6 +164,21 @@ void Map::Draw(ViewProjection& viewProjection) {
 		}
 	}
 	effectmodel->Draw(effectworldTrans, viewProjection);
+}
+
+void Map::WallDraw(ViewProjection& viewProjection)
+{
+	if (MapFlag == 0)
+	{
+		//3Dモデルを描画
+		for (int z = 0; z < Map_Z; z++) {
+			for (int x = 0; x < Map_X; x++) {
+				if (FirstMap[z][x] == BLOCK) {
+					afterModel_->Draw(worldTransform_[z][x], viewProjection);
+				}
+			}
+		}
+	}
 }
 
 void Map::FloorDraw(ViewProjection& viewProjection) {
@@ -404,10 +419,10 @@ void Map::PlayerBlockCheck(Player* player) {
 						testFlag = CheckCollision(worldTransform_[z][x].translation_, player->GetWorldPosition(), radius, player->GetRadius());
 						// プレイヤーとブロック衝突判定
 						if (testFlag == true) {
-							GoalCount -= 0.05f;
+							GoalCount -= 0.25f;
 							UIFlag = true;
 							ResetFlag = true;
-							if (GoalCount <= 0.25f) {
+							if (GoalCount <= 0.0f) {
 								//UIのフラグ
 								UIFlag = false;
 								goalReadyFlag = true;

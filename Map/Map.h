@@ -39,6 +39,8 @@ public:		//ƒƒ“ƒoŠÖ”
 	//•`‰æ
 	void Draw(ViewProjection& viewProjection);
 
+	void WallDraw(ViewProjection& viewProjection);
+
 	//°‚Ì•`‰æ
 	void FloorDraw(ViewProjection& viewProjection);
 
