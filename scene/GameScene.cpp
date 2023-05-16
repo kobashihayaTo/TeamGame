@@ -381,6 +381,7 @@ void GameScene::Reset()
 	newMap->Reset();
 	newUI->Reset();
 	PosReset();
+	playBGMHandle = audio_->LoadWave("NeonVerseBgm/NeonVerseGame.wav");
 }
 
 void GameScene::PosReset()
