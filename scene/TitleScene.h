@@ -84,19 +84,19 @@ private:
 	int changeFlag_ = false;
 
 	//テクスチャバンドル
-	uint32_t textureHandle_ = 0;
-	uint32_t nameHandle_ = 0;
+	uint32_t titleBGHandle_ = 0;
+	uint32_t titleHandle_ = 0;
 	uint32_t spaceHandle_ = 0;
 	uint32_t space_Selection_ = 0;
 	uint32_t exitHandle_ = 0;
 	uint32_t exit_Selection_ = 0;
 	//スプライト
-	Sprite* sprite_ = nullptr;
-	Sprite* sprite_2 = nullptr;
+	Sprite* titleBG_sprite_ = nullptr;
+	Sprite* title_sprite_ = nullptr;
 	Sprite* space_sprite_ = nullptr;
-	Sprite* space_Selection_sprite = nullptr;
+	Sprite* space_Selection_sprite_ = nullptr;
 	Sprite* exit_sprite_ = nullptr;
-	Sprite* exit_Selection_sprite = nullptr;
+	Sprite* exit_Selection_sprite_ = nullptr;
 	//サウンド
 	uint32_t soundDataHandle_ = 0u;
 	//音声再生ハンドル
@@ -104,7 +104,7 @@ private:
 
 	int selectFlag = 0;
 
-	int Time = 0;
+	int time = 0;
 	float posY = -1080.0f;
 	//float posY = 0.0f;
 	

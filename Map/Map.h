@@ -20,8 +20,8 @@ public:		//Enum
 		WALL, //1
 		BLOCK,//2
 		GOAL,  //3	
-		RELAY, //4
-		ECHIGO //5
+		MIDDLEGOAL1, //4
+		MIDDLEGOAL2 //5
 	};
 
 public:		//メンバ関数
@@ -45,7 +45,7 @@ public:		//メンバ関数
 	void FloorDraw(ViewProjection& viewProjection);
 
 	//ブロックサイズを取得
-	int GetBlockSize() { return BlockSize; }
+	int GetBlockSize() { return blockSize; }
 
 	//衝突を検出したら呼び出されるコールバック関数
 	void OnCollision(Vector3 playerPos, float radius);
@@ -63,32 +63,32 @@ public:		//メンバ関数
 
 	bool CheckCollision(Vector3 pos1, Vector3 pos2, float radius1, float radius2);
 
-	int GetMapFlag() { return MapFlag; }
+	int GetMapFlag() { return mapFlag; }
 
 	bool GetGoalFlag() { return goalFlag; }
 
-	bool GetAnswerFlag() { return AnswerFlag; }
+	bool GetAnswerFlag() { return answerFlag; }
 
 	bool GetOKFlag() { return OKFlag; }
 
 	void Reset();
 
-	bool GeteffectOffFlag() { return effectOffFlag; }
+	bool GetEffectOffFlag() { return effectOffFlag; }
 
 	bool GetFlag() { return goalReadyFlag; }
 
-	int GetGoalCount() { return GoalCount; }
+	int GetGoalCount() { return goalCount; }
 
-	int GetGoalRELAYCount() { return GoalRELAYCount; }
-	int GetGoalECHIGOCount() { return GoalECHIGOCount; }
+	int GetGoalMidCount1() { return goalMidCount1; }
+	int GetGoalMidCount2() { return goalMidCount2; }
 
 
 	bool GetUIFlag() { return UIFlag; }
 	bool GetTestFlag() { return testFlag; }
 
-	int Getgoal_() { return goal_; }
+	int GetGoal_() { return goal_; }
 
-	bool GetResetFlag() { return ResetFlag; }
+	bool GetResetFlag() { return resetFlag; }
 
 public:
 	//半径
@@ -129,10 +129,10 @@ public:		//マップ
 		{1,0,0,0,0,0,2,2,2,2,2,2,2,2,2,0,0,2,2,2,2,0,0,0,1},
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,2,2,2,2,0,0,0,0,2,2,0,0,0,2,2,0,0,1},
-		{1,0,0,2,2,2,2,2,2,2,0,0,0,0,2,2,2,2,0,0,2,2,0,0,1},
-		{1,0,0,2,2,2,2,2,2,2,0,0,0,0,2,2,2,2,0,0,2,2,0,0,1},
-		{1,0,0,2,2,2,2,0,0,0,0,0,0,0,0,2,2,0,0,0,2,2,0,0,1},
+		{1,0,0,0,0,0,0,2,2,2,2,0,0,0,2,2,0,0,0,0,2,2,0,0,1},
+		{1,0,0,2,2,2,2,2,2,2,0,0,0,2,2,2,2,0,0,0,2,2,0,0,1},
+		{1,0,0,2,2,2,2,2,2,2,0,0,0,2,2,2,2,0,0,0,2,2,0,0,1},
+		{1,0,0,2,2,2,2,0,0,0,0,0,0,0,2,2,0,0,0,0,2,2,0,0,1},
 		{1,0,0,2,2,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,1},
 		{1,0,0,0,0,0,2,2,2,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,1},
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -146,15 +146,15 @@ public:		//マップ
 private:	//メンバ変数
 	//ワールド変換データ
 	WorldTransform worldTransform_[40][25] = {};
-	int BlockSize;
+	int blockSize;
 	WorldTransform floorWorldTransform_;
-	WorldTransform effectworldTrans;
+	WorldTransform effectWorldTrans;
 
 	//操作
 	Input* input_ = nullptr;
 	//モデル
 	Model* model_ = nullptr;
-	Model* effectmodel = nullptr;
+	Model* effectModel = nullptr;
 
 	//床のモデル
 	Model* floorModel_ = nullptr;
@@ -173,25 +173,25 @@ private:	//メンバ変数
 	Player* player_ = nullptr;
 
 	//マップフラグ
-	int MapFlag = 0;
+	int mapFlag = 0;
 
 	//透明フラグ
-	bool AnswerFlag = false;
-	bool AnswerIntervalFlag = false;
-	int  AnswerTimer = 100;
-	int  AnswerIntervalTimer = 100;
+	bool answerFlag = false;
+	bool answerIntervalFlag = false;
+	int  answerTimer = 100;
+	int  answerIntervalTimer = 100;
 
 	bool goalFlag = false;
 	bool goalReadyFlag = false;
 	//
-	float GoalCount = 50;
-	float GoalRELAYCount = 50;
-	float GoalECHIGOCount = 50;
+	float goalCount = 50;
+	float goalMidCount1 = 50;
+	float goalMidCount2 = 50;
 
-	int goalcount = 0;
+	int goalCounter = 0;
 
-	int Map_Z = 40;
-	int Map_X = 25;
+	int map_Z = 40;
+	int map_X = 25;
 
 	bool OKFlag = false;
 	bool effectOffFlag = false;
@@ -204,5 +204,5 @@ private:	//メンバ変数
 
 	int goal_ = 0;
 
-	bool ResetFlag = false;
+	bool resetFlag = false;
 };

@@ -1,13 +1,13 @@
 #include "math/Useful.h"
 
-void useful::setScaleMat(Matrix4& mat, WorldTransform& worldTransform) {
+void useful::SetScaleMat(Matrix4& mat, WorldTransform& worldTransform) {
 	//スケーリング倍率を行列に設定する
 	mat.m[0][0] = worldTransform.scale_.x;
 	mat.m[1][1] = worldTransform.scale_.y;
 	mat.m[2][2] = worldTransform.scale_.z;
 }
 
-Matrix4 useful::generateScaleMat(WorldTransform& worldTransform)
+Matrix4 useful::GenerateScaleMat(WorldTransform& worldTransform)
 {
 	//スケーリング行列を宣言
 	Matrix4 matScale =
@@ -26,7 +26,7 @@ Matrix4 useful::generateScaleMat(WorldTransform& worldTransform)
 	return matScale;
 }
 
-void useful::setRotateMat(UsefulMat& mat, WorldTransform& worldTransform) {
+void useful::SetRotateMat(UsefulMat& mat, WorldTransform& worldTransform) {
 	mat.rotateX.m[1][1] = cos(worldTransform.rotation_.x);
 	mat.rotateX.m[1][2] = sin(worldTransform.rotation_.x);
 	mat.rotateX.m[2][1] = -sin(worldTransform.rotation_.x);
@@ -43,7 +43,7 @@ void useful::setRotateMat(UsefulMat& mat, WorldTransform& worldTransform) {
 	mat.rotateZ.m[1][1] = cos(worldTransform.rotation_.z);
 }
 
-Matrix4 useful::generateRotateXMat(WorldTransform& worldTransform)
+Matrix4 useful::GenerateRotateXMat(WorldTransform& worldTransform)
 {
 	//X軸回転行列を宣言
 	Matrix4 matRotX =
@@ -62,7 +62,7 @@ Matrix4 useful::generateRotateXMat(WorldTransform& worldTransform)
 	return matRotX;
 }
 
-Matrix4 useful::generateRotateYMat(WorldTransform& worldTransform)
+Matrix4 useful::GenerateRotateYMat(WorldTransform& worldTransform)
 {
 	//Y軸回転行列を宣言
 	Matrix4 matRotY =
@@ -81,7 +81,7 @@ Matrix4 useful::generateRotateYMat(WorldTransform& worldTransform)
 	return matRotY;
 }
 
-Matrix4 useful::generateRotateZMat(WorldTransform& worldTransform)
+Matrix4 useful::GenerateRotateZMat(WorldTransform& worldTransform)
 {
 	//Z軸回転行列を宣言
 	Matrix4 matRotZ =
@@ -100,14 +100,14 @@ Matrix4 useful::generateRotateZMat(WorldTransform& worldTransform)
 	return matRotZ;
 }
 
-void useful::setTranslateMat(Matrix4& mat, WorldTransform& worldTransform)
+void useful::SetTranslateMat(Matrix4& mat, WorldTransform& worldTransform)
 {
 	mat.m[3][0] = worldTransform.translation_.x;
 	mat.m[3][1] = worldTransform.translation_.y;
 	mat.m[3][2] = worldTransform.translation_.z;
 }
 
-Matrix4 useful::generateTransMat(WorldTransform& worldTransform)
+Matrix4 useful::GenerateTransMat(WorldTransform& worldTransform)
 {
 	//平行移動行列を宣言
 	Matrix4 matTrans = MathUtility::Matrix4Identity();
@@ -119,7 +119,7 @@ Matrix4 useful::generateTransMat(WorldTransform& worldTransform)
 	return matTrans;
 }
 
-void useful::setTransformationWolrdMat(UsefulMat& usefulMat, WorldTransform& worldTransform)
+void useful::SetTransformationWolrdMat(UsefulMat& usefulMat, WorldTransform& worldTransform)
 {
 	worldTransform.matWorld_ *= usefulMat.scale;
 	worldTransform.matWorld_ *= usefulMat.rotateX;
@@ -128,7 +128,7 @@ void useful::setTransformationWolrdMat(UsefulMat& usefulMat, WorldTransform& wor
 	worldTransform.matWorld_ *= usefulMat.translate;
 }
 
-Vector3 useful::matVector(Vector3 v, Matrix4 mat)
+Vector3 useful::MatVector(Vector3 v, Matrix4 mat)
 {
 	Vector3 pos;
 	pos.x = mat.m[0][0] * v.x + mat.m[0][1] * v.y + mat.m[0][2] * v.z + mat.m[0][3] * 1;

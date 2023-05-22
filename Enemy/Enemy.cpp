@@ -9,7 +9,7 @@ void Enemy::Initialize(Model* model, Model* sensormodel, RailCamera* camera, Vec
 
 	//引数として受け取ったデータをメンバ変数に記憶する
 	model_ = model;
-	sensormodel_ = sensormodel;
+	sensorModel_ = sensormodel;
 
 	//シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
@@ -36,22 +36,22 @@ void Enemy::Initialize(Model* model, Model* sensormodel, RailCamera* camera, Vec
 	sensorX = worldTransform_.translation_.x;
 	sensorZ = worldTransform_.translation_.z;
 
-	HeightSensorVisionX[0] = 5;
+	HeightSensorVisionX[0] = 3;
 	HeightSensorVisionZ[0] = 10;
-	HeightSensorVisionX[1] = -5;
+	HeightSensorVisionX[1] = -3;
 	HeightSensorVisionZ[1] = 10;
 
 	WidthSensorVisionX[0] = 10;
-	WidthSensorVisionZ[0] = 5;
+	WidthSensorVisionZ[0] = 3;
 	WidthSensorVisionX[1] = -10;
-	WidthSensorVisionZ[1] = 5;
+	WidthSensorVisionZ[1] = 3;
 
 	speed = 0.2f;
 
-	RightMoveFlag = false;
-	LeftMoveFlag = false;
-	UpMoveFlag = false;
-	DownMoveFlag = false;
+	rightMoveFlag = false;
+	leftMoveFlag = false;
+	upMoveFlag = false;
+	downMoveFlag = false;
 
 	//視界移動の記録用
 	for (int i = 0; i < 2; i++) {
@@ -69,10 +69,10 @@ void Enemy::Initialize(Model* model, Model* sensormodel, RailCamera* camera, Vec
 	WidthHeightFlag_ = WidthHeightFlag;
 
 	if (WidthHeightFlag_ == false) {
-		RightMoveFlag = true;
+		rightMoveFlag = true;
 	}
 	else if (WidthHeightFlag_ == true) {
-		UpMoveFlag = true;
+		upMoveFlag = true;
 	}
 }
 
@@ -92,24 +92,24 @@ void Enemy::Update(bool keyFlag, Player* player, float moveDis) {
 	//UpSensorVector(player->GetWorldPosition().z, player->GetWorldPosition().x, player->GetRadius());
 	//DownSensorVector(player->GetWorldPosition().z, player->GetWorldPosition().x, player->GetRadius());
 
-	sensorTransform_.ColorSetter(sensorColor);
+	sensorTransform_.ColorSetter(SensorColor);
 
 	if (player->GetSecretFlag() == false) {
 		if (WidthHeightFlag_ == false) {
-			if (RightMoveFlag == true) {
-				rightFlag = VectorLineCollision(player->GetWorldPosition(), player->GetRadius(), RightStart, RightEnd, RightEnd1, player);
+			if (rightMoveFlag == true) {
+				rightFlag = VectorLineCollision(player->GetWorldPosition(), player->GetRadius(), RightStart_Pt1, RightEnd_Pt2, RightEnd_Pt3, player);
 			}
-			if (LeftMoveFlag == true) {
-				leftFlag = VectorLineCollision(player->GetWorldPosition(), player->GetRadius(), LeftStart, LeftEnd, LeftEnd1, player);
+			if (leftMoveFlag == true) {
+				leftFlag = VectorLineCollision(player->GetWorldPosition(), player->GetRadius(), LeftStart_Pt1, LeftEnd_Pt2, LeftEnd_Pt3, player);
 			}
 		}
 
 		if (WidthHeightFlag_ == true) {
-			if (UpMoveFlag == true) {
-				upFlag = VectorLineCollision(player->GetWorldPosition(), player->GetRadius(), UpStart, UpEnd, UpEnd1, player);
+			if (upMoveFlag == true) {
+				upFlag = VectorLineCollision(player->GetWorldPosition(), player->GetRadius(), UpStart_Pt1, UpEnd_Pt2, UpEnd_Pt3, player);
 			}
-			if (DownMoveFlag == true) {
-				downFlag = VectorLineCollision(player->GetWorldPosition(), player->GetRadius(), DownStart, DownEnd, DownEnd1, player);
+			if (downMoveFlag == true) {
+				downFlag = VectorLineCollision(player->GetWorldPosition(), player->GetRadius(), DownStart_Pt1, DownEnd_Pt2, DownEnd_Pt3, player);
 			}
 		}
 	}
@@ -144,13 +144,13 @@ void Enemy::Update(bool keyFlag, Player* player, float moveDis) {
 		}
 	}
 
-	prePosition_ = worldTransform_.translation_;
+	PrePosition_ = worldTransform_.translation_;
 
 	if (stopFlag == false || stopIntervalFlag == true) {
 
 		EnemyMove(moveDis, WidthHeightFlag_);
 
-		EnemyMoveCheck(player->GetWorldPosition().x, player->GetWorldPosition().z, player->GetRadius());
+		EnemyMoveCheck(player->GetWorldPosition().x, player->GetWorldPosition().z, player->GetRadius(), WidthHeightFlag_);
 	}
 
 	//行列の更新
@@ -177,9 +177,9 @@ void Enemy::Update(bool keyFlag, Player* player, float moveDis) {
 	debugText_->SetPos(50, 90);
 	debugText_->Printf("up:%d down:%d right:%d left:%d", upFlag, downFlag, rightFlag, leftFlag);
 	debugText_->SetPos(50, 120);
-	debugText_->Printf("upMove:%d downMove:%d rightMove:%d leftMove:%d", UpMoveFlag, DownMoveFlag, RightMoveFlag, LeftMoveFlag);
+	debugText_->Printf("upMove:%d downMove:%d rightMove:%d leftMove:%d", upMoveFlag, downMoveFlag, rightMoveFlag, leftMoveFlag);
 	debugText_->SetPos(50, 250);
-	debugText_->Printf("isMove UP:0 DOWN:1 RIGHT:2 LEFT:3 %d", isMove);
+	debugText_->Printf("isMove UP:0 DOWN:1 RIGHT:2 LEFT:3 %d", isMove_Height);
 	debugText_->SetPos(50, 540);
 	debugText_->Printf("enemyPos X:%f Y:%f Z:%f", worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z);
 	debugText_->SetPos(50, 570);
@@ -205,25 +205,25 @@ void Enemy::SensorDraw(ViewProjection& viewProjection) {
 
 #pragma region 上センサーの描画
 
-	if (UpMoveFlag == true) {
+	if (upMoveFlag == true) {
 		if (upFlag == true) {
-			UpStart = { sensorX , 0, sensorZ };
-			UpEnd = { HeightSensorVisionX[0] + sensorX, 0, HeightSensorVisionZ[0] + sensorZ };
-			UpEnd1 = { HeightSensorVisionX[1] + sensorX,0,HeightSensorVisionZ[1] + sensorZ };
+			UpStart_Pt1 = { sensorX , 0, sensorZ };
+			UpEnd_Pt2 = { HeightSensorVisionX[0] + sensorX, 0, HeightSensorVisionZ[0] + sensorZ };
+			UpEnd_Pt3 = { HeightSensorVisionX[1] + sensorX,0,HeightSensorVisionZ[1] + sensorZ };
 
-			primitive_->DrawLine3d(UpStart, UpEnd, color);
-			primitive_->DrawLine3d(UpEnd, UpEnd1, color);
-			primitive_->DrawLine3d(UpEnd1, UpStart, color);
+			primitive_->DrawLine3d(UpStart_Pt1, UpEnd_Pt2, color);
+			primitive_->DrawLine3d(UpEnd_Pt2, UpEnd_Pt3, color);
+			primitive_->DrawLine3d(UpEnd_Pt3, UpStart_Pt1, color);
 
 		}
 		else {
-			UpStart = { sensorX , 0, sensorZ };
-			UpEnd = { HeightSensorVisionX[0] + sensorX, 0, HeightSensorVisionZ[0] + sensorZ };
-			UpEnd1 = { HeightSensorVisionX[1] + sensorX,0,HeightSensorVisionZ[1] + sensorZ };
+			UpStart_Pt1 = { sensorX , 0, sensorZ };
+			UpEnd_Pt2 = { HeightSensorVisionX[0] + sensorX, 0, HeightSensorVisionZ[0] + sensorZ };
+			UpEnd_Pt3 = { HeightSensorVisionX[1] + sensorX,0,HeightSensorVisionZ[1] + sensorZ };
 
-			primitive_->DrawLine3d(UpStart, UpEnd, color1);
-			primitive_->DrawLine3d(UpEnd, UpEnd1, color1);
-			primitive_->DrawLine3d(UpEnd1, UpStart, color1);
+			primitive_->DrawLine3d(UpStart_Pt1, UpEnd_Pt2, color1);
+			primitive_->DrawLine3d(UpEnd_Pt2, UpEnd_Pt3, color1);
+			primitive_->DrawLine3d(UpEnd_Pt3, UpStart_Pt1, color1);
 
 		}
 	}
@@ -231,25 +231,25 @@ void Enemy::SensorDraw(ViewProjection& viewProjection) {
 
 #pragma region 下センサーの描画
 
-	if (DownMoveFlag == true) {
+	if (downMoveFlag == true) {
 		if (downFlag == true) {
-			DownStart = { sensorX , 0, sensorZ };
-			DownEnd = { HeightSensorVisionX[1] + sensorX,0,-HeightSensorVisionZ[1] + sensorZ };
-			DownEnd1 = { HeightSensorVisionX[0] + sensorX, 0, -HeightSensorVisionZ[0] + sensorZ };
+			DownStart_Pt1 = { sensorX , 0, sensorZ };
+			DownEnd_Pt2 = { HeightSensorVisionX[1] + sensorX,0,-HeightSensorVisionZ[1] + sensorZ };
+			DownEnd_Pt3 = { HeightSensorVisionX[0] + sensorX, 0, -HeightSensorVisionZ[0] + sensorZ };
 
-			primitive_->DrawLine3d(DownStart, DownEnd, color);
-			primitive_->DrawLine3d(DownEnd, DownEnd1, color);
-			primitive_->DrawLine3d(DownEnd1, DownStart, color);
+			primitive_->DrawLine3d(DownStart_Pt1, DownEnd_Pt2, color);
+			primitive_->DrawLine3d(DownEnd_Pt2, DownEnd_Pt3, color);
+			primitive_->DrawLine3d(DownEnd_Pt3, DownStart_Pt1, color);
 
 		}
 		else {
-			DownStart = { sensorX , 0, sensorZ };
-			DownEnd = { HeightSensorVisionX[1] + sensorX,0,-HeightSensorVisionZ[1] + sensorZ };
-			DownEnd1 = { HeightSensorVisionX[0] + sensorX, 0, -HeightSensorVisionZ[0] + sensorZ };
+			DownStart_Pt1 = { sensorX , 0, sensorZ };
+			DownEnd_Pt2 = { HeightSensorVisionX[1] + sensorX,0,-HeightSensorVisionZ[1] + sensorZ };
+			DownEnd_Pt3 = { HeightSensorVisionX[0] + sensorX, 0, -HeightSensorVisionZ[0] + sensorZ };
 
-			primitive_->DrawLine3d(DownStart, DownEnd, color1);
-			primitive_->DrawLine3d(DownEnd, DownEnd1, color1);
-			primitive_->DrawLine3d(DownEnd1, DownStart, color1);
+			primitive_->DrawLine3d(DownStart_Pt1, DownEnd_Pt2, color1);
+			primitive_->DrawLine3d(DownEnd_Pt2, DownEnd_Pt3, color1);
+			primitive_->DrawLine3d(DownEnd_Pt3, DownStart_Pt1, color1);
 
 		}
 	}
@@ -258,25 +258,25 @@ void Enemy::SensorDraw(ViewProjection& viewProjection) {
 
 #pragma region 右センサーの描画
 
-	if (RightMoveFlag == true) {
+	if (rightMoveFlag == true) {
 		if (rightFlag == true) {
-			RightStart = { sensorX , 0, sensorZ };
-			RightEnd = { WidthSensorVisionX[0] + sensorX,0,-WidthSensorVisionZ[0] + sensorZ };
-			RightEnd1 = { WidthSensorVisionX[0] + sensorX, 0, WidthSensorVisionZ[0] + sensorZ };
+			RightStart_Pt1 = { sensorX , 0, sensorZ };
+			RightEnd_Pt2 = { WidthSensorVisionX[0] + sensorX,0,-WidthSensorVisionZ[0] + sensorZ };
+			RightEnd_Pt3 = { WidthSensorVisionX[0] + sensorX, 0, WidthSensorVisionZ[0] + sensorZ };
 
-			primitive_->DrawLine3d(RightStart, RightEnd, color);
-			primitive_->DrawLine3d(RightEnd, RightEnd1, color);
-			primitive_->DrawLine3d(RightEnd1, RightStart, color);
+			primitive_->DrawLine3d(RightStart_Pt1, RightEnd_Pt2, color);
+			primitive_->DrawLine3d(RightEnd_Pt2, RightEnd_Pt3, color);
+			primitive_->DrawLine3d(RightEnd_Pt3, RightStart_Pt1, color);
 
 		}
 		else {
-			RightStart = { sensorX , 0, sensorZ };
-			RightEnd = { WidthSensorVisionX[0] + sensorX,0,-WidthSensorVisionZ[0] + sensorZ };
-			RightEnd1 = { WidthSensorVisionX[0] + sensorX, 0, WidthSensorVisionZ[0] + sensorZ };
+			RightStart_Pt1 = { sensorX , 0, sensorZ };
+			RightEnd_Pt2 = { WidthSensorVisionX[0] + sensorX,0,-WidthSensorVisionZ[0] + sensorZ };
+			RightEnd_Pt3 = { WidthSensorVisionX[0] + sensorX, 0, WidthSensorVisionZ[0] + sensorZ };
 
-			primitive_->DrawLine3d(RightStart, RightEnd, color1);
-			primitive_->DrawLine3d(RightEnd, RightEnd1, color1);
-			primitive_->DrawLine3d(RightEnd1, RightStart, color1);
+			primitive_->DrawLine3d(RightStart_Pt1, RightEnd_Pt2, color1);
+			primitive_->DrawLine3d(RightEnd_Pt2, RightEnd_Pt3, color1);
+			primitive_->DrawLine3d(RightEnd_Pt3, RightStart_Pt1, color1);
 		}
 	}
 
@@ -285,25 +285,25 @@ void Enemy::SensorDraw(ViewProjection& viewProjection) {
 
 #pragma region 左センサーの描画
 
-	if (LeftMoveFlag == true) {
+	if (leftMoveFlag == true) {
 		if (leftFlag == true) {
-			LeftStart = { sensorX , 0, sensorZ };
-			LeftEnd = { WidthSensorVisionX[1] + sensorX,0,WidthSensorVisionZ[1] + sensorZ };
-			LeftEnd1 = { WidthSensorVisionX[1] + sensorX, 0, -WidthSensorVisionZ[1] + sensorZ };
+			LeftStart_Pt1 = { sensorX , 0, sensorZ };
+			LeftEnd_Pt2 = { WidthSensorVisionX[1] + sensorX,0,WidthSensorVisionZ[1] + sensorZ };
+			LeftEnd_Pt3 = { WidthSensorVisionX[1] + sensorX, 0, -WidthSensorVisionZ[1] + sensorZ };
 
-			primitive_->DrawLine3d(LeftStart, LeftEnd, color);
-			primitive_->DrawLine3d(LeftEnd, LeftEnd1, color);
-			primitive_->DrawLine3d(LeftEnd1, LeftStart, color);
+			primitive_->DrawLine3d(LeftStart_Pt1, LeftEnd_Pt2, color);
+			primitive_->DrawLine3d(LeftEnd_Pt2, LeftEnd_Pt3, color);
+			primitive_->DrawLine3d(LeftEnd_Pt3, LeftStart_Pt1, color);
 
 		}
 		else {
-			LeftStart = { sensorX , 0, sensorZ };
-			LeftEnd = { WidthSensorVisionX[1] + sensorX,0,WidthSensorVisionZ[1] + sensorZ };
-			LeftEnd1 = { WidthSensorVisionX[1] + sensorX, 0, -WidthSensorVisionZ[1] + sensorZ };
+			LeftStart_Pt1 = { sensorX , 0, sensorZ };
+			LeftEnd_Pt2 = { WidthSensorVisionX[1] + sensorX,0,WidthSensorVisionZ[1] + sensorZ };
+			LeftEnd_Pt3 = { WidthSensorVisionX[1] + sensorX, 0, -WidthSensorVisionZ[1] + sensorZ };
 
-			primitive_->DrawLine3d(LeftStart, LeftEnd, color1);
-			primitive_->DrawLine3d(LeftEnd, LeftEnd1, color1);
-			primitive_->DrawLine3d(LeftEnd1, LeftStart, color1);
+			primitive_->DrawLine3d(LeftStart_Pt1, LeftEnd_Pt2, color1);
+			primitive_->DrawLine3d(LeftEnd_Pt2, LeftEnd_Pt3, color1);
+			primitive_->DrawLine3d(LeftEnd_Pt3, LeftStart_Pt1, color1);
 
 		}
 	}
@@ -431,11 +431,6 @@ Vector3 Enemy::GetWorldPosition() {
 	worldPos.z = worldTransform_.matWorld_.m[3][2];
 
 	return  worldPos;
-	/*worldPos_2.x = worldTransform_[1].matWorld_.m[3][0];
-	worldPos_2.y = worldTransform_[1].matWorld_.m[3][1];
-	worldPos_2.z = worldTransform_[1].matWorld_.m[3][2];
-	return  worldPos_2;*/
-
 }
 
 Vector3 Enemy::GetSensorPosition()
@@ -554,23 +549,22 @@ void Enemy::EnemyMove(float moveDis, bool WidthHeightFlag) {
 	//センサーで検知したとき
 	if (visionHitFlag[0] == 1 && visionHitFlag[1] == 1 && visionHitFlag[2] == 1) {
 		// 上移動
-
-		if (isMove == UP) {
+		if (isMove_Height == UP) {
 			worldTransform_.translation_.z -= speed;
 			crisisFlag = true;
 		}
 		// 下移動
-		if (isMove == DOWN) {
+		if (isMove_Height == DOWN) {
 			worldTransform_.translation_.z += speed;
 			crisisFlag = true;
 		}
 		// 右移動
-		if (isMove == RIGHT) {
+		if (isMove_Height == RIGHT) {
 			worldTransform_.translation_.x += speed;
 			crisisFlag = true;
 		}
 		// 左移動
-		if (isMove == LEFT) {
+		if (isMove_Height == LEFT) {
 			worldTransform_.translation_.x -= speed;
 			crisisFlag = true;
 		}
@@ -580,21 +574,21 @@ void Enemy::EnemyMove(float moveDis, bool WidthHeightFlag) {
 		if (WidthHeightFlag == false) {
 			//敵の移動処理(横)
 			if (sensorMovedDis <= -moveDis) {
-				LeftMoveFlag = false;
-				RightMoveFlag = true;
+				leftMoveFlag = false;
+				rightMoveFlag = true;
 			}
 			if (sensorMovedDis >= moveDis) {
-				RightMoveFlag = false;
-				LeftMoveFlag = true;
+				rightMoveFlag = false;
+				leftMoveFlag = true;
 			}
 
 
-			if (RightMoveFlag == true) {
+			if (rightMoveFlag == true) {
 				worldTransform_.translation_.x += 0.1;
 				sensorMovedDis += 0.1;
 				worldTransform_.rotation_.y = RadianConversion(90);
 			}
-			if (LeftMoveFlag == true) {
+			if (leftMoveFlag == true) {
 				worldTransform_.translation_.x -= 0.1;
 				sensorMovedDis -= 0.1;
 				worldTransform_.rotation_.y = RadianConversion(270);
@@ -603,20 +597,20 @@ void Enemy::EnemyMove(float moveDis, bool WidthHeightFlag) {
 		if (WidthHeightFlag == true) {
 			//敵の移動処理(縦)
 			if (sensorMovedDis >= moveDis) {
-				UpMoveFlag = false;
-				DownMoveFlag = true;
+				upMoveFlag = false;
+				downMoveFlag = true;
 			}
 			if (sensorMovedDis <= -moveDis) {
-				DownMoveFlag = false;
-				UpMoveFlag = true;
+				downMoveFlag = false;
+				upMoveFlag = true;
 			}
 
-			if (UpMoveFlag == true) {
+			if (upMoveFlag == true) {
 				worldTransform_.translation_.z += 0.1;
 				sensorMovedDis += 0.1;
 				worldTransform_.rotation_.y = RadianConversion(0);
 			}
-			if (DownMoveFlag == true) {
+			if (downMoveFlag == true) {
 				worldTransform_.translation_.z -= 0.1;
 				sensorMovedDis -= 0.1;
 				worldTransform_.rotation_.y = RadianConversion(180);
@@ -628,7 +622,7 @@ void Enemy::EnemyMove(float moveDis, bool WidthHeightFlag) {
 
 }
 
-void Enemy::EnemyMoveCheck(float playerX, float playerZ, float playerR) {
+void Enemy::EnemyMoveCheck(float playerX, float playerZ, float playerR, bool WidthHeightFlag) {
 	count--;
 	if (count > 0) {
 		isSearch = 0;
@@ -637,29 +631,51 @@ void Enemy::EnemyMoveCheck(float playerX, float playerZ, float playerR) {
 		isSearch = TRUE;
 		// searchFlagが呼ばれたときにmoveFlagを変更するようにする
 		if (isSearch == TRUE) {
-			EnemyMoveSearch(playerX, playerZ, playerR);
+			EnemyMoveSearch(playerX, playerZ, playerR, WidthHeightFlag);
 			// カウントを戻す
 			count = 1;
 		}
 	}
 }
 
-void Enemy::EnemyMoveSearch(float playerX, float playerZ, float playerR) {
-	// プレイヤーが敵の右に居る時
-	if (playerX > worldTransform_.translation_.x + radius) {
-		isMove = RIGHT;
+void Enemy::EnemyMoveSearch(float playerX, float playerZ, float playerR, bool WidthHeightFlag) {
+	//敵が横移動の時、縦の追従強め
+	if (WidthHeightFlag == false) {
+		// プレイヤーが敵の右に居る時
+		if (playerX > worldTransform_.translation_.x + radius) {
+			isMove_Height = RIGHT;
+		}
+		// プレイヤーが敵の左に居る時
+		if (playerX + playerR < worldTransform_.translation_.x) {
+			isMove_Height = LEFT;
+		}
+		// プレイヤーが敵の上に居る時
+		if (playerZ + playerR < worldTransform_.translation_.z) {
+			isMove_Height = UP;
+		}
+		// プレイヤーが敵の下にいる時
+		if (playerZ > worldTransform_.translation_.z + radius) {
+			isMove_Height = DOWN;
+		}
 	}
-	// プレイヤーが敵の左に居る時
-	if (playerX + playerR < worldTransform_.translation_.x) {
-		isMove = LEFT;
-	}
-	// プレイヤーが敵の上に居る時
-	if (playerZ + playerR < worldTransform_.translation_.z) {
-		isMove = UP;
-	}
-	// プレイヤーが敵の下にいる時
-	if (playerZ > worldTransform_.translation_.z + radius) {
-		isMove = DOWN;
+	//敵が縦移動の時、横の追従強め
+	if (WidthHeightFlag == true) {
+		// プレイヤーが敵の上に居る時
+		if (playerZ + playerR < worldTransform_.translation_.z) {
+			isMove_Height = UP;
+		}
+		// プレイヤーが敵の下にいる時
+		if (playerZ > worldTransform_.translation_.z + radius) {
+			isMove_Height = DOWN;
+		}
+		// プレイヤーが敵の右に居る時
+		if (playerX > worldTransform_.translation_.x + radius) {
+			isMove_Height = RIGHT;
+		}
+		// プレイヤーが敵の左に居る時
+		if (playerX + playerR < worldTransform_.translation_.x) {
+			isMove_Height = LEFT;
+		}
 	}
 }
 

@@ -44,14 +44,14 @@ void Player::Update(bool PlayerKeyFlag) {
 		//3Dモデルを描画
 		worldTransform_.ColorSetter(SecretColor);
 	}
-	if (SecretIntervalFlag == true) {
+	if (secretIntervalFlag == true) {
 		//3Dモデルを描画
 		worldTransform_.ColorSetter(DefaultColor);
 	}
 	worldTransform_.TransferColorMatrix();
 
 
-	prePosition_ = worldTransform_.translation_;
+	PrePosition_ = worldTransform_.translation_;
 
 
 
@@ -81,27 +81,27 @@ void Player::Update(bool PlayerKeyFlag) {
 		playerSecretFlag = true;
 	}
 	if (playerSecretFlag == true){
-		SecretTimer--;
-		if (SecretTimer < 0){
-			SecretIntervalFlag = true;
+		secretTimer--;
+		if (secretTimer < 0){
+			secretIntervalFlag = true;
 			playerSecretFlag = false;
 		}
 	}
-	if (SecretIntervalFlag == true) {
-		SecretIntervalTimer--;
-		if (SecretIntervalTimer <= 0.01f) {
+	if (secretIntervalFlag == true) {
+		secretIntervalTimer--;
+		if (secretIntervalTimer <= 0.01f) {
 			OKFlag = true;
 		}
-		if (SecretIntervalTimer < 0) {
+		if (secretIntervalTimer < 0) {
 			PlayerKeyFlag = false;
 			OKFlag = false;
-			SecretIntervalFlag = false;
-			SecretTimer = 100;
-			SecretIntervalTimer = 100;
+			secretIntervalFlag = false;
+			secretTimer = 100;
+			secretIntervalTimer = 100;
 			playerSecretFlag = false;
 		}
 	}
-	move = worldTransform_.translation_;
+	Move = worldTransform_.translation_;
 
 	//行列の更新
 	myFunc_.UpdateWorldTransform(worldTransform_);
@@ -114,10 +114,10 @@ void Player::Update(bool PlayerKeyFlag) {
 	debugText_->Printf("playerSecretFlag:%d", playerSecretFlag);
 
 	debugText_->SetPos(50, 330);
-	debugText_->Printf("SecretTimer:%d", SecretTimer);
+	debugText_->Printf("SecretTimer:%d", secretTimer);
 
 	debugText_->SetPos(50, 350);
-	debugText_->Printf("SecretIntervalTimer:%f", SecretIntervalTimer);
+	debugText_->Printf("SecretIntervalTimer:%f", secretIntervalTimer);
 
 	debugText_->SetPos(50, 370);
 	debugText_->Printf("OKFlag:%d", OKFlag);
@@ -150,18 +150,18 @@ void Player::OnCollision() {
 void Player::Reset()
 {
 	OKFlag = false;
-	SecretIntervalFlag = false;
-	SecretTimer = 100;
-	SecretIntervalTimer = 100;
+	secretIntervalFlag = false;
+	secretTimer = 100;
+	secretIntervalTimer = 100;
 	playerSecretFlag = false;
 
 	playerDeathFlag = false;
 	playerSecretFlag = false;
 	//プレイヤーの初期位置の設定
 	worldTransform_.translation_ = { -20.0f, 0.0f, -18.0f };
-	SecretIntervalFlag = false;
-	SecretTimer = 100;
-	SecretIntervalTimer = 100.0f;
+	secretIntervalFlag = false;
+	secretTimer = 100;
+	secretIntervalTimer = 100.0f;
 	worldTransform_.rotation_.y = RadianConversion(0);
 }
 	//何もしない

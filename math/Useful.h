@@ -29,21 +29,21 @@ namespace useful {
 	//(1)
 
 	//(1)-1 設定する関数
-	void setScaleMat(Matrix4& mat, WorldTransform& worldTransform);
-	void setRotateMat(UsefulMat& mat, WorldTransform& worldTransform);
-	void setTranslateMat(Matrix4& mat, WorldTransform& worldTransform);
+	void SetScaleMat(Matrix4& mat, WorldTransform& worldTransform);
+	void SetRotateMat(UsefulMat& mat, WorldTransform& worldTransform);
+	void SetTranslateMat(Matrix4& mat, WorldTransform& worldTransform);
 
 	//(2)-2 行列を使って変換した値を返す関数
-	Matrix4 generateScaleMat(WorldTransform& worldTransform);
+	Matrix4 GenerateScaleMat(WorldTransform& worldTransform);
 
-	Matrix4 generateRotateXMat(WorldTransform& worldTransform);
-	Matrix4 generateRotateYMat(WorldTransform& worldTransform);
-	Matrix4 generateRotateZMat(WorldTransform& worldTransform);
+	Matrix4 GenerateRotateXMat(WorldTransform& worldTransform);
+	Matrix4 GenerateRotateYMat(WorldTransform& worldTransform);
+	Matrix4 GenerateRotateZMat(WorldTransform& worldTransform);
 
-	Matrix4 generateTransMat(WorldTransform& worldTransform);
+	Matrix4 GenerateTransMat(WorldTransform& worldTransform);
 
 	//(2) ワールド行列を生成する関数
-	void setTransformationWolrdMat(UsefulMat& usefulMat, WorldTransform& worldTransform);
+	void SetTransformationWolrdMat(UsefulMat& usefulMat, WorldTransform& worldTransform);
 
-	Vector3 matVector(Vector3 v, Matrix4 mat);
+	Vector3 MatVector(Vector3 v, Matrix4 mat);
 }

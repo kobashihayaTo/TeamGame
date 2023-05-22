@@ -79,14 +79,14 @@ private:
 
 	Map* map_ = nullptr;
 
-	uint32_t textureHandle_ = 0;
+	uint32_t alertHandle_ = 0;
 	uint32_t operationHandle_ = 0;
 	uint32_t hpHandle_ = 0;
 	uint32_t loadGaugeHandle_ = 0;
 	uint32_t moveKeyHandle_ = 0;
 	uint32_t moveKey_unusableHandle_ = 0;
 	//スプライト
-	Sprite* sprite_ = nullptr;
+	Sprite* alertSprite_ = nullptr;
 	Sprite* operationSprite_ = nullptr;
 	Sprite* hpSprite_ = nullptr;
 	Sprite* LoadGaugeSprite_ = nullptr;
@@ -95,6 +95,6 @@ private:
 
 	int crisisTimer = 0;
 
-	float LoadGaugeCounter = 250;
+	float loadGaugeCounter = 250;
 };
 

@@ -8,7 +8,7 @@ BadScene::BadScene(){}
 
 BadScene::~BadScene(){
 
-	delete sprite_;
+	delete sprite_1;
 	delete sprite_2;
 }
 
@@ -21,10 +21,10 @@ void BadScene::Initialize()
 	nextScene_ = Scene::BADEND;
 
 	//ファイル名指定してテクスチャを読み込む
-	textureHandle_ = TextureManager::Load("gameover.png");
-	nameHandle_ = TextureManager::Load("overName.png");
+	textureHandle_ = TextureManager::Load("GAMEOVER/gameover.png");
+	nameHandle_ = TextureManager::Load("GAMEOVER/overName.png");
 	//スプライトの生成
-	sprite_ = Sprite::Create(textureHandle_, { 0,0 });
+	sprite_1 = Sprite::Create(textureHandle_, { 0,0 });
 	sprite_2 = Sprite::Create(nameHandle_, { 0,posY });
 
 	//サウンド
@@ -105,7 +105,7 @@ void BadScene::Draw()
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
-	sprite_->Draw();
+	sprite_1->Draw();
 	sprite_2->Draw();
 #ifdef _DEBUG
 
@@ -129,7 +129,7 @@ void BadScene::SoundStop()
 
 void BadScene::Reset()
 {
-	Time = 0;
+	time = 0;
 	posY = -1080.0f;
 	//float posY = 0.0f;
 
