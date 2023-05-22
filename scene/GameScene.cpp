@@ -15,7 +15,6 @@ GameScene::~GameScene() {
 	delete enemySensorModel_;
 	delete effectModel;
 	delete goalModel;
-	delete model_;
 }
 
 void GameScene::Initialize() {
@@ -48,20 +47,18 @@ void GameScene::Initialize() {
 	//プレイヤーの初期化
 	newPlayer->Initialize(playerModel_);
 	//敵の初期化
-	newEnemy->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos, false);
-	newEnemy_1->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_1, false);
-	newEnemy_2->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_2, true);
-	newEnemy_3->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_3, true);
-	newEnemy_4->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_4, true);
-	newEnemy_5->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_5, false);
-	newEnemy_6->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_6, true);
-	newEnemy_7->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_7, false);
+	newEnemy->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_1, false);
+	newEnemy_1->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_2, false);
+	newEnemy_2->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_3, true);
+	newEnemy_3->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_4, true);
+	newEnemy_4->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_5, true);
+	newEnemy_5->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_6, false);
+	newEnemy_6->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_7, true);
+	newEnemy_7->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_8, false);
 
 #pragma endregion
 	//ビュープロジェクションの初期化
 	viewProjection_.Initialize();
-
-	model_ = Model::Create();
 
 	//音声
 	playBGMHandle = audio_->LoadWave("NeonVerseBgm/NeonVerseGame.wav");
@@ -72,7 +69,7 @@ void GameScene::Update() {
 
 	if (newMap->GetFlag() == false) {
 		//プレイヤーの更新
-		newPlayer->Update(playerkeyFlag);
+		newPlayer->Update(playerKeyFlag);
 	}
 
 	if (audio_->IsPlaying(playBGMHandle) == false || playBGMHandle == -1)
@@ -81,7 +78,7 @@ void GameScene::Update() {
 	}
 
 	//マップの更新
-	newMap->Update(newPlayer.get(), MapkeyFlag);
+	newMap->Update(newPlayer.get(), mapKeyFlag);
 
 	//敵の更新
 	newEnemy->Update(keyFlag, newPlayer.get(), 10.0f);
@@ -110,41 +107,41 @@ void GameScene::Update() {
 
 	//プレイヤー
 	if (input_->TriggerKey(DIK_A)) {
-		if (MapkeyFlag == false && keyFlag == false) {
-			playerkeyFlag = true;
-			MapkeyFlag = false;
+		if (mapKeyFlag == false && keyFlag == false) {
+			playerKeyFlag = true;
+			mapKeyFlag = false;
 			keyFlag = false;
 		}
 	}
 	if (newPlayer->GetOKFlag()) {
-		playerkeyFlag = false;
-		MapkeyFlag = false;
+		playerKeyFlag = false;
+		mapKeyFlag = false;
 		keyFlag = false;
 	}
 	//マップ
 	if (input_->TriggerKey(DIK_D)) {
-		if (playerkeyFlag == false && keyFlag == false) {
-			playerkeyFlag = false;
-			MapkeyFlag = true;
+		if (playerKeyFlag == false && keyFlag == false) {
+			playerKeyFlag = false;
+			mapKeyFlag = true;
 			keyFlag = false;
 		}
 	}
 	if (newMap->GetOKFlag()) {
-		playerkeyFlag = false;
-		MapkeyFlag = false;
+		playerKeyFlag = false;
+		mapKeyFlag = false;
 		keyFlag = false;
 	}
 	//敵
 	if (input_->TriggerKey(DIK_S)) {
-		if (playerkeyFlag == false && MapkeyFlag == false) {
-			playerkeyFlag = false;
-			MapkeyFlag = false;
+		if (playerKeyFlag == false && mapKeyFlag == false) {
+			playerKeyFlag = false;
+			mapKeyFlag = false;
 			keyFlag = true;
 		}
 	}
 	if (newEnemy->GetOKFlag()) {
-		playerkeyFlag = false;
-		MapkeyFlag = false;
+		playerKeyFlag = false;
+		mapKeyFlag = false;
 		keyFlag = false;
 	}
 
@@ -176,13 +173,13 @@ void GameScene::Update() {
 	}
 
 	debugText_->SetPos(50, 450);
-	debugText_->Printf("playerkeyFlag:%d", playerkeyFlag);
+	debugText_->Printf("playerkeyFlag:%d", playerKeyFlag);
 
 	debugText_->SetPos(50, 470);
 	debugText_->Printf("keyFlag:%d", keyFlag);
 
 	debugText_->SetPos(50, 490);
-	debugText_->Printf("MapkeyFlag:%d", MapkeyFlag);
+	debugText_->Printf("MapkeyFlag:%d", mapKeyFlag);
 
 
 }
@@ -224,7 +221,7 @@ void GameScene::Draw() {
 	newMap->FloorDraw(viewProjection_);
 
 	//プレイヤーの描画
-	if (newMap->GeteffectOffFlag() == false)
+	if (newMap->GetEffectOffFlag() == false)
 	{
 		newPlayer->Draw(viewProjection_);
 	}
@@ -270,7 +267,7 @@ void GameScene::Draw() {
 	newUI->Draw(newEnemy_6.get(), newMap.get());
 	newUI->Draw(newEnemy_7.get(), newMap.get());
 
-	if (keyFlag == true || MapkeyFlag == true || playerkeyFlag == true) {
+	if (keyFlag == true || mapKeyFlag == true || playerKeyFlag == true) {
 		newUI->KeyDraw_unusable();
 	}
 	else
@@ -374,8 +371,8 @@ void GameScene::SceneChange() {
 void GameScene::Reset()
 {
 	keyFlag = false;
-	MapkeyFlag = false; 
-	playerkeyFlag = false;
+	mapKeyFlag = false; 
+	playerKeyFlag = false;
 	newPlayer->Reset();
 	newEnemy->Reset();
 	newMap->Reset();
@@ -388,14 +385,14 @@ void GameScene::PosReset()
 {
 	//敵の初期化
 	//falseが縦　trueが横
-	newEnemy->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos, false);
-	newEnemy_1->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_1, false);
-	newEnemy_2->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_2, true);
-	newEnemy_3->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_3, true);
-	newEnemy_4->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_4, true);
-	newEnemy_5->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_5, false);
-	newEnemy_6->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_6, true);
-	newEnemy_7->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_7, false);
+	newEnemy->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_1, false);
+	newEnemy_1->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_2, false);
+	newEnemy_2->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_3, true);
+	newEnemy_3->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_4, true);
+	newEnemy_4->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_5, true);
+	newEnemy_5->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_6, false);
+	newEnemy_6->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_7, true);
+	newEnemy_7->Initialize(enemyModel_, enemySensorModel_, newCamera.get(), enemyPos_8, false);
 }
 
 void GameScene::SoundStop()

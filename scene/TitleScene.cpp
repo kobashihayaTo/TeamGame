@@ -6,8 +6,8 @@ TitleScene::TitleScene()
 
 TitleScene::~TitleScene()
 {
-	delete sprite_;
-	delete sprite_2;
+	delete titleBG_sprite_;
+	delete title_sprite_;
 }
 
 void TitleScene::Initialize()
@@ -19,19 +19,19 @@ void TitleScene::Initialize()
 	nextScene_ = Scene::TITLE;
 
 	//ファイル名指定してテクスチャを読み込む
-	textureHandle_ = TextureManager::Load("titleBackground.png");
-	nameHandle_ = TextureManager::Load("titlename.png");
-	spaceHandle_ = TextureManager::Load("SPACE.png");
-	space_Selection_= TextureManager::Load("SPACE_selection.png");
-	exitHandle_= TextureManager::Load("EXIT.png");
-	exit_Selection_ = TextureManager::Load("EXIT_selection.png");
+	titleBGHandle_ = TextureManager::Load("TITLE/titleBackground.png");
+	titleHandle_ = TextureManager::Load("TITLE/titlename.png");
+	spaceHandle_ = TextureManager::Load("START/START.png");
+	space_Selection_= TextureManager::Load("START/START_selection.png");
+	exitHandle_= TextureManager::Load("EXIT/EXIT.png");
+	exit_Selection_ = TextureManager::Load("EXIT/EXIT_selection.png");
 	//スプライトの生成
-	sprite_ = Sprite::Create(textureHandle_, { 0,0 });
-	sprite_2 = Sprite::Create(nameHandle_, { 0,posY });
+	titleBG_sprite_ = Sprite::Create(titleBGHandle_, { 0,0 });
+	title_sprite_ = Sprite::Create(titleHandle_, { 0,posY });
 	space_sprite_ = Sprite::Create(spaceHandle_, { 1100,700 });
-	space_Selection_sprite = Sprite::Create(space_Selection_, { 1100,700 });
+	space_Selection_sprite_ = Sprite::Create(space_Selection_, { 1100,700 });
 	exit_sprite_ = Sprite::Create(exitHandle_, { 300,700 });
-	exit_Selection_sprite = Sprite::Create(exit_Selection_, { 300,700 });
+	exit_Selection_sprite_ = Sprite::Create(exit_Selection_, { 300,700 });
 
 	selectFlag = 0;
 
@@ -44,7 +44,7 @@ void TitleScene::Initialize()
 
 void TitleScene::Update()
 {
-	sprite_2->SetPosition({ 0,posY });
+	title_sprite_->SetPosition({ 0,posY });
 
 	if (audio_->IsPlaying(playHandle) == false || playHandle == -1)
 	{
@@ -122,18 +122,18 @@ void TitleScene::Draw()
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
-	sprite_->Draw();
-	sprite_2->Draw();
+	titleBG_sprite_->Draw();
+	title_sprite_->Draw();
 
 	if (selectFlag == 0) {
-	space_Selection_sprite->Draw();
+	space_Selection_sprite_->Draw();
 	}
 	else {
 		space_sprite_->Draw();
 	}
 
 	if (selectFlag == 1) {
-		exit_Selection_sprite->Draw();		
+		exit_Selection_sprite_->Draw();		
 	}
 	else{
 		exit_sprite_->Draw();
@@ -168,7 +168,7 @@ void TitleScene::ChangeSelect()
 
 void TitleScene::Reset()
 {
-	Time = 0;
+	time = 0;
 	posY = -1080.0f;
 
 	frame = 0.0f;

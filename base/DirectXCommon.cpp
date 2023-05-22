@@ -35,7 +35,7 @@ void DirectXCommon::Initialize(WinApp* winApp, int32_t backBufferWidth, int32_t 
 	// DXGIデバイス初期化
 	InitializeDXGIDevice();
 
-	// コマンド関連初期化
+	// コマンド関連初期化 
 	InitializeCommand();
 
 	// スワップチェーンの生成
@@ -168,9 +168,10 @@ void DirectXCommon::ClearRenderTarget() {
 	  device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
 
 	// 全画面クリア        Red   Green Blue  Alpha
-	float clearColor[] = {0.1f, 0.25f, 0.5f, 0.0f}; // 青っぽい色
+	//float clearColor[] = {0.1f, 0.25f, 0.5f, 0.0f}; // 青っぽい色
 	//// 全画面クリア        Red   Green Blue  Alpha
-	//float clearColor[] = { 0.0f, 0.0f, 0.0f, 0.0f }; // 黒っぽい色
+	
+	float clearColor[] = { 0.01f, 0.01f, 0.01f, 0.0f }; // 黒っぽい色
 	commandList_->ClearRenderTargetView(rtvH, clearColor, 0, nullptr);
 }
 

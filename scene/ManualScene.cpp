@@ -7,7 +7,10 @@
 ManualScene::ManualScene() {}
 
 ManualScene::~ManualScene() {
-	delete sprite_;
+	delete sprite_1;
+	delete sprite_2;
+	delete sprite_3;
+	delete sprite_4;
 }
 
 void ManualScene::Initialize()
@@ -18,16 +21,16 @@ void ManualScene::Initialize()
 	nextScene_ = Scene::MANUAL;
 
 	//ファイル名指定してテクスチャを読み込む
-	nameHandle_ = TextureManager::Load("manual_2.png");
-	textureHandle_ = TextureManager::Load("manual_04.png");
-	manumalHandle_ = TextureManager::Load("manual_05.png");
-	manumalHandle_1 = TextureManager::Load("manual_03.png");
+	menuHandle_1 = TextureManager::Load("Manual/manual_01.png");
+	menuHandle_2 = TextureManager::Load("Manual/manual_02.png");
+	menuHandle_3 = TextureManager::Load("Manual/manual_03.png");
+	menuHandle_4 = TextureManager::Load("Manual/manual_04.png");
 
 	//スプライトの生成
-	sprite_ = Sprite::Create(nameHandle_, { 0,0 });
-	sprite_2 = Sprite::Create(textureHandle_, { 0,0 });
-	sprite_3= Sprite::Create(manumalHandle_, { 0,0 });
-	sprite_4 = Sprite::Create(manumalHandle_1, { 0,0 });
+	sprite_1 = Sprite::Create(menuHandle_1, { 0,0 });
+	sprite_2 = Sprite::Create(menuHandle_2, { 0,0 });
+	sprite_3= Sprite::Create(menuHandle_3, { 0,0 });
+	sprite_4 = Sprite::Create(menuHandle_4, { 0,0 });
 }
 
 void ManualScene::Update()
@@ -96,7 +99,7 @@ void ManualScene::Draw()
 	/// </summary>
 	if (selectFlag == 0)
 	{
-		sprite_->Draw();
+		sprite_1->Draw();
 	}
 	if (selectFlag == 1)
 	{

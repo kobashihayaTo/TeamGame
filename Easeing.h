@@ -71,6 +71,3 @@ double easeInBounce(double time);
 double easeOutBounce(double time);
 
 double easeInOutBounce(double time);
-
-
-//---------------------easeio.cpp--------------------//

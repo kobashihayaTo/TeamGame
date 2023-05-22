@@ -6,7 +6,7 @@ UI::UI()
 
 UI::~UI()
 {
-	delete sprite_;
+	delete alertSprite_;
 	delete operationSprite_;
 }
 
@@ -17,14 +17,14 @@ void UI::Initialize()
 	debugText_ = DebugText::GetInstance();
 
 	//ファイル名指定してテクスチャを読み込む
-	textureHandle_ = TextureManager::Load("Alert.png");
+	alertHandle_ = TextureManager::Load("Alert.png");
 	operationHandle_ = TextureManager::Load("operation.png");
 	loadGaugeHandle_= TextureManager::Load("EnemyHp.png");
 	moveKeyHandle_ = TextureManager::Load("ASD.png");
 	moveKey_unusableHandle_ = TextureManager::Load("asd_unused.png");
 	//スプライトの生成
-	sprite_ = Sprite::Create(textureHandle_, { 0,0 });
-	operationSprite_ = Sprite::Create(operationHandle_, { 1680,840 });
+	alertSprite_ = Sprite::Create(alertHandle_, { 0,0 });
+	operationSprite_ = Sprite::Create(operationHandle_, { 1640,820 });
 	LoadGaugeSprite_= Sprite::Create(loadGaugeHandle_, { 0,0 });
 	LoadGaugeSprite_->SetPosition({ 1000,0 });
 
@@ -82,11 +82,12 @@ void UI::Draw(Enemy* enemy_, Map* map_)
 	operationSprite_->Draw();
 	
 	if (map_->GetUIFlag() == true) {
-		if (LoadGaugeCounter >= 0 && map_->GetFlag() == false && map_->GeteffectOffFlag() == false) {
+		if (loadGaugeCounter >= 0 && map_->GetFlag() == false && map_->GetEffectOffFlag() == false) {
 		LoadGaugeCount();
+		LoadGaugeSprite_->Draw();
 		}
 	}
-	LoadGaugeSprite_->Draw();
+	
 	
 	if (map_->GetResetFlag() == false) {
 		Reset();
@@ -99,7 +100,7 @@ void UI::Draw(Enemy* enemy_, Map* map_)
 	if (enemy_->GetCrisisFlag() == true) {
 		crisisTimer++;
 		if (crisisTimer < 15) {
-			sprite_->Draw();
+			alertSprite_->Draw();
 		}
 		if (crisisTimer > 25)
 		{
@@ -176,14 +177,14 @@ void UI::KeyDraw_unusable()
 
 void UI::LoadGaugeCount()
 {
-	LoadGaugeSprite_->SetSize({ LoadGaugeCounter,32 });
-	LoadGaugeCounter -= 0.2f;
+	LoadGaugeSprite_->SetSize({ loadGaugeCounter,32 });
+	loadGaugeCounter -= 0.2f;
 	debugText_->SetPos(50, 630);
-	debugText_->Printf("LoadGaugeCounter:%f", LoadGaugeCounter);
+	debugText_->Printf("LoadGaugeCounter:%f", loadGaugeCounter);
 }
 
 void UI::Reset()
 {
 
-	LoadGaugeCounter = 300;
+	loadGaugeCounter = 300;
 }

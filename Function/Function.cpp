@@ -7,15 +7,15 @@ void MyFunc::UpdateWorldTransform(WorldTransform& worldTransform) {
 	useful::UsefulMat usefulMat;
 
 	//////
-	useful::setScaleMat(usefulMat.scale, worldTransform);
-	useful::setRotateMat(usefulMat, worldTransform);
-	useful::setTranslateMat(usefulMat.translate, worldTransform);
+	useful::SetScaleMat(usefulMat.scale, worldTransform);
+	useful::SetRotateMat(usefulMat, worldTransform);
+	useful::SetTranslateMat(usefulMat.translate, worldTransform);
 
 	//matworldに単位行列を入れる
 	worldTransform.matWorld_ = MathUtility::Matrix4Identity();
 
 	//行列の計算
-	useful::setTransformationWolrdMat(usefulMat, worldTransform);
+	useful::SetTransformationWolrdMat(usefulMat, worldTransform);
 
 	//行列の転送
 	worldTransform.TransferMatrix();

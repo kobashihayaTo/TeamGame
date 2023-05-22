@@ -2,14 +2,14 @@
 
 Map::Map()
 {
-	BlockSize = 32;
+	blockSize = 32;
 }
 
 Map::~Map() {}
 
 void Map::Initialize(Model* model, Model* floorModel, Model* effectmodel_, Model* afterModel, Model* goalModel) {
 	//引数として受け取ったデータをメンバ変数に記録する
-	BlockSize = 32;
+	blockSize = 32;
 	input_ = Input::GetInstance();
 
 
@@ -18,15 +18,15 @@ void Map::Initialize(Model* model, Model* floorModel, Model* effectmodel_, Model
 	afterModel_ = afterModel;
 
 	goalModel_ = goalModel;
-	effectmodel = effectmodel_;
+	effectModel = effectmodel_;
 
 	floorModel_ = floorModel;
 
 	debugText_ = DebugText::GetInstance();
 
 	//カメラの画角の調整
-	for (int z = 0; z < Map_Z; z++) {
-		for (int x = 0; x < Map_X; x++) {
+	for (int z = 0; z < map_Z; z++) {
+		for (int x = 0; x < map_X; x++) {
 			worldTransform_[z][x].Initialize();
 			worldTransform_[z][x].translation_.x = 2.0f * z - 40.0f;
 			worldTransform_[z][x].translation_.y = 0.0f;
@@ -39,7 +39,7 @@ void Map::Initialize(Model* model, Model* floorModel, Model* effectmodel_, Model
 
 	floorWorldTransform_.Initialize();
 	floorWorldTransform_.translation_ = { 0.0f, -5.0f, 3.0f };
-	floorWorldTransform_.scale_ = { 42.0f, 1.0f, 25.0f };
+	//floorWorldTransform_.scale_ = { 42.0f, 1.0f, 25.0f };
 	myFunc_.UpdateWorldTransform(floorWorldTransform_);
 	floorWorldTransform_.TransferColorMatrix();
 
@@ -48,17 +48,17 @@ void Map::Initialize(Model* model, Model* floorModel, Model* effectmodel_, Model
 	debugText_->Printf(" pos:(%f, %f, %f)", worldTransform_[0][0].translation_.x, worldTransform_[0][0].translation_.y, worldTransform_[0][0].translation_.z);
 
 	goalFlag = false;
-	effectworldTrans.Initialize();
-	effectworldTrans.scale_ = { 2.0f,2.0f,2.0f };
-	effectworldTrans.translation_ = { -11.0f, 0.0f, -18.0f };
-	effectworldTrans.translation_.y -= 10.0f;
+	effectWorldTrans.Initialize();
+	effectWorldTrans.scale_ = { 2.0f,2.0f,2.0f };
+	effectWorldTrans.translation_ = { -11.0f, 0.0f, -18.0f };
+	effectWorldTrans.translation_.y -= 10.0f;
 
 }
 
 void Map::Update(Player* player, bool MapkeyFlag) {
 
-	effectworldTrans.translation_.x = player->GetTransform().x;
-	effectworldTrans.translation_.z = player->GetTransform().z;
+	effectWorldTrans.translation_.x = player->GetTransform().x;
+	effectWorldTrans.translation_.z = player->GetTransform().z;
 
 	//マップチップとプレイヤーが当たっているか確認する
 	PlayerBlockCheck(player);
@@ -67,39 +67,39 @@ void Map::Update(Player* player, bool MapkeyFlag) {
 	//透明フラグの切り替え
 
 	if (MapkeyFlag == true) {
-		if (AnswerFlag == false) {
-			AnswerFlag = true;
+		if (answerFlag == false) {
+			answerFlag = true;
 		}
 	}
-	if (AnswerFlag == true) {
-		AnswerTimer--;
-		if (AnswerTimer < 0) {
-			AnswerIntervalFlag = true;
+	if (answerFlag == true) {
+		answerTimer--;
+		if (answerTimer < 0) {
+			answerIntervalFlag = true;
 		}
 	}
-	if (AnswerIntervalFlag == true) {
-		AnswerIntervalTimer--;
-		if (AnswerIntervalTimer <= 0.01f) {
+	if (answerIntervalFlag == true) {
+		answerIntervalTimer--;
+		if (answerIntervalTimer <= 0.01f) {
 			OKFlag = true;
 		}
-		if (AnswerIntervalTimer < 0) {
+		if (answerIntervalTimer < 0) {
 			OKFlag = false;
-			AnswerFlag = false;
-			AnswerIntervalFlag = false;
-			AnswerTimer = 100;
-			AnswerIntervalTimer = 100;
+			answerFlag = false;
+			answerIntervalFlag = false;
+			answerTimer = 100;
+			answerIntervalTimer = 100;
 		}
 	}
 
 
-	effectworldTrans.TransferColorMatrix();
-	myFunc_.UpdateWorldTransform(effectworldTrans);
+	effectWorldTrans.TransferColorMatrix();
+	myFunc_.UpdateWorldTransform(effectWorldTrans);
 
 
 	//デバッグ用表示
 
 	debugText_->SetPos(50, 150);
-	debugText_->Printf("effect pos:(%f, %f, %f)", effectworldTrans.translation_.x, effectworldTrans.translation_.y, effectworldTrans.translation_.z);
+	debugText_->Printf("effect pos:(%f, %f, %f)", effectWorldTrans.translation_.x, effectWorldTrans.translation_.y, effectWorldTrans.translation_.z);
 
 	debugText_->SetPos(50, 180);
 	debugText_->Printf("MapPlayer pos:(%f, %f, %f)", player->GetWorldPosition().x, player->GetWorldPosition().y, player->GetWorldPosition().z);
@@ -108,48 +108,48 @@ void Map::Update(Player* player, bool MapkeyFlag) {
 	debugText_->Printf("MapPlayer pos:(%f, %f, %f)", player->GetTransform().x, player->GetTransform().y, player->GetTransform().z);
 
 	debugText_->SetPos(50, 320);
-	debugText_->Printf("GoalCount:%d", GoalCount);
+	debugText_->Printf("GoalCount:%d", goalCount);
 
 
 	debugText_->SetPos(50, 210);
-	debugText_->Printf("AnswerFlag:%d", AnswerFlag);
+	debugText_->Printf("AnswerFlag:%d", answerFlag);
 
 	debugText_->SetPos(50, 390);
-	debugText_->Printf("AnswerIntervalFlag:%d", AnswerIntervalFlag);
+	debugText_->Printf("AnswerIntervalFlag:%d", answerIntervalFlag);
 
 	debugText_->SetPos(50, 410);
-	debugText_->Printf("AnswerTimer:%d", AnswerTimer);
+	debugText_->Printf("AnswerTimer:%d", answerTimer);
 
 	debugText_->SetPos(50, 430);
-	debugText_->Printf("AnswerIntervalTimer:%d", AnswerIntervalTimer);
+	debugText_->Printf("AnswerIntervalTimer:%d", answerIntervalTimer);
 
 	debugText_->SetPos(50, 610);
-	debugText_->Printf("GoalRELAYCount:%d", GoalRELAYCount);
+	debugText_->Printf("GoalRELAYCount:%d", goalMidCount1);
 }
 
 void Map::Draw(ViewProjection& viewProjection) {
 
-	if (MapFlag == 0)
+	if (mapFlag == 0)
 	{
 		//3Dモデルを描画
-		for (int z = 0; z < Map_Z; z++) {
-			for (int x = 0; x < Map_X; x++) {
+		for (int z = 0; z < map_Z; z++) {
+			for (int x = 0; x < map_X; x++) {
 				/*if (FirstMap[z][x] == BLOCK) {
 					afterModel_->Draw(worldTransform_[z][x], viewProjection);
 				}*/
 				if (FirstMap[z][x] == WALL) {
 					model_->Draw(worldTransform_[z][x], viewProjection);
 				}
-				if (AnswerFlag == true && AnswerIntervalFlag == false) {
+				if (answerFlag == true && answerIntervalFlag == false) {
 
 					if (goal_ == 0) {
-						if (FirstMap[z][x] == RELAY) {
+						if (FirstMap[z][x] == MIDDLEGOAL1) {
 							goalModel_->Draw(worldTransform_[z][x], viewProjection);
 						}
 					}
 
 					if (goal_ == 1) {
-						if (FirstMap[z][x] == ECHIGO) {
+						if (FirstMap[z][x] == MIDDLEGOAL2) {
 							goalModel_->Draw(worldTransform_[z][x], viewProjection);
 						}
 					}
@@ -163,16 +163,16 @@ void Map::Draw(ViewProjection& viewProjection) {
 			}
 		}
 	}
-	effectmodel->Draw(effectworldTrans, viewProjection);
+	effectModel->Draw(effectWorldTrans, viewProjection);
 }
 
 void Map::WallDraw(ViewProjection& viewProjection)
 {
-	if (MapFlag == 0)
+	if (mapFlag == 0)
 	{
 		//3Dモデルを描画
-		for (int z = 0; z < Map_Z; z++) {
-			for (int x = 0; x < Map_X; x++) {
+		for (int z = 0; z < map_Z; z++) {
+			for (int x = 0; x < map_X; x++) {
 				if (FirstMap[z][x] == BLOCK) {
 					afterModel_->Draw(worldTransform_[z][x], viewProjection);
 				}
@@ -195,10 +195,10 @@ void Map::OnCollision(Vector3 playerPos, float radius) {
 
 void Map::PlayerBlockCheck(Player* player) {
 
-	if (MapFlag == 0) {
+	if (mapFlag == 0) {
 		UIFlag = false;
-		for (int z = 0; z < Map_Z; z++) {
-			for (int x = 0; x < Map_X; x++) {
+		for (int z = 0; z < map_Z; z++) {
+			for (int x = 0; x < map_X; x++) {
 				// ブロックの座標
 				worldTransform_[z][x].translation_;
 
@@ -373,20 +373,20 @@ void Map::PlayerBlockCheck(Player* player) {
 
 				if (goal_ == 0) {
 					//進んだ先がGOALだったらクリア画面に移行する
-					if (FirstMap[z][x] == RELAY) {
+					if (FirstMap[z][x] == MIDDLEGOAL1) {
 						testFlag = CheckCollision(worldTransform_[z][x].translation_, player->GetWorldPosition(), radius, player->GetRadius());
 						// プレイヤーとブロック衝突判定
 						if (testFlag == true) {
-							GoalRELAYCount -= 0.25f;
+							goalMidCount1 -= 0.25f;
 							UIFlag = true;
-							ResetFlag = true;
-							if (GoalRELAYCount <= 0.0f) {
+							resetFlag = true;
+							if (goalMidCount1 <= 0.0f) {
 								testFlag = false;
 								//UIのフラグ
 								UIFlag = false;
 								goal_ = 1;
-								GoalRELAYCount = 50;
-								ResetFlag = false;
+								goalMidCount1 = 50;
+								resetFlag = false;
 							}
 						}
 					}
@@ -394,20 +394,20 @@ void Map::PlayerBlockCheck(Player* player) {
 
 				if (goal_ == 1) {
 					//進んだ先がGOALだったらクリア画面に移行する
-					if (FirstMap[z][x] == ECHIGO) {
+					if (FirstMap[z][x] == MIDDLEGOAL2) {
 						testFlag = CheckCollision(worldTransform_[z][x].translation_, player->GetWorldPosition(), radius, player->GetRadius());
 						// プレイヤーとブロック衝突判定
 						if (testFlag == true) {
-							GoalECHIGOCount -= 0.25f;
+							goalMidCount2 -= 0.25f;
 							UIFlag = true;
-							ResetFlag = true;
-							if (GoalECHIGOCount <= 0.0f) {
+							resetFlag = true;
+							if (goalMidCount2 <= 0.0f) {
 								//UIのフラグ
 								UIFlag = false;
-								GoalECHIGOCount = 50;
+								goalMidCount2 = 50;
 								goal_ = 2;
 								testFlag = false;
-								ResetFlag = false;
+								resetFlag = false;
 							}
 						}
 					}
@@ -419,37 +419,37 @@ void Map::PlayerBlockCheck(Player* player) {
 						testFlag = CheckCollision(worldTransform_[z][x].translation_, player->GetWorldPosition(), radius, player->GetRadius());
 						// プレイヤーとブロック衝突判定
 						if (testFlag == true) {
-							GoalCount -= 0.25f;
+							goalCount -= 0.25f;
 							UIFlag = true;
-							ResetFlag = true;
-							if (GoalCount <= 0.0f) {
+							resetFlag = true;
+							if (goalCount <= 0.0f) {
 								//UIのフラグ
 								UIFlag = false;
 								goalReadyFlag = true;
-								GoalCount = 50;
-								ResetFlag = false;
+								goalCount = 50;
+								resetFlag = false;
 							}
 							if (goalReadyFlag == true) {
-								effectworldTrans.translation_.y += 0.5f;
-								if (effectworldTrans.translation_.y >= 0.0f) {
-									effectworldTrans.translation_.y = 0.0f;
+								effectWorldTrans.translation_.y += 0.5f;
+								if (effectWorldTrans.translation_.y >= 0.0f) {
+									effectWorldTrans.translation_.y = 0.0f;
 									effectOffFlag = true;
 									goalReadyFlag = false;
 
 								}
 							}
 							if (effectOffFlag == true) {
-								effectworldTrans.translation_.y -= 1.0f;
-								if (effectworldTrans.translation_.y <= -10.0f) {
-									effectworldTrans.translation_.y = -10.0f;
-									goalcount++;
-									if (goalcount > 50) {
+								effectWorldTrans.translation_.y -= 1.0f;
+								if (effectWorldTrans.translation_.y <= -10.0f) {
+									effectWorldTrans.translation_.y = -10.0f;
+									goalCounter++;
+									if (goalCounter > 50) {
 										goalFlag = true;
 									}
 								}
 							}
 							debugText_->SetPos(50, 710);
-							debugText_->Printf("effectworldTrans.translation_.y:%f", effectworldTrans.translation_.y);
+							debugText_->Printf("effectworldTrans.translation_.y:%f", effectWorldTrans.translation_.y);
 							/*
 								ブロックかプレイヤーの四角の左端、右端、上端、下端、中心点を比較してぶつかった方向判別する
 
@@ -469,9 +469,9 @@ void Map::PlayerBlockCheck(Player* player) {
 }
 
 void Map::EnemyBlockCheck(Enemy* enemy) {
-	if (MapFlag == 0) {
-		for (int z = 0; z < Map_Z; z++) {
-			for (int x = 0; x < Map_X; x++) {
+	if (mapFlag == 0) {
+		for (int z = 0; z < map_Z; z++) {
+			for (int x = 0; x < map_X; x++) {
 				// ブロックの座標
 				worldTransform_[z][x].translation_;
 
@@ -632,19 +632,19 @@ bool Map::CheckCollision(Vector3 pos1, Vector3 pos2, float radius1, float radius
 
 void Map::Reset()
 {
-	AnswerFlag = false;
-	AnswerIntervalFlag = false;
-	AnswerTimer = 100;
-	AnswerIntervalTimer = 100;
+	answerFlag = false;
+	answerIntervalFlag = false;
+	answerTimer = 100;
+	answerIntervalTimer = 100;
 
 	goalFlag = false;
 	goalReadyFlag = false;
 	//
-	GoalCount = 50;
-	GoalRELAYCount = 50;
-	GoalECHIGOCount = 50;
+	goalCount = 50;
+	goalMidCount1 = 50;
+	goalMidCount2 = 50;
 
-	goalcount = 0;
+	goalCounter = 0;
 
 	OKFlag = false;
 	effectOffFlag = false;
@@ -657,5 +657,5 @@ void Map::Reset()
 
 	goal_ = 0;
 
-	ResetFlag = false;
+	resetFlag = false;
 }

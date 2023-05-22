@@ -81,7 +81,7 @@ private:
 	uint32_t textureHandle_ = 0;
 	uint32_t nameHandle_ = 0;
 	//スプライト
-	Sprite* sprite_ = nullptr;
+	Sprite* sprite_1 = nullptr;
 	Sprite* sprite_2 = nullptr;
 
 	//サウンド
@@ -89,7 +89,7 @@ private:
 	//音声再生ハンドル
 	uint32_t playHandle = -1;
 
-	int Time = 0;
+	int time = 0;
 	float posY = -1080.0f;
 
 	double frame = 0.0f;

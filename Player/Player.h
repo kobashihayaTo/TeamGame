@@ -33,7 +33,7 @@ public:	//メンバ関数
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update(bool PlayerKeyFlag);
+	void Update(bool playerKeyFlag);
 
 	/// <summary>
 	/// 描画
@@ -58,7 +58,7 @@ public:	//メンバ関数
 	// 衝突を検出したら呼び出されるコールバック関数
 	void OnCollision();
 
-	Vector3 Getmove() { return move; }
+	Vector3 GetMove() { return Move; }
 
 	Vector3 GetTransform() { return Trans; }
 
@@ -66,7 +66,7 @@ public:	//メンバ関数
 
 	bool GetSecretFlag() { return playerSecretFlag; }
 
-	bool GetSecretIntervalFlag() { return SecretIntervalFlag; }
+	bool GetSecretIntervalFlag() { return secretIntervalFlag; }
 
 	bool GetOKFlag() { return OKFlag; }
 
@@ -81,7 +81,7 @@ public:
 
 	void SetWorldPosition(Vector3 worldPosition) { worldTransform_.translation_ = worldPosition; }
 
-	Vector3 GetprePosition() { return prePosition_; }
+	Vector3 GetprePosition() { return PrePosition_; }
 
 	float GetRadius() { return radius; }
 
@@ -102,11 +102,11 @@ private:	//メンバ変数
 	WorldTransform effectTransform;
 
 	// 移動する前の座標
-	Vector3 prePosition_;
+	Vector3 PrePosition_;
 
 	//モデル
 	Model* model_ = nullptr;
-	Model* effectmodel = nullptr;
+	Model* effectModel = nullptr;
 
 	//入力処理するため
 	Input* input_ = nullptr;
@@ -136,7 +136,7 @@ private:	//メンバ変数
 	//プレイヤーの速度
 	float playerSpeedX_ = 0.3f;
 	float playerSpeedZ_ = 0.3f;
-	Vector3 move = { 0,0,0 };
+	Vector3 Move = { 0,0,0 };
 
 	Vector3 Trans = { 0,0,0 };
 
@@ -144,13 +144,13 @@ private:	//メンバ変数
 	bool playerDeathFlag = false;
 	bool playerSecretFlag = false;
 
-	bool SecretIntervalFlag = false;
+	bool secretIntervalFlag = false;
 
 	XMFLOAT4 DefaultColor = { 1.0f,1.0f,1.0f,1.0f };
 	XMFLOAT4 SecretColor = { 1.0f,1.0f,1.0f,0.5f };
 
-	int SecretTimer = 100;
-	float SecretIntervalTimer = 100.0f;
+	int secretTimer = 100;
+	float secretIntervalTimer = 100.0f;
 
 	bool OKFlag = false;
 

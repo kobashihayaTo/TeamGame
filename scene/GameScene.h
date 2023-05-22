@@ -91,8 +91,6 @@ private: // メンバ変数
 	//レールカメラ
 	std::unique_ptr<RailCamera> newCamera = std::make_unique<RailCamera>();
 
-	Model* model_ = nullptr;
-
 	//マップ生成
 	std::unique_ptr<Map> newMap = std::make_unique<Map>();
 	//マップモデル
@@ -123,8 +121,8 @@ private: // メンバ変数
 	std::unique_ptr<Enemy> newEnemy_5 = std::make_unique<Enemy>();
 	std::unique_ptr<Enemy> newEnemy_6 = std::make_unique<Enemy>();
 	std::unique_ptr<Enemy> newEnemy_7 = std::make_unique<Enemy>();
+	
 	//敵モデル
-
 	Model* enemyModel_ = nullptr;
 	Model* enemySensorModel_ = nullptr;
 
@@ -148,17 +146,17 @@ private: // メンバ変数
 	int isEnd_ = false;
 
 	bool keyFlag = false;
-	bool MapkeyFlag = false;
-	bool playerkeyFlag = false;
+	bool mapKeyFlag = false;
+	bool playerKeyFlag = false;
 
-	Vector3 enemyPos = { -14.0f, 0.9f, 22.7f };
-	Vector3 enemyPos_1 = { 16.0f, 0.9f, 22.7f };
-	Vector3 enemyPos_2 = { -36.0f, 0.9f, 8.0f };
-	Vector3 enemyPos_3 = { -9.7f, 0.9f, 0.0f };
-	Vector3 enemyPos_4 = { 12.0f, 0.9f, 0.0f };
-	Vector3 enemyPos_5 = { 30.0f, 0.9f, 2.0f };
-	Vector3 enemyPos_6 = { 34.0f, 0.9f, 4.0f };
-	Vector3 enemyPos_7 = { 0.0f, 0.9f, -19.0f };
+	Vector3 enemyPos_1 = { -14.0f, 0.9f, 22.7f };
+	Vector3 enemyPos_2 = { 16.0f, 0.9f, 22.7f };
+	Vector3 enemyPos_3 = { -36.0f, 0.9f, 8.0f };
+	Vector3 enemyPos_4 = { -9.7f, 0.9f, 0.0f };
+	Vector3 enemyPos_5 = { 12.0f, 0.9f, 0.0f };
+	Vector3 enemyPos_6 = { 30.0f, 0.9f, 2.0f };
+	Vector3 enemyPos_7 = { 34.0f, 0.9f, 4.0f };
+	Vector3 enemyPos_8 = { 0.0f, 0.9f, -19.0f };
 
 	//サウンド
 	uint32_t playBGMHandle = 0u;

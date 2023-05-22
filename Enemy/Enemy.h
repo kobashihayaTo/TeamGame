@@ -34,7 +34,7 @@ public:		//メンバ関数
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <param name="texturehandle">テクスチャハンドル</param>
-	void Initialize(Model* model, Model* sensormodel, RailCamera* camera, Vector3 enemyPos, bool WidthHeightFlag);
+	void Initialize(Model* model, Model* sensorModel, RailCamera* camera, Vector3 enemyPos, bool WidthHeightFlag);
 
 	/// <summary>
 	/// 更新
@@ -57,26 +57,6 @@ public:		//メンバ関数
 	void SensorVision();
 
 	/// <summary>
-	/// それぞれのベクトルを得る関数(上)
-	/// </summary>
-	void UpSensorVector(float playerZ, float playerX, float playerRadius);
-
-	/// <summary>
-	/// それぞれのベクトルを得る関数(下)
-	/// </summary>
-	void DownSensorVector(float playerZ, float playerX, float playerRadius);
-
-	/// <summary>
-	/// それぞれのベクトルを得る関数(右)
-	/// </summary>
-	void RightSensorVector(float playerZ, float playerX, float playerRadius);
-
-	/// <summary>
-	/// それぞれのベクトルを得る関数(左)
-	/// </summary>
-	void LeftSensorVector(float playerZ, float playerX, float playerRadius);
-
-	/// <summary>
 	/// センサーの描画
 	/// </summary>
 	void SensorDraw(ViewProjection& viewProjection);
@@ -89,12 +69,12 @@ public:		//メンバ関数
 	/// <summary>
 	/// プレイヤーが敵から見てどこにいるかを見る
 	/// </summary>
-	void EnemyMoveSearch(float playerX, float playerZ, float playerR);
+	void EnemyMoveSearch(float playerX, float playerZ, float playerR, bool WidthHeightFlag);
 
 	/// <summary>
-	/// 
+	/// プレイヤーが敵から見てどこにいるかをチェックする
 	/// </summary>
-	void EnemyMoveCheck(float playerX, float playerZ, float playerR);
+	void EnemyMoveCheck(float playerX, float playerZ, float playerR, bool WidthHeightFlag);
 
 	//衝突を検出したら呼び出されるコールバック関数
 	void OnCollision();
@@ -123,7 +103,7 @@ public:		//メンバ関数
 
 	bool GetStopFlag() { return stopFlag; }
 
-	Vector3 GetprePosition() { return prePosition_; }
+	Vector3 GetprePosition() { return PrePosition_; }
 
 	bool GetOKFlag() { return OKFlag; }
 
@@ -145,7 +125,7 @@ private:	//メンバ変数
 
 	//モデル
 	Model* model_ = nullptr;
-	Model* sensormodel_ = nullptr;
+	Model* sensorModel_ = nullptr;
 
 
 
@@ -156,7 +136,7 @@ private:	//メンバ変数
 	DebugText* debugText_ = nullptr;
 
 	// 移動する前の座標
-	Vector3 prePosition_;
+	Vector3 PrePosition_;
 
 	PrimitiveDrawer* primitive_ = nullptr;
 
@@ -166,10 +146,10 @@ private:	//メンバ変数
 	std::list<std::unique_ptr<Enemy>>enemys;
 
 	//切り替えフラグ
-	bool RightMoveFlag = false;
-	bool LeftMoveFlag = false;
-	bool UpMoveFlag = false;
-	bool DownMoveFlag = false;
+	bool rightMoveFlag = false;
+	bool leftMoveFlag = false;
+	bool upMoveFlag = false;
+	bool downMoveFlag = false;
 
 	//透明フラグ
 	bool invisibleFlag = false;
@@ -206,13 +186,13 @@ private:	//メンバ変数
 
 	int count = 20;
 	int isSearch = FALSE;
-	int isMove = UP;
-	int isMove_1 = RIGHT;
+	int isMove_Height = UP;
+	int isMove_Width = RIGHT;
 	float sensorMovedDis = 0.0f;
 
 	bool crisisFlag = false;
 
-	XMFLOAT4 sensorColor = { 1.0f,1.0f,1.0f,0.2f };
+	XMFLOAT4 SensorColor = { 1.0f,1.0f,1.0f,0.2f };
 
 	int direction = UP;
 
@@ -224,17 +204,17 @@ private:	//メンバ変数
 	bool leftFlag = false;
 
 	//センサーの頂点
-	Vector3 UpStart = { 0,0,0 };
-	Vector3 UpEnd = { 0,0,0 };
-	Vector3 UpEnd1 = { 0,0,0 };
-	Vector3 DownStart = { 0,0,0 };
-	Vector3 DownEnd = { 0,0,0 };
-	Vector3 DownEnd1 = { 0,0,0 };
-	Vector3 RightStart = { 0,0,0 };
-	Vector3 RightEnd = { 0,0,0 };
-	Vector3 RightEnd1 = { 0,0,0 };
-	Vector3 LeftStart = { 0,0,0 };
-	Vector3 LeftEnd = { 0,0,0 };
-	Vector3 LeftEnd1 = { 0,0,0 };
+	Vector3 UpStart_Pt1 = { 0,0,0 };
+	Vector3 UpEnd_Pt2 = { 0,0,0 };
+	Vector3 UpEnd_Pt3 = { 0,0,0 };
+	Vector3 DownStart_Pt1 = { 0,0,0 };
+	Vector3 DownEnd_Pt2 = { 0,0,0 };
+	Vector3 DownEnd_Pt3 = { 0,0,0 };
+	Vector3 RightStart_Pt1 = { 0,0,0 };
+	Vector3 RightEnd_Pt2 = { 0,0,0 };
+	Vector3 RightEnd_Pt3 = { 0,0,0 };
+	Vector3 LeftStart_Pt1 = { 0,0,0 };
+	Vector3 LeftEnd_Pt2 = { 0,0,0 };
+	Vector3 LeftEnd_Pt3 = { 0,0,0 };
 };
 
