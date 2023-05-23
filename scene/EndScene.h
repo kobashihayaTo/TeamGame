@@ -72,8 +72,10 @@ private:
 
 	//テクスチャバンドル
 	uint32_t textureHandle1_ = 0;
+	uint32_t textureHandle2_ = 0;
 	//スプライト
 	Sprite* sprite1_ = nullptr;
+	Sprite* sprite2_ = nullptr;
 
 	//サウンド
 	uint32_t soundDataHandle_ = 0;
