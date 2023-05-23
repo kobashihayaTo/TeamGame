@@ -6,7 +6,9 @@
 
 EndScene::EndScene() {}
 
-EndScene::~EndScene() {}
+EndScene::~EndScene() {
+	delete sprite1_;
+}
 
 void EndScene::Initialize()
 {
@@ -17,10 +19,10 @@ void EndScene::Initialize()
 	nextScene_ = Scene::END;
 
 	//ファイル名指定してテクスチャを読み込む
-	textureHandle_ = TextureManager::Load("GAMECLEAR/clear.png");
+	textureHandle1_ = TextureManager::Load("GAMECLEAR/clear.png");
 
 	//スプライトの生成
-	sprite_ = Sprite::Create(textureHandle_, { 0,0 });
+	sprite1_ = Sprite::Create(textureHandle1_, { 0,0 });
 
 	//サウンド
 	soundDataHandle_ = audio_->LoadWave("Sound/gameclear.wav");
@@ -78,7 +80,7 @@ void EndScene::Draw()
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
-	sprite_->Draw();
+	sprite1_->Draw();
 
 #ifdef _DEBUG
 

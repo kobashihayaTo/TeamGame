@@ -8,6 +8,10 @@ TitleScene::~TitleScene()
 {
 	delete titleBG_sprite_;
 	delete title_sprite_;
+	delete space_sprite_;
+	delete space_Selection_sprite_;
+	delete exit_sprite_;
+	delete exit_Selection_sprite_;
 }
 
 void TitleScene::Initialize()

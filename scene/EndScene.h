@@ -71,9 +71,9 @@ private:
 	int endFlag_ = false;
 
 	//テクスチャバンドル
-	uint32_t textureHandle_ = 0;
+	uint32_t textureHandle1_ = 0;
 	//スプライト
-	Sprite* sprite_ = nullptr;
+	Sprite* sprite1_ = nullptr;
 
 	//サウンド
 	uint32_t soundDataHandle_ = 0;
