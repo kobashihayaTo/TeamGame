@@ -29,6 +29,7 @@ void TitleScene::Initialize()
 	space_Selection_= TextureManager::Load("START/START_selection.png");
 	exitHandle_= TextureManager::Load("EXIT/EXIT.png");
 	exit_Selection_ = TextureManager::Load("EXIT/EXIT_selection.png");
+	selectManualHandle_ = TextureManager::Load("TITLE/selectManual.png");
 	//スプライトの生成
 	titleBG_sprite_ = Sprite::Create(titleBGHandle_, { 0,0 });
 	title_sprite_ = Sprite::Create(titleHandle_, { 0,posY });
@@ -36,6 +37,7 @@ void TitleScene::Initialize()
 	space_Selection_sprite_ = Sprite::Create(space_Selection_, { 1100,700 });
 	exit_sprite_ = Sprite::Create(exitHandle_, { 300,700 });
 	exit_Selection_sprite_ = Sprite::Create(exit_Selection_, { 300,700 });
+	selectManual_sprite_ = Sprite::Create(selectManualHandle_, { 230,940 });
 
 	selectFlag = 0;
 
@@ -98,7 +100,7 @@ void TitleScene::Draw()
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
-
+	titleBG_sprite_->Draw();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
@@ -126,8 +128,8 @@ void TitleScene::Draw()
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
-	titleBG_sprite_->Draw();
 	title_sprite_->Draw();
+	selectManual_sprite_->Draw();
 
 	if (selectFlag == 0) {
 	space_Selection_sprite_->Draw();

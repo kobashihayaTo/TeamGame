@@ -90,6 +90,7 @@ private:
 	uint32_t space_Selection_ = 0;
 	uint32_t exitHandle_ = 0;
 	uint32_t exit_Selection_ = 0;
+	uint32_t selectManualHandle_ = 0;
 	//スプライト
 	Sprite* titleBG_sprite_ = nullptr;
 	Sprite* title_sprite_ = nullptr;
@@ -97,6 +98,7 @@ private:
 	Sprite* space_Selection_sprite_ = nullptr;
 	Sprite* exit_sprite_ = nullptr;
 	Sprite* exit_Selection_sprite_ = nullptr;
+	Sprite* selectManual_sprite_ = nullptr;
 	//サウンド
 	uint32_t soundDataHandle_ = 0u;
 	//音声再生ハンドル
