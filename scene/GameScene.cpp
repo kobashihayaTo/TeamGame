@@ -168,9 +168,9 @@ void GameScene::Update() {
 	}
 
 	//リセット処理
-	if (input_->TriggerKey(DIK_W)) {
-		Reset();
-	}
+	//if (input_->TriggerKey(DIK_W)) {
+	//	Reset();
+	//}
 
 	debugText_->SetPos(50, 450);
 	debugText_->Printf("playerkeyFlag:%d", playerKeyFlag);
