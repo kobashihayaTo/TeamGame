@@ -33,10 +33,10 @@ void TitleScene::Initialize()
 	//スプライトの生成
 	titleBG_sprite_ = Sprite::Create(titleBGHandle_, { 0,0 });
 	title_sprite_ = Sprite::Create(titleHandle_, { 0,posY });
-	space_sprite_ = Sprite::Create(spaceHandle_, { 1100,700 });
-	space_Selection_sprite_ = Sprite::Create(space_Selection_, { 1100,700 });
-	exit_sprite_ = Sprite::Create(exitHandle_, { 300,700 });
-	exit_Selection_sprite_ = Sprite::Create(exit_Selection_, { 300,700 });
+	space_sprite_ = Sprite::Create(spaceHandle_, { 300,700 });
+	space_Selection_sprite_ = Sprite::Create(space_Selection_, { 300,700 });
+	exit_sprite_ = Sprite::Create(exitHandle_, { 1100,700 });
+	exit_Selection_sprite_ = Sprite::Create(exit_Selection_, { 1100,700 });
 	selectManual_sprite_ = Sprite::Create(selectManualHandle_, { 230,940 });
 
 	selectFlag = 0;
