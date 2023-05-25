@@ -9,6 +9,7 @@ EndScene::EndScene() {}
 EndScene::~EndScene() {
 	delete sprite1_;
 	delete sprite2_;
+	delete sprite3_;
 }
 
 void EndScene::Initialize()
@@ -20,21 +21,28 @@ void EndScene::Initialize()
 	nextScene_ = Scene::END;
 
 	//ファイル名指定してテクスチャを読み込む
-	textureHandle1_ = TextureManager::Load("GAMECLEAR/clear1.png");
+	textureHandle1_ = TextureManager::Load("GAMECLEAR/clear1_table.png");
 	textureHandle2_ = TextureManager::Load("GAMECLEAR/clear2.png");
+	textureHandle3_ = TextureManager::Load("GAMECLEAR/clear3.png");
 
 	//スプライトの生成
 	sprite1_ = Sprite::Create(textureHandle1_, { 0,0 });
 	sprite2_ = Sprite::Create(textureHandle2_, { 0,0 });
+	sprite3_ = Sprite::Create(textureHandle3_, { 0,0 });
 
 	//サウンド
 	soundDataHandle_ = audio_->LoadWave("Sound/gameclear.wav");
+
+	lightingTimer = 300;
 }
 
 void EndScene::Update()
 {
-	if (audio_->IsPlaying(playHandle) == false || playHandle == -1)
-	{
+	
+	lightingTimer--;
+	
+
+	if (audio_->IsPlaying(playHandle) == false || playHandle == -1){
 		playHandle = audio_->PlayWave(soundDataHandle_, false, 1);
 	}
 	endFlag_ = false;
@@ -85,7 +93,30 @@ void EndScene::Draw()
 	/// </summary>
 	sprite1_->Draw();
 
-	sprite2_->Draw();
+	//クリア(色が淡いやつ)
+	if (lightingTimer <= 250 && lightingTimer >= 220) {
+		sprite2_->Draw();
+	}
+	if (lightingTimer <= 190 && lightingTimer >= 150) {
+		sprite2_->Draw();
+	}
+	if (lightingTimer <= 90 && lightingTimer >= 60) {
+		sprite2_->Draw();
+	}
+
+	//クリア(白のハイライト)
+	if (lightingTimer <= 170 && lightingTimer >= 160) {
+		sprite3_->Draw();
+	}
+	if (lightingTimer <= 80 && lightingTimer >= 70) {
+		sprite3_->Draw();
+	}
+	
+
+	if (lightingTimer <= 0) {
+		sprite2_->Draw();
+		sprite3_->Draw();
+	}
 
 #ifdef _DEBUG
 
