@@ -70,12 +70,16 @@ private:
 
 	int endFlag_ = false;
 
+	int lightingTimer = 0;
+
 	//テクスチャバンドル
 	uint32_t textureHandle1_ = 0;
 	uint32_t textureHandle2_ = 0;
+	uint32_t textureHandle3_ = 0;
 	//スプライト
 	Sprite* sprite1_ = nullptr;
 	Sprite* sprite2_ = nullptr;
+	Sprite* sprite3_ = nullptr;
 
 	//サウンド
 	uint32_t soundDataHandle_ = 0;
